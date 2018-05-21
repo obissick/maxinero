@@ -15,6 +15,8 @@
                     @endif
 
                     You are logged in!
+
+                    <a href="{{route('settings.index')}}">Settings</a>
                 </div>
             </div>
         </div>
