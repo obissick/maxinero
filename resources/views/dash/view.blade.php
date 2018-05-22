@@ -35,8 +35,7 @@
                                 <tr>
                                     <!-- Task Name -->
                                     <td class="table-text">
-                                        
-                                        <a class="btn btn-sm btn-primary" role="button" >{{ $sessions['data'][$i]['id']}}</a>
+                                        <a class="btn btn-sm btn-info" role="button" >{{ $sessions['data'][$i]['id']}}</a>
                                     </td>
                                     <td class="table-text">
                                         {{ $sessions['data'][$i]['attributes']['user'] }}
