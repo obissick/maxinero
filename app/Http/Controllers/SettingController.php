@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 use App\Setting;
 use Auth;
@@ -15,7 +17,9 @@ class SettingController extends Controller
 
     public function index()
     {
-        $setting = Setting::where('user_id', Auth::user()->id)->first();
+        $setting = DB::table('settings')
+            ->select(DB::raw('id, api_url, username'))
+            ->where('user_id', Auth::user()->id)->first();
         return view('setting.index', compact('setting'));
     }
 
@@ -24,7 +28,7 @@ class SettingController extends Controller
         $settings = new Setting([
             'api_url' => $request->get('api_url'),
             'username' => $request->get('username'),
-            'password' => bcrypt($request->get('password')),
+            'password' => Crypt::encrypt($request->get('password')),
             'user_id' => Auth::user()->id,
         ]);
 
@@ -40,7 +44,11 @@ class SettingController extends Controller
 
     public function update(Request $request, $id)
     {
-        Setting::find($id)->update($request->all());
+        Setting::find($id)->update([
+            'api_url' => $request->get('api_url'),
+            'username' => $request->get('username'),
+            'password' => Crypt::encrypt($request->get('password')), 
+        ]);
         return redirect()->route('settings.index');
     }
 }

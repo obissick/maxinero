@@ -13,6 +13,22 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+    <style>
+        .numberCircle {
+            border-radius: 50%;
+            behavior: url(PIE.htc);
+            /* remove if you don't care about IE8 */
+            width: 166px;
+            height: 166px;
+            padding: 50px;
+            background: #fff;
+            border: 2px solid #666;
+            color: #666;
+            text-align: center;
+            font: 48px Arial, sans-serif;
+        }
+    </style>
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
@@ -34,7 +50,15 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @guest
+                            &nbsp;
+                        @else
+                            <li><a class="nav-link" href="{{ route('home') }}">Dashboard</a></li>
+                            <li><a class="nav-link" href="">MaxScale</a></li>
+                            <li><a class="nav-link" href="">Services</a></li>
+                            <li><a class="nav-link" href="">Servers</a></li>
+                            <li><a class="nav-link" href="">Filters</a></li>
+                        @endguest
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -44,6 +68,8 @@
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @else
+
+                            <li><a class="nav-link" href="{{route('settings.index')}}">Config</a></li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
