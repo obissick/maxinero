@@ -56,7 +56,7 @@
                             <li><a class="nav-link" href="{{ route('home') }}">Dashboard</a></li>
                             <li><a class="nav-link" href="">MaxScale</a></li>
                             <li><a class="nav-link" href="">Services</a></li>
-                            <li><a class="nav-link" href="">Servers</a></li>
+                            <li><a class="nav-link" href="{{ route('servers.index') }}">Servers</a></li>
                             <li><a class="nav-link" href="">Filters</a></li>
                         @endguest
                     </ul>
@@ -97,5 +97,7 @@
             @yield('content')
         </main>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{{asset('js/ajax.js')}}"></script>
 </body>
 </html>

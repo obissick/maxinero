@@ -24,7 +24,7 @@
                             <th>ID</th>
                             <th>User</th>
                             <th>Remote</th>
-                            <th>Connected</th>
+                            <th>Service</th>
                             <th>Idle</th>
                         </thead>
 
@@ -44,7 +44,7 @@
                                         {{ $sessions['data'][$i]['attributes']['remote'] }}
                                     </td>
                                     <td class="table-text">
-                                        {{ $sessions['data'][$i]['attributes']['connected'] }}
+                                        {{ $sessions['data'][$i]['relationships']['services']['data'][0]['id'] }}
                                     </td>
                                     <td class="table-text">
                                         {{ $sessions['data'][$i]['attributes']['idle'] }}
