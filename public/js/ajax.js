@@ -1,6 +1,6 @@
 $(document).ready(function(){
     var url = "/servers";
-
+    var services_url = "/services";
     //display modal form for server editing
     $('.open-modal').click(function(){
         var server_id = $(this).val(); 
@@ -114,12 +114,64 @@ $(document).ready(function(){
                     $('#servers-list').append(server);
                 }else{ //if user updated an existing record
 
-                    $("#task" + server_id).replaceWith(server);
+                    $("#server" + server_id).replaceWith(server);
                 }
 
                 $('#addserver').trigger("reset");
 
                 $('#server').modal('hide')
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.stop-service').click(function(){
+        var service_id = $(this).val();
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: services_url + '/' + service_id,
+            data: ({type: 'stop'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+
+                //$("#server" + server_id).remove();
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.start-service').click(function(){
+        var service_id = $(this).val();
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: services_url + '/' + service_id,
+            data: ({type: 'start'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+
+                //$("#server" + server_id).remove();
             },
             error: function (data) {
                 console.log('Error:', data);

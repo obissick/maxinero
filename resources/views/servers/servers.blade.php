@@ -39,6 +39,7 @@
                         @endfor
                     </tbody>
                 </table>
+            
                 <!-- End of Table-to-load-the-data Part -->
                 <!-- Modal (Pop up when detail button clicked) -->
                 <div class="modal fade" id="server" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

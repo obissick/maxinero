@@ -27,10 +27,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
+        $threads = json_decode($this->get_request('maxscale/threads'), true);
         $sessions = json_decode($this->get_request('sessions'), true);
         $count = count($sessions['data']);
+        $threads_count = count($threads['data']);
 
-        return view('dash.view', compact('count', 'sessions'));
+        return view('dash.view', compact('count', 'sessions', 'threads_count', 'threads'));
     }
 }

@@ -22,3 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/settings', 'SettingController');
 
 Route::resource('/servers', 'ServerController');
+
+Route::resource('/services', 'ServiceController');

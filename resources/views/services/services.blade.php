@@ -4,36 +4,36 @@
 <div class="container container-fluid">
     <div class="row">
         
-        <button id="btn-add" name="btn-add" class="btn btn-success btn-xs" data-toggle="modal" data-target="#server">Add Server</button>
+        <button id="btn-add" name="btn-add" class="btn btn-success btn-xs" data-toggle="modal" data-target="#server">Add Service</button>
             <div>
                 <!-- Table-to-load-the-data Part -->
                 <table class="table">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Address</th>
-                            <th>Port</th>
-                            <th>Protocol</th>
+                            <th>Router</th>
                             <th>State</th>
-                            <th>Connections</th>
                             <th>Total Connections</th>
+                            <th>Connections</th>
                             <th>Actions</th>
-
                         </tr>
                     </thead>
                     <tbody id="servers-list" name="servers-list">
-                        @for ($i = 0; $i < count($servers['data']); $i++)
-                        <tr id="server{{$servers['data'][$i]['id']}}">
-                            <td>{{$servers['data'][$i]['id']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['parameters']['address']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['parameters']['port']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['parameters']['protocol']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['state']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['statistics']['connections']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['statistics']['total_connections']}}</td>
+                        @for ($i = 0; $i < count($services['data']); $i++)
+                        <tr id="server{{$services['data'][$i]['id']}}">
+                            <td>{{$services['data'][$i]['id']}}</td>
+                            <td>{{$services['data'][$i]['attributes']['router']}}</td>
+                            <td>{{$services['data'][$i]['attributes']['state']}}</td>
+                            <td>{{$services['data'][$i]['attributes']['total_connections']}}</td>
+                            <td>{{$services['data'][$i]['attributes']['connections']}}</td>
                             <td>
-                                <button class="btn btn-warning btn-xs btn-detail open-modal" value="{{$servers['data'][$i]['id']}}">Edit</button>
-                                <button class="btn btn-danger btn-xs btn-delete delete-server" value="{{$servers['data'][$i]['id']}}">Delete</button>
+                                @if($services['data'][$i]['attributes']['state'] === "Started")
+                                    <button class="btn btn-danger btn-xs btn-detail stop-service" value="{{$services['data'][$i]['id']}}">Stop</button>  
+                                @else
+                                    <button class="btn btn-success btn-xs btn-detail start-service" value="{{$services['data'][$i]['id']}}">Start</button>
+                                @endif
+                                <button class="btn btn-warning btn-xs btn-detail open-modal" value="{{$services['data'][$i]['id']}}">Edit</button>
+                                <button class="btn btn-danger btn-xs btn-delete delete-server" value="{{$services['data'][$i]['id']}}">Delete</button>
                             </td>
                         </tr>
                         @endfor
@@ -41,7 +41,7 @@
                 </table>
                 <!-- End of Table-to-load-the-data Part -->
                 <!-- Modal (Pop up when detail button clicked) -->
-                <div class="modal fade" id="server" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="service" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -49,12 +49,12 @@
                                 <h4 class="modal-title" id="myModalLabel">Server Editor</h4>
                             </div>
                             <div class="modal-body">
-                                <form id="addserver" name="addserver" class="form-horizontal" novalidate="" method="POST" action="{{ route('servers.store') }}">
+                                <form id="addservice" name="addservice" class="form-horizontal" novalidate="" method="POST" action="{{ route('services.store') }}">
                                     {{ csrf_field() }}
                                     <div class="form-group error">
-                                        <label for="server_id" class="col-sm-3 control-label">Server ID</label>
+                                        <label for="service_id" class="col-sm-3 control-label">Service ID</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control has-error" id="server_id" name="server_id" placeholder="ID" value="">
+                                            <input type="text" class="form-control has-error" id="service_id" name="service_id" placeholder="ID" value="">
                                         </div>
                                     </div>
 

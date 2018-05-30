@@ -60,9 +60,53 @@
 		</div>
 		<div class="col-md-6">
 			<div class="panel panel-default">
-				<div class="panel-heading"></div>
+				<div class="panel-heading"># Threads</div>
 				<div class="panel-body">
-					<canvas id="pie" height="280" width="600"></canvas>
+					<div class="numberCircle">{{$threads_count}}</div>	
+                    <br />
+                    <div class="table-responsive">
+                    <table class="table table-striped table-bordered task-table">
+						
+                        <!-- Table Headings -->
+                        <thead>
+                            <th>ID</th>
+                            <th>Reads</th>
+                            <th>Writes</th>
+                            <th>Errors</th>
+                            <th>Hangups</th>
+                            <th>accepts</th>
+                        </thead>
+
+                        <!-- Table Body -->
+                        <tbody>
+                            
+                            @for($i = 0; $i < count($threads['data']); $i++)
+                                <tr>
+                                    <!-- Task Name -->
+                                    <td class="table-text">
+                                        <a class="btn btn-sm btn-info" role="button" >{{ $threads['data'][$i]['id']}}</a>
+                                    </td>
+                                    <td class="table-text">
+                                        {{ $threads['data'][$i]['attributes']['stats']['reads'] }}
+                                    </td>
+                                    <td class="table-text">
+                                        {{ $threads['data'][$i]['attributes']['stats']['writes'] }}
+                                    </td>
+                                    <td class="table-text">
+                                        {{ $threads['data'][$i]['attributes']['stats']['errors'] }}
+                                    </td>
+                                    <td class="table-text">
+                                        {{ $threads['data'][$i]['attributes']['stats']['hangups'] }}
+                                    </td>
+                                    <td class="table-text">
+                                        {{ $threads['data'][$i]['attributes']['stats']['accepts'] }}
+                                    </td>
+                                </tr>
+                            @endfor
+                            
+                        </tbody>
+                    </table>
+                </div>
 				</div>
 			</div>
 		</div>

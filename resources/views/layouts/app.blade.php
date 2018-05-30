@@ -21,7 +21,7 @@
             width: 166px;
             height: 166px;
             padding: 50px;
-            background: #fff;
+            background: #01FCA1;
             border: 2px solid #666;
             color: #666;
             text-align: center;
@@ -55,7 +55,7 @@
                         @else
                             <li><a class="nav-link" href="{{ route('home') }}">Dashboard</a></li>
                             <li><a class="nav-link" href="">MaxScale</a></li>
-                            <li><a class="nav-link" href="">Services</a></li>
+                            <li><a class="nav-link" href="{{ route('services.index') }}">Services</a></li>
                             <li><a class="nav-link" href="{{ route('servers.index') }}">Servers</a></li>
                             <li><a class="nav-link" href="">Filters</a></li>
                         @endguest

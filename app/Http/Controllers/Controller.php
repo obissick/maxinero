@@ -49,6 +49,15 @@ class Controller extends BaseController
         ]);
     }
 
+    function put_request($location){
+        $setting = $this->get_api_info();
+        $client = new GuzzleHttp\Client();
+        $res = $client->put($setting->api_url.$location, [
+            'auth' => [$setting->username, Crypt::decrypt($setting->password)], 
+            'verify' => false
+        ]);
+    }
+
     function get_api_info(){
         return DB::table('settings')
             ->select(DB::raw('id, api_url, username, password'))
