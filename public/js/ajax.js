@@ -1,6 +1,7 @@
 $(document).ready(function(){
     var url = "/servers";
     var services_url = "/services";
+    var monitors_url = "/monitors"
     //display modal form for server editing
     $('.open-modal').click(function(){
         var server_id = $(this).val(); 
@@ -58,8 +59,9 @@ $(document).ready(function(){
 
                 $("#server" + server_id).remove();
             },
-            error: function (data) {
-                console.log('Error:', data);
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+                
             }
         });
     });
@@ -127,6 +129,181 @@ $(document).ready(function(){
         });
     });
 
+    $('.master').click(function(){
+        var server_id = $(this).val(); 
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: url + '/' + server_id,
+            data: ({state: 'Master'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(jQuery.parseJSON(data));
+                
+            },
+            error: function (data) {
+                alert('Error:', data);
+            }
+        });
+    });
+
+    $('.slave').click(function(){
+        var server_id = $(this).val(); 
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: url + '/' + server_id,
+            data: ({state: 'Slave'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(jQuery.parseJSON(data));
+                
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.maintenance').click(function(){
+        var server_id = $(this).val(); 
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: url + '/' + server_id,
+            data: ({state: 'Maintenance'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(jQuery.parseJSON(data));
+                
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.running').click(function(){
+        var server_id = $(this).val(); 
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: url + '/' + server_id,
+            data: ({state: 'Running'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(jQuery.parseJSON(data));
+                
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.synced').click(function(){
+        var server_id = $(this).val(); 
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: url + '/' + server_id,
+            data: ({state: 'Synced'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(jQuery.parseJSON(data));
+                
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.ndb').click(function(){
+        var server_id = $(this).val(); 
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: url + '/' + server_id,
+            data: ({state: 'NDB'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(jQuery.parseJSON(data));
+                
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.stale').click(function(){
+        var server_id = $(this).val(); 
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: url + '/' + server_id,
+            data: ({state: 'Stale'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(jQuery.parseJSON(data));
+                
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
     $('.stop-service').click(function(){
         var service_id = $(this).val();
 
@@ -145,7 +322,12 @@ $(document).ready(function(){
             success: function (data) {
                 console.log(data);
 
-                //$("#server" + server_id).remove();
+                var service = '<tr id="service' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['router'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['total_connections']+ '</td><td>' + data['data']['attributes']['connections'] + '</td><td>' + data['data']['attributes']['started'] + '</td>';
+                service += '<td><button class="btn btn-success btn-xs btn-detail start-service"' + data['data']['id'] + '">Start</button>';
+                service += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                service += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td></tr>';
+
+                $("#service" + service_id).replaceWith(service);
             },
             error: function (data) {
                 console.log('Error:', data);
@@ -171,7 +353,81 @@ $(document).ready(function(){
             success: function (data) {
                 console.log(data);
 
-                //$("#server" + server_id).remove();
+                var service = '<tr id="service' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['router'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['total_connections']+ '</td><td>' + data['data']['attributes']['connections'] + '</td><td>' + data['data']['attributes']['started'] + '</td>';
+                service += '<td><button class="btn btn-warning btn-xs btn-detail stop-service"' + data['data']['id'] + '">Stop</button>';
+                service += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                service += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td></tr>';
+
+                $("#service" + service_id).replaceWith(service);
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.stop-monitor').click(function(){
+        var monitor_id = $(this).val();
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: monitors_url + '/' + monitor_id,
+            data: ({type: 'stop'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                var servers = "";
+                for(i = 0; i < data['data']['relationships']['servers']['data'].length; i++){
+                    servers+= data['data']['relationships']['servers']['data'][i]['id'] + " "
+                }
+                var monitor = '<tr id="monitor' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['module'] + '</td><td>' + data['data']['attributes']['state']+ '</td><td>' + servers + '</td>';
+                monitor += '<td><button class="btn btn-success btn-xs btn-detail start-monitor"' + data['data']['id'] + '">Start</button>';
+                monitor += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                monitor += '<button class="btn btn-danger btn-xs btn-delete delete-monitor" value="' + data['data']['id'] + '">Delete</button></td></tr>';
+
+                $("#monitor" + monitor_id).replaceWith(monitor);
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.start-monitor').click(function(){
+        var monitor_id = $(this).val();
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "PUT",
+            url: monitors_url + '/' + monitor_id,
+            data: ({type: 'start'}),
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                var servers = "";
+                for(i = 0; i < data['data']['relationships']['servers']['data'].length; i++){
+                    servers+= data['data']['relationships']['servers']['data'][i]['id'] + " "
+                }
+
+                var monitor = '<tr id="monitor' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['module'] + '</td><td>' + data['data']['attributes']['state']+ '</td><td>' + servers + '</td>';
+                monitor += '<td><button class="btn btn-warning btn-xs btn-detail stop-monitor"' + data['data']['id'] + '">Stop</button>';
+                monitor += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                monitor += '<button class="btn btn-danger btn-xs btn-delete delete-monitor" value="' + data['data']['id'] + '">Delete</button></td></tr>';
+
+                $("#monitor" + monitor_id).replaceWith(monitor);
             },
             error: function (data) {
                 console.log('Error:', data);

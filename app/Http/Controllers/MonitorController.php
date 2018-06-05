@@ -4,14 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ServiceController extends Controller
+class MonitorController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -19,13 +13,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        if($this->get_api_info()){
-            $services = json_decode($this->get_request('services'), true);
-            $monitors = json_decode($this->get_request('monitors'), true);
-            return view('services.services', compact('services', 'monitors'));
-        }else{
-            return view('setting.index');
-        }
+        //
     }
 
     /**
@@ -81,8 +69,8 @@ class ServiceController extends Controller
     public function update(Request $request, $id)
     {
         $type = $request->input('type');
-        $this->put_request('services/'.$id.'/'.$type);
-        return $this->get_request('services/'.$id);
+        $this->put_request('monitors/'.$id.'/'.$type);
+        return $this->get_request('monitors/'.$id);
     }
 
     /**
@@ -94,6 +82,6 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         $id = preg_replace('#[ -]+#', '-', $id);
-        $this->delete_request('services/'.$id);
+        $this->delete_request('monitors/'.$id);
     }
 }

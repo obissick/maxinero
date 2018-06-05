@@ -2,10 +2,11 @@
 
 @section('content')
 <div class="container container-fluid">
+    <h2>Services</h2>
     <div class="row">
         
         <button id="btn-add" name="btn-add" class="btn btn-success btn-xs" data-toggle="modal" data-target="#server">Add Service</button>
-            <div>
+            <div class="table-responsive">
                 <!-- Table-to-load-the-data Part -->
                 <table class="table">
                     <thead>
@@ -15,30 +16,33 @@
                             <th>State</th>
                             <th>Total Connections</th>
                             <th>Connections</th>
+                            <th>Started</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="servers-list" name="servers-list">
+                    <tbody id="services-list" name="services-list">
                         @for ($i = 0; $i < count($services['data']); $i++)
-                        <tr id="server{{$services['data'][$i]['id']}}">
+                        <tr id="service{{$services['data'][$i]['id']}}">
                             <td>{{$services['data'][$i]['id']}}</td>
                             <td>{{$services['data'][$i]['attributes']['router']}}</td>
                             <td>{{$services['data'][$i]['attributes']['state']}}</td>
                             <td>{{$services['data'][$i]['attributes']['total_connections']}}</td>
                             <td>{{$services['data'][$i]['attributes']['connections']}}</td>
+                            <td>{{$services['data'][$i]['attributes']['started']}}</td>
                             <td>
                                 @if($services['data'][$i]['attributes']['state'] === "Started")
-                                    <button class="btn btn-danger btn-xs btn-detail stop-service" value="{{$services['data'][$i]['id']}}">Stop</button>  
+                                    <button class="btn btn-warning btn-xs btn-detail stop-service" value="{{$services['data'][$i]['id']}}">Stop</button>  
                                 @else
                                     <button class="btn btn-success btn-xs btn-detail start-service" value="{{$services['data'][$i]['id']}}">Start</button>
                                 @endif
-                                <button class="btn btn-warning btn-xs btn-detail open-modal" value="{{$services['data'][$i]['id']}}">Edit</button>
+                                <button class="btn btn-info btn-xs btn-detail open-modal" value="{{$services['data'][$i]['id']}}">Edit</button>
                                 <button class="btn btn-danger btn-xs btn-delete delete-server" value="{{$services['data'][$i]['id']}}">Delete</button>
                             </td>
                         </tr>
                         @endfor
                     </tbody>
                 </table>
+            </div>
                 <!-- End of Table-to-load-the-data Part -->
                 <!-- Modal (Pop up when detail button clicked) -->
                 <div class="modal fade" id="service" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -99,7 +103,50 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        
+        <h2>Monitors</h2>
+        <div class="row">
+            <button id="add-monitor" name="add-monitor" class="btn btn-success btn-xs" data-toggle="monitor-modal" data-target="#monitor">Add Monitor</button>
+            <div class="table-responsive">
+                    <!-- Table-to-load-the-data Part -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Type</th>
+                                <th>Module</th>
+                                <th>State</th>
+                                <th>Servers</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="monitors-list" name="monitors-list">
+                            @for ($i = 0; $i < count($monitors['data']); $i++)
+                            <tr id="monitor{{$monitors['data'][$i]['id']}}">
+                                <td>{{$monitors['data'][$i]['id']}}</td>
+                                <td>{{$monitors['data'][$i]['type']}}</td>
+                                <td>{{$monitors['data'][$i]['attributes']['module']}}</td>
+                                <td>{{$monitors['data'][$i]['attributes']['state']}}</td>
+                                <td>
+                                    @for($y = 0; $y < count($monitors['data'][$i]['relationships']['servers']['data']); $y++)
+                                        {{$monitors['data'][$i]['relationships']['servers']['data'][$y]['id']}} 
+                                    @endfor
+                                </td>
+                                <td>
+                                    @if($monitors['data'][$i]['attributes']['state'] === "Running")
+                                        <button class="btn btn-warning btn-xs btn-detail stop-monitor" value="{{$monitors['data'][$i]['id']}}">Stop</button>  
+                                    @else
+                                        <button class="btn btn-success btn-xs btn-detail start-monitor" value="{{$monitors['data'][$i]['id']}}">Start</button>
+                                    @endif
+                                    <button class="btn btn-info btn-xs btn-detail open-modal" value="{{$monitors['data'][$i]['id']}}">Edit</button>
+                                    <button class="btn btn-danger btn-xs btn-delete delete-monitor" value="{{$monitors['data'][$i]['id']}}">Delete</button>
+                                </td>
+                            </tr>
+                            @endfor
+                        </tbody>
+                    </table>
+                </div>
+        </div>
 </div>
 
 @endsection

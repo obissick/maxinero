@@ -26,8 +26,13 @@ class ServerController extends Controller
      */
     public function index()
     {
-        $servers = json_decode($this->get_request('servers'), true);
-        return view('servers.servers', compact('servers'));
+        
+        if($this->get_api_info()){
+            $servers = json_decode($this->get_request('servers'), true);
+            return view('servers.servers', compact('servers'));
+        }else{
+            return view('setting.index');
+        } 
     }
 
     /**
@@ -126,7 +131,17 @@ class ServerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $server = $this->get_request('servers/'.$id);
+        $server = json_decode($server, true);
+        $state = $request->input('state');
+        $states = explode(',', trim($server['data']['attributes']['state']));
+        if(in_array($state, $states)){
+            $res = $this->put_request('servers/'.$id.'/clear?state='.$state);
+        }else{
+            $res = $this->put_request('servers/'.$id.'/set?state='.$state);
+        }  
+
+        return $res->getBody();
     }
 
     /**

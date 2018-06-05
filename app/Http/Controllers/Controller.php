@@ -47,6 +47,7 @@ class Controller extends BaseController
             'auth' => [$setting->username, Crypt::decrypt($setting->password)], 
             'verify' => false
         ]);
+        return $res;
     }
 
     function put_request($location){
@@ -56,6 +57,7 @@ class Controller extends BaseController
             'auth' => [$setting->username, Crypt::decrypt($setting->password)], 
             'verify' => false
         ]);
+        return $res;
     }
 
     function get_api_info(){
