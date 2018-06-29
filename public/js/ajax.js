@@ -109,8 +109,16 @@ $(document).ready(function(){
                 console.log(data);
 
                 var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
+                server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
+                server += '<li><button type="button" class="btn btn-link btn-xs master" value="' + data['data']['id'] + '">master</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs slave" value="' + data['data']['id'] + '">slave</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs maintenance" value="' + data['data']['id'] + '">maintenance</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs running" value="' + data['data']['id'] + '">running</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
                 server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
-                server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></td></tr>';
+                server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
 
                 if (state == "add"){ //if user added a new record
                     $('#servers-list').append(server);
@@ -146,7 +154,20 @@ $(document).ready(function(){
             dataType: 'json',
             success: function (data) {
                 console.log(jQuery.parseJSON(data));
+
+                var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
+                server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
+                server += '<li><button type="button" class="btn btn-link btn-xs master" value="' + data['data']['id'] + '">master</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs slave" value="' + data['data']['id'] + '">slave</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs maintenance" value="' + data['data']['id'] + '">maintenance</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs running" value="' + data['data']['id'] + '">running</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
+                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
                 
+                $("#server" + server_id).replaceWith(server);
             },
             error: function (data) {
                 alert('Error:', data);
@@ -172,6 +193,19 @@ $(document).ready(function(){
             success: function (data) {
                 console.log(jQuery.parseJSON(data));
                 
+                var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
+                server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
+                server += '<li><button type="button" class="btn btn-link btn-xs master" value="' + data['data']['id'] + '">master</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs slave" value="' + data['data']['id'] + '">slave</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs maintenance" value="' + data['data']['id'] + '">maintenance</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs running" value="' + data['data']['id'] + '">running</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
+                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
+
+                $("#server" + server_id).replaceWith(server);
             },
             error: function (data) {
                 console.log('Error:', data);
@@ -196,7 +230,20 @@ $(document).ready(function(){
             dataType: 'json',
             success: function (data) {
                 console.log(jQuery.parseJSON(data));
-                
+
+                var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
+                server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
+                server += '<li><button type="button" class="btn btn-link btn-xs master" value="' + data['data']['id'] + '">master</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs slave" value="' + data['data']['id'] + '">slave</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs maintenance" value="' + data['data']['id'] + '">maintenance</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs running" value="' + data['data']['id'] + '">running</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
+                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
+
+                $("#server" + server_id).replaceWith(server);
             },
             error: function (data) {
                 console.log('Error:', data);
@@ -222,6 +269,19 @@ $(document).ready(function(){
             success: function (data) {
                 console.log(jQuery.parseJSON(data));
                 
+                var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
+                server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
+                server += '<li><button type="button" class="btn btn-link btn-xs master" value="' + data['data']['id'] + '">master</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs slave" value="' + data['data']['id'] + '">slave</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs maintenance" value="' + data['data']['id'] + '">maintenance</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs running" value="' + data['data']['id'] + '">running</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
+                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
+
+                $("#server" + server_id).replaceWith(server);
             },
             error: function (data) {
                 console.log('Error:', data);
@@ -247,6 +307,19 @@ $(document).ready(function(){
             success: function (data) {
                 console.log(jQuery.parseJSON(data));
                 
+                var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
+                server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
+                server += '<li><button type="button" class="btn btn-link btn-xs master" value="' + data['data']['id'] + '">master</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs slave" value="' + data['data']['id'] + '">slave</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs maintenance" value="' + data['data']['id'] + '">maintenance</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs running" value="' + data['data']['id'] + '">running</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
+                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
+
+                $("#server" + server_id).replaceWith(server);
             },
             error: function (data) {
                 console.log('Error:', data);
@@ -272,6 +345,19 @@ $(document).ready(function(){
             success: function (data) {
                 console.log(jQuery.parseJSON(data));
                 
+                var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
+                server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
+                server += '<li><button type="button" class="btn btn-link btn-xs master" value="' + data['data']['id'] + '">master</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs slave" value="' + data['data']['id'] + '">slave</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs maintenance" value="' + data['data']['id'] + '">maintenance</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs running" value="' + data['data']['id'] + '">running</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
+                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
+
+                $("#server" + server_id).replaceWith(server);
             },
             error: function (data) {
                 console.log('Error:', data);
@@ -297,6 +383,19 @@ $(document).ready(function(){
             success: function (data) {
                 console.log(jQuery.parseJSON(data));
                 
+                var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
+                server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
+                server += '<li><button type="button" class="btn btn-link btn-xs master" value="' + data['data']['id'] + '">master</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs slave" value="' + data['data']['id'] + '">slave</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs maintenance" value="' + data['data']['id'] + '">maintenance</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs running" value="' + data['data']['id'] + '">running</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
+                server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
+                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
+
+                $("#server" + server_id).replaceWith(server);
             },
             error: function (data) {
                 console.log('Error:', data);

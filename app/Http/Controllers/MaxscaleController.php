@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 class MaxscaleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +17,12 @@ class MaxscaleController extends Controller
      */
     public function index()
     {
-        //
+        if($this->get_api_info()){
+            $maxscale = json_decode($this->get_request('maxscale'), true);
+            return view('maxinfo', compact('maxscale'));
+        }else{
+            return view('setting.index');
+        }
     }
 
     /**

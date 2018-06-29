@@ -140,8 +140,8 @@ class ServerController extends Controller
         }else{
             $res = $this->put_request('servers/'.$id.'/set?state='.$state);
         }  
-
-        return $res->getBody();
+        sleep(1);
+        return $this->get_request('servers/'.$id);
     }
 
     /**

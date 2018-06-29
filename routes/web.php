@@ -26,3 +26,5 @@ Route::resource('/servers', 'ServerController');
 Route::resource('/services', 'ServiceController');
 
 Route::resource('/monitors', 'MonitorController');
+
+Route::resource('/maxscale', 'MaxscaleController');
