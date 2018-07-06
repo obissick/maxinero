@@ -50,7 +50,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Server Editor</h4>
+                                <h4 class="modal-title" id="myModalLabel">Service Editor</h4>
                             </div>
                             <div class="modal-body">
                                 <form id="addservice" name="addservice" class="form-horizontal" novalidate="" method="POST" action="{{ route('services.store') }}">

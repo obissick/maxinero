@@ -137,7 +137,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.master').click(function(){
+    $('.table').on('click', '.master', function(){
         var server_id = $(this).val(); 
 
         $.ajaxSetup({
@@ -153,7 +153,6 @@ $(document).ready(function(){
             data: ({state: 'Master'}),
             dataType: 'json',
             success: function (data) {
-                console.log(jQuery.parseJSON(data));
 
                 var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
                 server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
@@ -175,7 +174,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.slave').click(function(){
+    $('.table').on('click', '.slave', function(){
         var server_id = $(this).val(); 
 
         $.ajaxSetup({
@@ -191,7 +190,6 @@ $(document).ready(function(){
             data: ({state: 'Slave'}),
             dataType: 'json',
             success: function (data) {
-                console.log(jQuery.parseJSON(data));
                 
                 var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
                 server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
@@ -213,7 +211,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.maintenance').click(function(){
+    $('.table').on('click', '.maintenance', function(){
         var server_id = $(this).val(); 
 
         $.ajaxSetup({
@@ -229,7 +227,6 @@ $(document).ready(function(){
             data: ({state: 'Maintenance'}),
             dataType: 'json',
             success: function (data) {
-                console.log(jQuery.parseJSON(data));
 
                 var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
                 server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
@@ -251,7 +248,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.running').click(function(){
+    $('.table').on('click', '.running', function(){
         var server_id = $(this).val(); 
 
         $.ajaxSetup({
@@ -267,7 +264,6 @@ $(document).ready(function(){
             data: ({state: 'Running'}),
             dataType: 'json',
             success: function (data) {
-                console.log(jQuery.parseJSON(data));
                 
                 var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
                 server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
@@ -289,7 +285,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.synced').click(function(){
+    $('.table').on('click', '.synced', function(){
         var server_id = $(this).val(); 
 
         $.ajaxSetup({
@@ -305,7 +301,6 @@ $(document).ready(function(){
             data: ({state: 'Synced'}),
             dataType: 'json',
             success: function (data) {
-                console.log(jQuery.parseJSON(data));
                 
                 var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
                 server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
@@ -327,7 +322,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.ndb').click(function(){
+    $('.table').on('click', '.ndb', function(){
         var server_id = $(this).val(); 
 
         $.ajaxSetup({
@@ -343,7 +338,6 @@ $(document).ready(function(){
             data: ({state: 'NDB'}),
             dataType: 'json',
             success: function (data) {
-                console.log(jQuery.parseJSON(data));
                 
                 var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
                 server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
@@ -365,7 +359,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.stale').click(function(){
+    $('.table').on('click', '.stale', function(){
         var server_id = $(this).val(); 
 
         $.ajaxSetup({
@@ -381,7 +375,6 @@ $(document).ready(function(){
             data: ({state: 'Stale'}),
             dataType: 'json',
             success: function (data) {
-                console.log(jQuery.parseJSON(data));
                 
                 var server = '<tr id="server' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['parameters']['address'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['statistics']['connections'] + '</td><td>' + data['data']['attributes']['statistics']['total_connections'] + '</td>';
                 server += '<td><div class="dropdown"><button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">State<span class="caret"></span></button><ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
@@ -403,7 +396,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.stop-service').click(function(){
+    $('.table').on('click', '.stop-service', function(){
         var service_id = $(this).val();
 
         $.ajaxSetup({
@@ -422,7 +415,7 @@ $(document).ready(function(){
                 console.log(data);
 
                 var service = '<tr id="service' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['router'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['total_connections']+ '</td><td>' + data['data']['attributes']['connections'] + '</td><td>' + data['data']['attributes']['started'] + '</td>';
-                service += '<td><button class="btn btn-success btn-xs btn-detail start-service"' + data['data']['id'] + '">Start</button>';
+                service += '<td><button class="btn btn-success btn-xs btn-detail start-service" value="' + data['data']['id'] + '">Start</button>';
                 service += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 service += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td></tr>';
 
@@ -434,7 +427,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.start-service').click(function(){
+    $('.table').on('click', '.start-service', function(){
         var service_id = $(this).val();
 
         $.ajaxSetup({
@@ -453,7 +446,7 @@ $(document).ready(function(){
                 console.log(data);
 
                 var service = '<tr id="service' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['router'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['total_connections']+ '</td><td>' + data['data']['attributes']['connections'] + '</td><td>' + data['data']['attributes']['started'] + '</td>';
-                service += '<td><button class="btn btn-warning btn-xs btn-detail stop-service"' + data['data']['id'] + '">Stop</button>';
+                service += '<td><button class="btn btn-warning btn-xs btn-detail stop-service" value="' + data['data']['id'] + '">Stop</button>';
                 service += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 service += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td></tr>';
 
@@ -465,7 +458,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.stop-monitor').click(function(){
+    $('.table').on('click', '.stop-monitor', function(){
         var monitor_id = $(this).val();
 
         $.ajaxSetup({
@@ -487,7 +480,7 @@ $(document).ready(function(){
                     servers+= data['data']['relationships']['servers']['data'][i]['id'] + " "
                 }
                 var monitor = '<tr id="monitor' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['module'] + '</td><td>' + data['data']['attributes']['state']+ '</td><td>' + servers + '</td>';
-                monitor += '<td><button class="btn btn-success btn-xs btn-detail start-monitor"' + data['data']['id'] + '">Start</button>';
+                monitor += '<td><button class="btn btn-success btn-xs btn-detail start-monitor" value="' + data['data']['id'] + '">Start</button>';
                 monitor += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 monitor += '<button class="btn btn-danger btn-xs btn-delete delete-monitor" value="' + data['data']['id'] + '">Delete</button></td></tr>';
 
@@ -499,7 +492,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.start-monitor').click(function(){
+    $('.table').on('click', '.start-monitor', function(){
         var monitor_id = $(this).val();
 
         $.ajaxSetup({
@@ -522,7 +515,7 @@ $(document).ready(function(){
                 }
 
                 var monitor = '<tr id="monitor' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['module'] + '</td><td>' + data['data']['attributes']['state']+ '</td><td>' + servers + '</td>';
-                monitor += '<td><button class="btn btn-warning btn-xs btn-detail stop-monitor"' + data['data']['id'] + '">Stop</button>';
+                monitor += '<td><button class="btn btn-warning btn-xs btn-detail stop-monitor" value="' + data['data']['id'] + '">Stop</button>';
                 monitor += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 monitor += '<button class="btn btn-danger btn-xs btn-delete delete-monitor" value="' + data['data']['id'] + '">Delete</button></td></tr>';
 
