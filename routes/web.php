@@ -24,6 +24,7 @@ Route::resource('/settings', 'SettingController');
 Route::resource('/servers', 'ServerController');
 
 Route::resource('/services', 'ServiceController');
+Route::delete('/services/{service}/deletelistener', 'ServiceController@delete_listener')->name('services.delete_listener');
 
 Route::resource('/monitors', 'MonitorController');
 

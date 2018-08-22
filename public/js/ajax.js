@@ -458,6 +458,32 @@ $(document).ready(function(){
         });
     });
 
+    //delete server and remove it from list
+    $('.delete-listener').click(function(){
+        var listener_id = $(this).val();
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "DELETE",
+            url: url + '/' + listener_id,
+            success: function (data) {
+                console.log(data);
+
+                $("#listener" + listener_id).remove();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+                
+            }
+        });
+    });
+
     $('.table').on('click', '.stop-monitor', function(){
         var monitor_id = $(this).val();
 

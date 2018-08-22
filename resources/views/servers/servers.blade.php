@@ -3,59 +3,60 @@
 @section('content')
 <div class="container container-fluid">
     <h2>DB Servers</h2>
+    <button id="btn-add" name="btn-add" class="btn btn-success btn-xs">Add Server</button>
     <div class="row">
-       <button id="btn-add" name="btn-add" class="btn btn-success btn-xs">Add Server</button>
-            <div class="table-responsive-sm">
-                <!-- Table-to-load-the-data Part -->
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Address</th>
-                            <th>Port</th>
-                            <th>Protocol</th>
-                            <th>State</th>
-                            <th>Connections</th>
-                            <th>Total Connections</th>
-                            <th>Actions</th>
+        <div class="table-responsive-sm">
+            <br />
+            <!-- Table-to-load-the-data Part -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Address</th>
+                        <th>Port</th>
+                        <th>Protocol</th>
+                        <th>State</th>
+                        <th>Connections</th>
+                        <th>Total Connections</th>
+                        <th>Actions</th>
 
-                        </tr>
-                    </thead>
-                    <tbody id="servers-list" name="servers-list">
-                        @for ($i = 0; $i < count($servers['data']); $i++)
-                        <tr id="server{{$servers['data'][$i]['id']}}">
-                            <td>{{$servers['data'][$i]['id']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['parameters']['address']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['parameters']['port']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['parameters']['protocol']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['state']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['statistics']['connections']}}</td>
-                            <td>{{$servers['data'][$i]['attributes']['statistics']['total_connections']}}</td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        State
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><button type="button" class="btn btn-link btn-xs master" value="{{$servers['data'][$i]['id']}}">master</button></li>
-                                        <li><button type="button" class="btn btn-link btn-xs slave" value="{{$servers['data'][$i]['id']}}">slave</button></li>
-                                        <li><button type="button" class="btn btn-link btn-xs maintenance" value="{{$servers['data'][$i]['id']}}">maintenance</button></li>
-                                        <li><button type="button" class="btn btn-link btn-xs running" value="{{$servers['data'][$i]['id']}}">running</button></li>
-                                        <li><button type="button" class="btn btn-link btn-xs synced" value="{{$servers['data'][$i]['id']}}">synced</button></li>
-                                        <li><button type="button" class="btn btn-link btn-xs ndb" value="{{$servers['data'][$i]['id']}}">ndb</button></li>
-                                        <li><button type="button" class="btn btn-link btn-xs stale" value="{{$servers['data'][$i]['id']}}">stale</button></li>
-                                    </ul>
-                                    <button class="btn btn-warning btn-xs btn-detail open-modal" value="{{$servers['data'][$i]['id']}}">Edit</button>
-                                    <button class="btn btn-danger btn-xs btn-delete delete-server" value="{{$servers['data'][$i]['id']}}">Delete</button>
-                                </div>
-                                
-                            </td>
-                        </tr>
-                        @endfor
-                    </tbody>
-                </table>
-            </div>
+                    </tr>
+                </thead>
+                <tbody id="servers-list" name="servers-list">
+                    @for ($i = 0; $i < count($servers['data']); $i++)
+                    <tr id="server{{$servers['data'][$i]['id']}}">
+                        <td>{{$servers['data'][$i]['id']}}</td>
+                        <td>{{$servers['data'][$i]['attributes']['parameters']['address']}}</td>
+                        <td>{{$servers['data'][$i]['attributes']['parameters']['port']}}</td>
+                        <td>{{$servers['data'][$i]['attributes']['parameters']['protocol']}}</td>
+                        <td>{{$servers['data'][$i]['attributes']['state']}}</td>
+                        <td>{{$servers['data'][$i]['attributes']['statistics']['connections']}}</td>
+                        <td>{{$servers['data'][$i]['attributes']['statistics']['total_connections']}}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    State
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><button type="button" class="btn btn-link btn-xs master" value="{{$servers['data'][$i]['id']}}">master</button></li>
+                                    <li><button type="button" class="btn btn-link btn-xs slave" value="{{$servers['data'][$i]['id']}}">slave</button></li>
+                                    <li><button type="button" class="btn btn-link btn-xs maintenance" value="{{$servers['data'][$i]['id']}}">maintenance</button></li>
+                                    <li><button type="button" class="btn btn-link btn-xs running" value="{{$servers['data'][$i]['id']}}">running</button></li>
+                                    <li><button type="button" class="btn btn-link btn-xs synced" value="{{$servers['data'][$i]['id']}}">synced</button></li>
+                                    <li><button type="button" class="btn btn-link btn-xs ndb" value="{{$servers['data'][$i]['id']}}">ndb</button></li>
+                                    <li><button type="button" class="btn btn-link btn-xs stale" value="{{$servers['data'][$i]['id']}}">stale</button></li>
+                                </ul>
+                                <button class="btn btn-warning btn-xs btn-detail open-modal" value="{{$servers['data'][$i]['id']}}">Edit</button>
+                                <button class="btn btn-danger btn-xs btn-delete delete-server" value="{{$servers['data'][$i]['id']}}">Delete</button>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    @endfor
+                </tbody>
+            </table>
+        </div>
                 <!-- End of Table-to-load-the-data Part -->
                 <!-- Modal (Pop up when detail button clicked) -->
                 <div class="modal fade" id="server" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

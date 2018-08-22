@@ -57,7 +57,13 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        //
+        if($this->get_api_info()){
+            $service = json_decode($this->get_request('services/'.$id), true);
+            $listeners = json_decode($this->get_request('services/'.$id.'/listeners'), true);
+            return view('services.servicedetail', compact('service', 'listeners'));
+        }else{
+            return view('setting.index');
+        }
     }
 
     /**
@@ -95,5 +101,11 @@ class ServiceController extends Controller
     {
         $id = preg_replace('#[ -]+#', '-', $id);
         $this->delete_request('services/'.$id);
+    }
+    public function destroy_listener(Request $request, $id)
+    {
+        $listener = $request->input('listener');
+        $id = preg_replace('#[ -]+#', '-', $id);
+        $this->delete_request('services/'.$id.'/listeners'.'/'.$listener);
     }
 }
