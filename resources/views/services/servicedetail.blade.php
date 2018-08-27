@@ -38,8 +38,8 @@
     </div>
 
     <h2>Listeners</h2>
+    <button id="add-listener" name="add-listener" class="btn btn-success btn-xs" data-toggle="modal" data-target="#listener">Add Listener</button>
         <div class="row">
-            <button id="add-listener" name="add-listener" class="btn btn-success btn-xs" data-toggle="listener-modal" data-target="#listener">Add Listener</button>
             <div class="table-responsive">
                     <!-- Table-to-load-the-data Part -->
                     <table class="table">
@@ -69,6 +69,102 @@
                         </tbody>
                     </table>
                 </div>
+            <!-- End of Table-to-load-the-data Part -->
+            <!-- Modal (Pop up when detail button clicked) -->
+            <div class="modal fade" id="listener" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Listener Editor</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addlistner" name="addlistener" class="form-horizontal" novalidate="">
+                                {{ csrf_field() }}
+                                <div class="form-group error">
+                                    <label for="listener_id" class="col-sm-3 control-label">Listener Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control has-error" id="listener_id" name="listner_id" placeholder="Name" value="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="listener_type" class="col-sm-3 control-label">Listener Type</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="listener_type" name="listener_type" placeholder="listeners" value="">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="address" class="col-sm-3 control-label">Address</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="address" name="address" placeholder="Optional" value="">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                        <label for="port" class="col-sm-3 control-label">Port</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="port" name="port" placeholder="Optional" value="">
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                        <label for="protocol" class="col-sm-3 control-label">Protocol</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="protocol" name="protocol" placeholder="Optional" value="">
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="auth" class="col-sm-3 control-label">Authenticator</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="auth" name="auth" placeholder="Optional" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="auth_options" class="col-sm-3 control-label">Authenticator Options</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="auth_options" name="auth_options" placeholder="Optional" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ssl_key" class="col-sm-3 control-label">SSL Key</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="ssl_key" name="ssl_key" placeholder="Optional" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ssl_cert" class="col-sm-3 control-label">SSL Cert</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="ssl_cert" name="ssl_cert" placeholder="Optional" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ssl_ca_cert" class="col-sm-3 control-label">SSL CA Cert</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="ssl_ca_cert" name="ssl_ca_cert" placeholder="Optional" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ssl_version" class="col-sm-3 control-label">SSL Version</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="ssl_version" name="ssl_version" placeholder="Optional" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ssl_cert_verify_depth" class="col-sm-3 control-label">SSL Cert Verify Depth</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="ssl_depth" name="ssl_depth" placeholder="Optional" value="">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes</button>
+                                        <input type="hidden" id="listener_id" name="listener_id" value="0">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 </div>
 

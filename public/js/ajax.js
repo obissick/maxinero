@@ -417,7 +417,7 @@ $(document).ready(function(){
                 var service = '<tr id="service' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['router'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['total_connections']+ '</td><td>' + data['data']['attributes']['connections'] + '</td><td>' + data['data']['attributes']['started'] + '</td>';
                 service += '<td><button class="btn btn-success btn-xs btn-detail start-service" value="' + data['data']['id'] + '">Start</button>';
                 service += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
-                service += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td></tr>';
+                service += '</td></tr>';
 
                 $("#service" + service_id).replaceWith(service);
             },
@@ -448,7 +448,7 @@ $(document).ready(function(){
                 var service = '<tr id="service' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['router'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['total_connections']+ '</td><td>' + data['data']['attributes']['connections'] + '</td><td>' + data['data']['attributes']['started'] + '</td>';
                 service += '<td><button class="btn btn-warning btn-xs btn-detail stop-service" value="' + data['data']['id'] + '">Stop</button>';
                 service += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
-                service += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td></tr>';
+                service += '</td></tr>';
 
                 $("#service" + service_id).replaceWith(service);
             },
