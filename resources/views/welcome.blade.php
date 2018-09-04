@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    MaxScale Admin
+                    MaxiNero
                 </div>
 
                 <div class="links">

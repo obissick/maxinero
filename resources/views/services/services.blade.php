@@ -23,11 +23,11 @@
                     <tr id="service{{$services['data'][$i]['id']}}">
                         <td><a href="{{route('services.show', $services['data'][$i]['id'])}}" class="btn btn-primary btn-xs btn-detail service-info" value="{{$services['data'][$i]['id']}}">{{$services['data'][$i]['id']}}</a></td>
                         <td>{{$services['data'][$i]['attributes']['router']}}</td>
-                        <td>{{$services['data'][$i]['attributes']['state']}}</td>
+                        <td id="state{{$services['data'][$i]['id']}}">{{$services['data'][$i]['attributes']['state']}}</td>
                         <td>{{$services['data'][$i]['attributes']['total_connections']}}</td>
                         <td>{{$services['data'][$i]['attributes']['connections']}}</td>
                         <td>{{$services['data'][$i]['attributes']['started']}}</td>
-                        <td>
+                        <td id="action{{$services['data'][$i]['id']}}">
                             @if($services['data'][$i]['attributes']['state'] === "Started")
                                 <button class="btn btn-warning btn-xs btn-detail stop-service" value="{{$services['data'][$i]['id']}}">Stop</button>  
                             @else
@@ -67,9 +67,11 @@
                         <td>{{$monitors['data'][$i]['attributes']['module']}}</td>
                         <td>{{$monitors['data'][$i]['attributes']['state']}}</td>
                         <td>
-                            @for($y = 0; $y < count($monitors['data'][$i]['relationships']['servers']['data']); $y++)
-                                {{$monitors['data'][$i]['relationships']['servers']['data'][$y]['id']}} 
-                            @endfor
+                            @isset($monitors['data'][$i]['relationships']['servers']['data'])
+                                @for($y = 0; $y < count($monitors['data'][$i]['relationships']['servers']['data']); $y++)
+                                    {{$monitors['data'][$i]['relationships']['servers']['data'][$y]['id']}} 
+                                @endfor
+                            @endisset
                         </td>
                         <td>
                             @if($monitors['data'][$i]['attributes']['state'] === "Running")
@@ -131,7 +133,7 @@
                                     </div>
                             </div>
                             <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes</button>
+                                    <button type="button" class="btn btn-primary" id="add-mon" value="add">Save changes</button>
                                     <input type="hidden" id="monitor_id" name="monitor_id" value="0">
                             </div>
                         </form>

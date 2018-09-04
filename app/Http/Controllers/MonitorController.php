@@ -34,7 +34,47 @@ class MonitorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $servers = explode(',', trim($request->input('servers')));
+        
+        $relation_data = array();
+        for ($i = 0; $i < count($servers); $i++){
+            $relation_data[$i]['id'] = $servers[$i];
+            $relation_data[$i]['type'] = 'servers';
+        }
+        #dd($relation_data);
+
+        if($servers[0]==""){
+            $data = array(
+                'data' => [
+                'id' => $request->input('monitor_id'),
+                'type' => $request->input('monitor_type'),
+                'attributes' => [
+                    'module' => $request->input('module'),
+                    'parameters' => [
+                        'monitor_interval' => (int) $request->input('monitor_interval')
+                    ]
+                ]
+                ]);
+        }else{
+            $data = array(
+                'data' => [
+                    'id' => $request->input('monitor_id'),
+                    'type' => $request->input('monitor_type'),
+                    'attributes' => [
+                        'module' => $request->input('module'),
+                        'parameters' => [
+                            'monitor_interval' => (int) $request->input('monitor_interval')
+                        ]
+                    ],
+                'relationships' => [
+                    'servers' => [
+                        'data' => $relation_data
+                    ]
+                ]
+            ]);
+        }
+        $res = $this->post_request($data, 'monitors');
+        return $this->get_request('monitors/'.$request->input('monitor_id'));
     }
 
     /**
