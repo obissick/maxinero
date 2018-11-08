@@ -26,13 +26,14 @@ class ServerController extends Controller
      */
     public function index()
     {
-        
-        if($this->get_api_info()){
+        try{
+            
             $servers = json_decode($this->get_request('servers'), true);
             return view('servers.servers', compact('servers'));
-        }else{
+            
+        } catch(\GuzzleHttp\Exception\ConnectException $exception){
             return view('setting.index');
-        } 
+        }
     }
 
     /**
@@ -53,6 +54,14 @@ class ServerController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'server_id' => 'required',
+            'address' => 'required',
+            'port' => 'required',
+            'protocol' => 'required',
+            'address' => 'required'
+            ]);
+
         $services = explode(',', trim($request->input('services')));
         
         $relation_data = array();
@@ -96,6 +105,7 @@ class ServerController extends Controller
         }
         $res = $this->post_request($data, 'servers');
         return $this->get_request('servers/'.$request->input('server_id'));
+        
     }
 
     /**

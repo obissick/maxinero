@@ -15,6 +15,7 @@
                             <th>Connections</th>
                             <th>Started</th>
                             <th>Queries</th>
+                            <th>Servers</th>
                         </tr>
                     </thead>
                     <tbody id="services-list" name="services-list">
@@ -29,6 +30,13 @@
                             @else
                                 <td>{{$service['data']['attributes']['router_diagnostics']['queries']}}</td>
                             @endif
+                            <td>
+                                @isset($service['data']['relationships']['servers']['data'])
+                                    @for($y = 0; $y < count($service['data']['relationships']['servers']['data']); $y++)
+                                        <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>{{$service['data']['relationships']['servers']['data'][$y]['id']}}</button>
+                                    @endfor
+                                @endisset
+                            </td>
                         </tr>
                         
                     </tbody>
@@ -38,7 +46,7 @@
     </div>
 
     <h2>Listeners</h2>
-    <button id="add-listener" name="add-listener" class="btn btn-success btn-xs" data-toggle="modal" data-target="#listener">Add Listener</button>
+    <button id="add-listener-button" name="add-listener-button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#listener">Add Listener</button>
         <div class="row">
             <div class="table-responsive">
                     <!-- Table-to-load-the-data Part -->
@@ -53,16 +61,16 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="monitors-list" name="monitors-list">
+                        <tbody id="listeners-list" name="listeners-list">
                             @for ($i = 0; $i < count($listeners['data']); $i++)
-                            <tr id="monitor{{$listeners['data'][$i]['id']}}">
+                            <tr id="listener{{$listeners['data'][$i]['id']}}">
                                 <td>{{$listeners['data'][$i]['id']}}</td>
                                 <td>{{$listeners['data'][$i]['type']}}</td>
                                 <td>{{$listeners['data'][$i]['attributes']['parameters']['port']}}</td>
                                 <td>{{$listeners['data'][$i]['attributes']['parameters']['protocol']}}</td>
                                 <td>{{$listeners['data'][$i]['attributes']['parameters']['authenticator']}}</td>
                                 <td>
-                                    <button class="btn btn-danger btn-xs btn-delete delete-listener" value="{{$service['data']['id']}}.'/'.{{$listeners['data'][$i]['id']}}">Delete</button>
+                                    <button class="btn btn-danger btn-xs btn-delete delete-listener" value="{{$listeners['data'][$i]['id']}}">Delete</button>
                                 </td>
                             </tr>
                             @endfor
@@ -84,7 +92,7 @@
                                 <div class="form-group error">
                                     <label for="listener_id" class="col-sm-3 control-label">Listener Name</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control has-error" id="listener_id" name="listner_id" placeholder="Name" value="">
+                                        <input type="text" class="form-control has-error" id="listener_id" name="listener_id" placeholder="Name" value="">
                                     </div>
                                 </div>
 
@@ -105,7 +113,7 @@
                                 <div class="form-group">
                                         <label for="port" class="col-sm-3 control-label">Port</label>
                                         <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="port" name="port" placeholder="Optional" value="">
+                                            <input type="text" class="form-control" id="port" name="port" placeholder="3306" value="">
                                         </div>
                                 </div>
                                 <div class="form-group">
@@ -157,8 +165,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes</button>
-                                        <input type="hidden" id="listener_id" name="listener_id" value="0">
+                                        <button type="button" class="btn btn-primary" id="add-listener" value="add">Save changes</button>
+                                        <input type="hidden" id="service_id" name="service_id" value="{{$service['data']['id']}}">
                                 </div>
                             </form>
                         </div>

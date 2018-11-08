@@ -7,7 +7,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Edit Settings</div>
                 <div class="panel-body">
-                    
                     @if (!empty($setting))
 
                         <form class="form-horizontal" method="POST" action="{{ route('settings.update', $setting->id) }}">

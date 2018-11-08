@@ -19,11 +19,13 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        if($this->get_api_info()){
+        try{
+            
             $services = json_decode($this->get_request('services'), true);
             $monitors = json_decode($this->get_request('monitors'), true);
             return view('services.services', compact('services', 'monitors'));
-        }else{
+            
+        } catch(\GuzzleHttp\Exception\ConnectException $exception){
             return view('setting.index');
         }
     }
@@ -57,6 +59,7 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
+        
         if($this->get_api_info()){
             $service = json_decode($this->get_request('services/'.$id), true);
             $listeners = json_decode($this->get_request('services/'.$id.'/listeners'), true);
@@ -101,6 +104,35 @@ class ServiceController extends Controller
     {
         $id = preg_replace('#[ -]+#', '-', $id);
         $this->delete_request('services/'.$id);
+    }
+    public function create_listener(Request $request, $id)
+    {
+        
+        $listener = $request->input('listener_id');
+        $id = preg_replace('#[ -]+#', '-', $id);
+        $data = array(
+            'data' => [
+            'id' => $request->input('listener_id'),
+            'type' => $request->input('listener_type') ?: "listeners",
+            'attributes' => [
+                'parameters' => [
+                    'port' => (int) $request->input('port')
+                ]
+            ]
+        ]);
+        if(!empty($request->input('address'))) $data['data']['attributes']['parameters']['address'] = $request->input('address'); 
+        if(!empty($request->input('protocol'))) $data['data']['attributes']['parameters']['protocol'] = $request->input('protocol');
+        if(!empty($request->input('auth'))) $data['data']['attributes']['parameters']['authenticator'] = $request->input('auth');
+        if(!empty($request->input('auth_options'))) $data['data']['attributes']['parameters']['authenticator_options'] = $request->input('auth_options');
+        if(!empty($request->input('ssl_key'))) $data['data']['attributes']['parameters']['ssl_key'] = $request->input('ssl_key');
+        if(!empty($request->input('ssl_cert'))) $data['data']['attributes']['parameters']['ssl_cert'] = $request->input('ssl_cert');
+        if(!empty($request->input('ssl_ca_cert'))) $data['data']['attributes']['parameters']['ssl_ca_cert'] = $request->input('ssl_ca_cert');
+        if(!empty($request->input('ssl_version'))) $data['data']['attributes']['parameters']['ssl_version'] = $request->input('ssl_version');
+        if(!empty($request->input('ssl_depth'))) $data['data']['attributes']['parameters']['ssl_cert_verify_depth'] = $request->input('ssl_depth');
+
+        $res = $this->post_request($data, 'services/'.$id.'/listeners');
+        return $this->get_request('services/'.$id.'/listeners'.'/'.$listener);
+        
     }
     public function destroy_listener(Request $request, $id)
     {

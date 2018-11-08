@@ -41,7 +41,7 @@ $(document).ready(function(){
     });
 
     //delete server and remove it from list
-    $('.delete-server').click(function(){
+    $('.table').on('click', '.delete-server', function(){
         var server_id = $(this).val();
 
         $.ajaxSetup({
@@ -131,8 +131,8 @@ $(document).ready(function(){
 
                 $('#server').modal('hide')
             },
-            error: function (data) {
-                console.log('Error:', data);
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);       
             }
         });
     });
@@ -187,7 +187,7 @@ $(document).ready(function(){
                 monitor += '<button class="btn btn-danger btn-xs btn-delete delete-monitor" value="' + data['data']['id'] + '">Delete</button></td></tr>';
 
                 if (state == "add"){ //if user added a new record
-                    $('#monitors-list').append(server);
+                    $('#monitors-list').append(monitor);
                 }else{ //if user updated an existing record
 
                     $("#monitor" + monitor_id).replaceWith(monitor);
@@ -229,7 +229,7 @@ $(document).ready(function(){
                 server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
-                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
                 
                 $("#server" + server_id).replaceWith(server);
@@ -266,7 +266,7 @@ $(document).ready(function(){
                 server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
-                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
 
                 $("#server" + server_id).replaceWith(server);
@@ -303,7 +303,7 @@ $(document).ready(function(){
                 server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
-                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
 
                 $("#server" + server_id).replaceWith(server);
@@ -340,7 +340,7 @@ $(document).ready(function(){
                 server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
-                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
 
                 $("#server" + server_id).replaceWith(server);
@@ -377,7 +377,7 @@ $(document).ready(function(){
                 server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
-                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
 
                 $("#server" + server_id).replaceWith(server);
@@ -414,7 +414,7 @@ $(document).ready(function(){
                 server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
-                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
 
                 $("#server" + server_id).replaceWith(server);
@@ -451,7 +451,7 @@ $(document).ready(function(){
                 server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
-                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
 
                 $("#server" + server_id).replaceWith(server);
@@ -524,6 +524,73 @@ $(document).ready(function(){
         });
     });
 
+    //create new server / update existing server
+    $("#add-listener").click(function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
+        e.preventDefault(); 
+
+        var formData = {
+            listener_id: $('#listener_id').val(),
+            listener_type: $('#listener_type').val(),
+            address: $('#address').val(),
+            port: $('#port').val(),
+            protocol: $('#protocol').val(),
+            auth: $('#auth').val(),
+            auth_options: $('#auth_options').val(),
+            ssl_key: $('#ssl_key').val(),
+            ssl_cert: $('#ssl_cert').val(),
+            ssl_ca_cert: $('#ssl_ca_cert').val(),
+            ssl_version: $('#ssl_version').val(),
+            ssl_depth: $('#ssl_depth').val(),
+        }
+
+        //used to determine the http verb to use [add=POST], [update=PUT]
+        var state = $('#add-listener').val();
+
+        var type = "POST"; //for creating new resource
+        var service_id = $('#service_id').val();
+        var my_url = services_url + '/' + service_id + '/createlistener';
+
+        if (state == "update"){
+            type = "PUT"; //for updating existing resource
+            my_url += '/' + service_id;
+        }
+
+        console.log(formData);
+
+        $.ajax({
+
+            type: type,
+            url: my_url,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+                var listener = '<tr id="listener' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['parameters']['port'] + '</td><td>' + data['data']['attributes']['parameters']['protocol'] + '</td><td>' + data['data']['attributes']['parameters']['authenticator'] + '</td>';
+                listener += '<td><button class="btn btn-danger btn-xs btn-delete delete-listener" value="' + data['data']['id'] + '">Delete</button></td></tr>';
+
+                if (state == "add"){ //if user added a new record
+                    $('#listeners-list').append(listener);
+                }else{ //if user updated an existing record
+
+                    $("#listener" + listener_id).replaceWith(listener);
+                }
+
+                $('#addlistener').trigger("reset");
+
+                $('#listener').modal('hide')
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
     //delete server and remove it from list
     $('.delete-listener').click(function(){
         var listener_id = $(this).val();
@@ -534,10 +601,16 @@ $(document).ready(function(){
             }     
           });
 
+        var formData = {
+            listener: listener_id
+        }
+
         $.ajax({
 
             type: "DELETE",
-            url: url + '/' + listener_id,
+            url: services_url + '/' + $('#service_id').val()+ '/deletelistener/',
+            data: formData,
+            dataType: 'json',
             success: function (data) {
                 console.log(data);
 

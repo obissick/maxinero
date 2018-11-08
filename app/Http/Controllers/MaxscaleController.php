@@ -17,12 +17,15 @@ class MaxscaleController extends Controller
      */
     public function index()
     {
-        if($this->get_api_info()){
+        try{
+            
             $maxscale = json_decode($this->get_request('maxscale'), true);
             return view('maxinfo', compact('maxscale'));
-        }else{
+            
+        } catch(\GuzzleHttp\Exception\ConnectException $exception){
             return view('setting.index');
         }
+        
     }
 
     /**
