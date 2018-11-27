@@ -117,7 +117,7 @@ $(document).ready(function(){
                 server += '<li><button type="button" class="btn btn-link btn-xs synced" value="' + data['data']['id'] + '">synced</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs ndb" value="' + data['data']['id'] + '">ndb</button></li>';
                 server += '<li><button type="button" class="btn btn-link btn-xs stale" value="' + data['data']['id'] + '">stale</button></li></ul>';
-                server += '<td><button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                server += '<button class="btn btn-warning btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 server += '<button class="btn btn-danger btn-xs btn-delete delete-server" value="' + data['data']['id'] + '">Delete</button></div></td></tr>';
 
                 if (state == "add"){ //if user added a new record
@@ -613,8 +613,12 @@ $(document).ready(function(){
             dataType: 'json',
             success: function (data) {
                 console.log(data);
-
-                $("#listener" + listener_id).remove();
+                if(data[0]='error'){
+                    $('#listener-button').append('</br>'+'<p class="text-danger">'+data[1]+'</p>');
+                }else{
+                    $("#listener" + listener_id).remove();
+                }
+                
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.responseText);

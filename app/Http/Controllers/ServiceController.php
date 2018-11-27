@@ -136,8 +136,21 @@ class ServiceController extends Controller
     }
     public function destroy_listener(Request $request, $id)
     {
-        $listener = $request->input('listener');
-        $id = preg_replace('#[ -]+#', '-', $id);
-        $this->delete_request('services/'.$id.'/listeners'.'/'.$listener);
+        try{
+            $listener = $request->input('listener');
+            $id = preg_replace('#[ -]+#', '-', $id);
+            $this->delete_request('services/'.$id.'/listeners'.'/'.$listener);
+        } catch(\GuzzleHttp\Exception\ClientException $exception){
+            $pos = strpos($exception->getMessage(),"was not created at runtime");
+            if($pos === false) {
+                
+            }
+            else {
+                $type = 'error';
+                $errmessage = "Listener was not created at runtime. Remove listener manually.";
+            }
+            return response()->json([$type, $errmessage]);
+        }
+        
     }
 }

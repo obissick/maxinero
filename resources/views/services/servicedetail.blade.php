@@ -46,7 +46,9 @@
     </div>
 
     <h2>Listeners</h2>
-    <button id="add-listener-button" name="add-listener-button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#listener">Add Listener</button>
+    <div id="listener-button">
+        <button id="add-listener-button" name="add-listener-button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#listener">Add Listener</button>
+    </div>
         <div class="row">
             <div class="table-responsive">
                     <!-- Table-to-load-the-data Part -->
@@ -69,7 +71,7 @@
                                 <td>{{$listeners['data'][$i]['attributes']['parameters']['port']}}</td>
                                 <td>{{$listeners['data'][$i]['attributes']['parameters']['protocol']}}</td>
                                 <td>{{$listeners['data'][$i]['attributes']['parameters']['authenticator']}}</td>
-                                <td>
+                                <td id="delete-col">
                                     <button class="btn btn-danger btn-xs btn-delete delete-listener" value="{{$listeners['data'][$i]['id']}}">Delete</button>
                                 </td>
                             </tr>
