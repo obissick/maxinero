@@ -2,6 +2,8 @@ $(document).ready(function(){
     var url = "/servers";
     var services_url = "/services";
     var monitors_url = "/monitors"
+    var users_url = "/users";
+
     //display modal form for server editing
     $('.open-modal').click(function(){
         var server_id = $(this).val(); 
@@ -718,6 +720,94 @@ $(document).ready(function(){
             },
             error: function (data) {
                 console.log('Error:', data);
+            }
+        });
+    });
+
+    $("#add-user").click(function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
+        e.preventDefault(); 
+
+        var formData = {
+            user_id: $('#user_id').val(),
+            password: $('#password').val(),
+            account: $('#account').val(),
+        }
+
+        //used to determine the http verb to use [add=POST], [update=PUT]
+        var state = $('#add-user').val();
+
+        var type = "POST"; //for creating new resource
+        var user_id = $('#user_id').val();
+        var my_url = users_url + '/';
+
+        console.log(formData);
+
+        $.ajax({
+
+            type: type,
+            url: my_url,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+                var user = '<tr id="user' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['account'] + '</td>';
+                user += '<td><button class="btn btn-danger btn-xs btn-delete delete-user" value="' + data['data']['id'] + '">Delete</button></td></tr>';
+
+                if (state == "add"){ //if user added a new record
+                    $('#users-list').append(user);
+                }else{ //if user updated an existing record
+
+                    $("#user" + user_id).replaceWith(user);
+                }
+
+                $('#adduser').trigger("reset");
+
+                $('#user').modal('hide')
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.delete-user').click(function(){
+        var user_id = $(this).val();
+        var user_type = $(this).attr('name');
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+        });
+        
+        var formData = {
+            user: user_id,
+            type: user_type
+        }
+
+        $.ajax({
+
+            type: "DELETE",
+            url: users_url + '/' + user_id,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if(data[0]='error'){
+                    $('#user-button').append('</br>'+'<p class="text-danger">'+data[1]+'</p>');
+                }else{
+                    $("#user" + user_id).remove();
+                }
+                
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+                
             }
         });
     });

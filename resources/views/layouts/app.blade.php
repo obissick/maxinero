@@ -57,7 +57,7 @@
                             <li><a class="nav-link" href="{{ route('maxscale.index') }}">MaxScale</a></li>
                             <li><a class="nav-link" href="{{ route('services.index') }}">Services</a></li>
                             <li><a class="nav-link" href="{{ route('servers.index') }}">Servers</a></li>
-                            <li><a class="nav-link" href="">Filters</a></li>
+                            <li><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
                         @endguest
                     </ul>
 

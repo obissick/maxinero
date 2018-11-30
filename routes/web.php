@@ -30,3 +30,5 @@ Route::post('/services/{service}/createlistener', 'ServiceController@create_list
 Route::resource('/monitors', 'MonitorController');
 
 Route::resource('/maxscale', 'MaxscaleController');
+
+Route::resource('/users', 'UserController');
