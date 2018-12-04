@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Session;
+use View;
 
 class UserController extends Controller
 {
@@ -67,8 +69,12 @@ class UserController extends Controller
     {
         if($request->input('type')== 'delete-user'){
             $this->delete_request('users/inet/'.$id);
+            Session::flash('success', 'User deleted.');
+            return View::make('flash-message');
         }elseif($request->input('type')== 'disable-user'){
             $this->delete_request('users/unix/'.$id);
+            Session::flash('success', 'User disabled.');
+            return View::make('flash-message');
         }
     }
 }

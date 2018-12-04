@@ -594,7 +594,7 @@ $(document).ready(function(){
     });
 
     //delete server and remove it from list
-    $('.delete-listener').click(function(){
+    $('.table').on('click', '.delete-listener', function(){
         var listener_id = $(this).val();
 
         $.ajaxSetup({
@@ -630,7 +630,7 @@ $(document).ready(function(){
     });
 
     //delete server and remove it from list
-    $('.delete-monitor').click(function(){
+    $('.table').on('click', '.delete-monitor', function(){
         var monitor_id = $(this).val();
 
         $.ajaxSetup({
@@ -776,7 +776,7 @@ $(document).ready(function(){
         });
     });
 
-    $('.delete-user').click(function(){
+    $('.table').on('click', '.delete-user', function(){
         var user_id = $(this).val();
         var user_type = $(this).attr('name');
         $.ajaxSetup({
@@ -795,14 +795,14 @@ $(document).ready(function(){
             type: "DELETE",
             url: users_url + '/' + user_id,
             data: formData,
-            dataType: 'json',
+            dataType: 'html',
             success: function (data) {
                 console.log(data);
-                if(data[0]='error'){
-                    $('#user-button').append('</br>'+'<p class="text-danger">'+data[1]+'</p>');
-                }else{
-                    $("#user" + user_id).remove();
-                }
+               
+                $("#user" + user_id).remove();
+                $('div.flash-message').html(data);
+                //$('#button-user').append('<p class="text-success">'+data[1]+'</p>');
+                
                 
             },
             error: function (xhr, ajaxOptions, thrownError) {

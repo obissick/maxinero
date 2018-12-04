@@ -2,8 +2,11 @@
 
 @section('content')
 <div class="container container-fluid">
+    <div class="flash-message"></div>
     <h2>Users</h2>
-    <button id="add-user-button" name="add-user-button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#user">Add User</button>
+    <div id="button-user">
+        <button id="add-user-button" name="add-user-button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#user">Add User</button>
+    </div>
     <div class="row">
         <div class="table-responsive-sm">
             <br />
@@ -70,7 +73,7 @@
                                     </div>
                                     <div class="modal-footer">
                                             <button type="button" class="btn btn-primary" id="add-user" value="add">Save changes</button>
-                                            <input type="hidden" id="user" name="user" value="0">
+                                            <input type="hidden" id="user" name="user" value="">
                                     </div>
                                 </form>
                             </div>
