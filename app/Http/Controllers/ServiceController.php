@@ -122,9 +122,10 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $id = preg_replace('#[ -]+#', '-', $id);
+        $service = $request->input('service');
+        $id = preg_replace('#[ -]+#', '-', $service);
         $this->delete_request('services/'.$id);
     }
     public function create_listener(Request $request, $id)
