@@ -34,6 +34,7 @@
                                 <button class="btn btn-success btn-xs btn-detail start-service" value="{{$services['data'][$i]['id']}}">Start</button>
                             @endif
                             <button class="btn btn-info btn-xs btn-detail open-modal" value="{{$services['data'][$i]['id']}}">Edit</button>
+                            <button class="btn btn-danger btn-xs btn-delete delete-service" value="{{$services['data'][$i]['id']}}">Delete</button>
                         </td>
                     </tr>
                     @endfor
