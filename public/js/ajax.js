@@ -605,17 +605,11 @@ $(document).ready(function(){
         $.ajax({
 
             type: "DELETE",
-            url: services_url + '/' + $('#service_id').val(),
-            data: formData,
-            dataType: 'json',
+            url: services_url + '/' + service_id,
             success: function (data) {
                 console.log(data);
-                if(data[0]='error'){
-                    $('#service-list').append('</br>'+'<p class="text-danger">'+data[1]+'</p>');
-                }else{
-                    $("#service" + service_id).remove();
-                }
-                
+
+                $("#service" + service_id).remove();
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.responseText);

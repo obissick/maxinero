@@ -124,8 +124,8 @@ class ServiceController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $service = $request->input('service');
-        $id = preg_replace('#[ -]+#', '-', $service);
+        //$service = $request->input('service');
+        $id = preg_replace('#[ -]+#', '-', $id);
         $this->delete_request('services/'.$id);
     }
     public function create_listener(Request $request, $id)
