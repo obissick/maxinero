@@ -526,6 +526,42 @@ $(document).ready(function(){
         });
     });
 
+     //delete service and remove it from list
+     $('.table').on('click', '.delete-service', function(){
+        var service_id = $(this).val();
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        var formData = {
+            service: service_id
+        }
+
+        $.ajax({
+
+            type: "DELETE",
+            url: services_url + '/' + $('#service_id').val(),
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if(data[0]='error'){
+                    $('#service-button').append('</br>'+'<p class="text-danger">'+data[1]+'</p>');
+                }else{
+                    $("#service" + service_id).remove();
+                }
+                
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+                
+            }
+        });
+    });
+
     //create new server / update existing server
     $("#add-listener").click(function (e) {
         $.ajaxSetup({
