@@ -526,6 +526,66 @@ $(document).ready(function(){
         });
     });
 
+    //create new server / update existing server
+    $("#add-service").click(function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
+        e.preventDefault(); 
+
+        var formData = {
+            service_id: $('#service_id').val(),
+            service_type: $('#service_type').val(),
+            module: $('#service_module').val(),
+            user: $('#user').val(),
+            password: $('#password').val(),
+        }
+
+        //used to determine the http verb to use [add=POST], [update=PUT]
+        var state = $('#add-service').val();
+
+        var type = "POST"; //for creating new resource
+        var service_id = $('#service_id').val();
+        var my_url = services_url + '/';
+
+        if (state == "update"){
+            type = "PUT"; //for updating existing resource
+            my_url += '/' + service_id;
+        }
+
+        console.log(formData);
+
+        $.ajax({
+
+            type: type,
+            url: my_url,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+
+                var service = '<tr id=service' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['router'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['total_connections'] + '</td><td>' + data['data']['attributes']['connections'] + '</td><td>' + data['data']['attributes']['started'] + '</td>';
+                service += '<td><button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td></tr>';
+
+                if (state == "add"){ //if user added a new record
+                    $('#services-list').append(service);
+                }else{ //if user updated an existing record
+
+                    $("#service" + service_id).replaceWith(service);
+                }
+
+                $('#service').trigger("reset");
+
+                $('#service').modal('hide')
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
      //delete service and remove it from list
      $('.table').on('click', '.delete-service', function(){
         var service_id = $(this).val();
@@ -549,7 +609,7 @@ $(document).ready(function(){
             success: function (data) {
                 console.log(data);
                 if(data[0]='error'){
-                    $('#service-button').append('</br>'+'<p class="text-danger">'+data[1]+'</p>');
+                    $('#service-list').append('</br>'+'<p class="text-danger">'+data[1]+'</p>');
                 }else{
                     $("#service" + service_id).remove();
                 }

@@ -48,7 +48,29 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'service_id' => 'required',
+            'service_type' => 'required',
+            'module' => 'required',
+            'user' => 'required',
+            'password' => 'required'
+        ]);
+
+        $data = array(
+            'data' => [
+            'id' => $request->input('service_id'),
+            'type' => $request->input('service_type'),
+            'attributes' => [
+                'router' => $request->input('module'),
+                'parameters' => [
+                    'user' => $request->input('user'),
+                    'password' => $request->input('password')
+                ]
+            ]
+        ]);
+
+        $res = $this->post_request($data, 'services/');
+        return $this->get_request('services/'.$request->input('service_id'));
     }
 
     /**

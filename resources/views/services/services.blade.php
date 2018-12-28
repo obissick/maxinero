@@ -3,6 +3,7 @@
 @section('content')
 <div class="container container-fluid">
     <h2>Services</h2>
+    <button id="addservice" name="add-service" class="btn btn-success btn-xs" data-toggle="modal" data-target="#service">Add Service</button>
     <div class="row">
         <div class="table-responsive">
             <!-- Table-to-load-the-data Part -->
@@ -108,7 +109,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="service_type" class="col-sm-3 control-label">Service Type</label>
+                                <label for="service_type" class="col-sm-3 control-label">Monitor Type</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="monitor_type" name="monitor_type" placeholder="monitors" value="">
                                 </div>
@@ -135,7 +136,59 @@
                             </div>
                             <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" id="add-mon" value="add">Save changes</button>
-                                    <input type="hidden" id="monitor_id" name="monitor_id" value="0">
+                                    <input type="hidden" id="monitorid" name="monitorid" value="0">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="service" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Service Editor</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addservice" name="addservice" class="form-horizontal" novalidate="">
+                            {{ csrf_field() }}
+                            <div class="form-group error">
+                                <label for="service_id" class="col-sm-3 control-label">Service Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control has-error" id="service_id" name="service_id" placeholder="ID" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="service_type" class="col-sm-3 control-label">Service Type</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="service_type" name="service_type" placeholder="services" value="">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="service_module" class="col-sm-3 control-label">Router Module</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="service_module" name="service_module" placeholder="" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="user" class="col-sm-3 control-label">User</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="user" name="user" placeholder="" value="">
+                                    </div>
+                            </div>
+                            <div class="form-group">
+                                    <label for="password" class="col-sm-3 control-label">Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="" value="">
+                                    </div>
+                            </div>
+                            <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="add-service" value="add">Save changes</button>
+                                    <input type="hidden" id="serviceid" name="serviceid" value="0">
                             </div>
                         </form>
                     </div>
