@@ -605,7 +605,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "DELETE",
-            url: services_url + '/' + service_id,
+            url: services_url + '/' + $('#service_id').val(),
             data: formData,
             dataType: 'json',
             success: function (data) {
