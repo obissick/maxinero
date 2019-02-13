@@ -3,6 +3,7 @@ $(document).ready(function(){
     var services_url = "/services";
     var monitors_url = "/monitors"
     var users_url = "/users";
+    var settings_url = "/settings";
 
     //display modal form for server editing
     $('.open-modal').click(function(){
@@ -567,8 +568,7 @@ $(document).ready(function(){
             data: formData,
             dataType: 'json',
             success: function (data) {
-
-                var service = '<tr id=service' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['attributes']['router'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['total_connections'] + '</td><td>' + data['data']['attributes']['connections'] + '</td><td>' + data['data']['attributes']['started'] + '</td>';
+                var service = '<tr id=service' + data['data']['id'] + '"><td>' + '<a href="' + my_url +  data['data']['id'] + '" class="btn btn-primary btn-xs btn-detail service-info" value="' + data['data']['id'] + '">' + data['data']['id'] + '</a></td><td>' + data['data']['attributes']['router'] + '</td><td>' + data['data']['attributes']['state'] + '</td><td>' + data['data']['attributes']['total_connections'] + '</td><td>' + data['data']['attributes']['connections'] + '</td><td>' + data['data']['attributes']['started'] + '</td>';
                 service += '<td><button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td></tr>';
 
                 if (state == "add"){ //if user added a new record
@@ -892,6 +892,69 @@ $(document).ready(function(){
                 console.log(data);
                
                 $("#user" + user_id).remove();
+                $('div.flash-message').html(data);
+                //$('#button-user').append('<p class="text-success">'+data[1]+'</p>');
+                
+                
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+                
+            }
+        });
+    });
+
+    $('.table').on('click', '.select', function(){
+        var setting_id = $(this).val();
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        var formData = {
+            id: setting_id
+        }
+
+        $.ajax({
+
+            type: "PUT",
+            url: settings_url + '/' + setting_id + "/select",
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                alert("MaxScale server selected");
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $('.table').on('click', '.delete-maxscale', function(){
+        var setting_id = $(this).val();
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+        });
+        
+        var formData = {
+            id: setting_id
+        }
+
+        $.ajax({
+
+            type: "DELETE",
+            url: settings_url + '/' + setting_id,
+            data: formData,
+            dataType: 'html',
+            success: function (data) {
+                console.log(data);
+               
+                $("#setting" + setting_id).remove();
                 $('div.flash-message').html(data);
                 //$('#button-user').append('<p class="text-success">'+data[1]+'</p>');
                 

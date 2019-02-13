@@ -63,6 +63,6 @@ class Controller extends BaseController
     function get_api_info(){
         return DB::table('settings')
             ->select(DB::raw('id, api_url, username, password'))
-            ->where('user_id', Auth::user()->id)->first();
+            ->where([['user_id', '=', Auth::user()->id],['selected', '=', true]])->first();
     }
 }

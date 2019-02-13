@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/settings', 'SettingController');
+Route::put('/settings/{setting}/select', 'SettingController@select')->name('settings.select');
 
 Route::resource('/servers', 'ServerController');
 

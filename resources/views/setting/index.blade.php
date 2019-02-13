@@ -5,120 +5,80 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Edit Settings</div>
+                <h2>MaxScale Servers</h2>
+                <button id="addmaxscale" name="add-maxscale" class="btn btn-success btn-xs" data-toggle="modal" data-target="#config">Add</button>
                 <div class="panel-body">
-                    @if (!empty($setting))
+                    @if (!empty($settings))
 
-                        <form class="form-horizontal" method="POST" action="{{ route('settings.update', $setting->id) }}">
-                            {{ csrf_field() }}
-                            {{ method_field('PATCH') }}
-                            <div class="form-group{{ $errors->has('api_url') ? ' has-error' : '' }}">
-                                <label for="title" class="col-md-4 control-label">API URL</label>
-
-                                <div class="col-md-6">
-                                    <input id="api_url" type="text" class="form-control" name="api_url" value="{{ $setting->api_url }}" autofocus>
-
-                                    @if ($errors->has('api_url'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('api_url') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                                <label for="content" class="col-md-4 control-label">Username</label>
-
-                                <div class="col-md-6">
-                                    <input id="username" type="text" class="form-control" name="username" value="{{$setting->username}}" >
-
-                                    @if ($errors->has('username'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('username') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" value="">
-
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-success">
-                                        Save
-                                    </button>
-                                    <a href="{{ URL::previous() }}" class="btn btn-danger">Cancel</a>
-                                </div>
-                            </div>
-                        </form>
-                    @else
-                    <form class="form-horizontal" method="POST" action="{{ route('settings.store') }}">
-                            {{ csrf_field() }}
-                            
-                            <div class="form-group{{ $errors->has('api_url') ? ' has-error' : '' }}">
-                                <label for="title" class="col-md-4 control-label">API URL</label>
-
-                                <div class="col-md-6">
-                                    <input id="api_url" type="text" class="form-control" name="api_url" value="" autofocus>
-
-                                    @if ($errors->has('api_url'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('api_url') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                                <label for="content" class="col-md-4 control-label">Username</label>
-
-                                <div class="col-md-6">
-                                    <input id="username" type="text" class="form-control" name="username" value="" >
-
-                                    @if ($errors->has('username'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('username') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" value="">
-
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-success">
-                                        Save
-                                    </button>
-                                    <a href="{{ URL::previous() }}" class="btn btn-danger">Cancel</a>
-                                </div>
-                            </div>
-                        </form>
                     @endif
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>API URL</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="configs-list" name="configs-list">
+                            @foreach ($settings as $setting)
+                            <tr id="setting{{$setting->id}}">
+                                <td>{{$setting->api_url}}</td>
+                                <td>{{$setting->username}}</td>
+                                <td></td>
+                                <td>
+                                    @if($setting->selected)
+                                          
+                                    @else
+                                        <button class="btn btn-success btn-xs btn-detail select" value="{{$setting->id}}">Select</button>
+                                    @endif
+                                    <button class="btn btn-info btn-xs btn-detail edit-maxscale" value="{{$setting->id}}">Edit</button>
+                                    <button class="btn btn-danger btn-xs btn-delete delete-maxscale" value="{{$setting->id}}">Delete</button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    {{ $settings->links() }}
+                    <div class="modal fade" id="config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">MaxScale Editor</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="addapi" name="addapi" class="form-horizontal" method="POST" action="{{ route('settings.store') }}" novalidate="">
+                                        {{ csrf_field() }}
+                                        <div class="form-group error">
+                                            <label for="api_url" class="col-sm-3 control-label">API URL</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control has-error" id="api_url" name="api_url" placeholder="" value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="api_username" class="col-sm-3 control-label">Username</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="api_username" name="api_username" placeholder="" value="">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                                <label for="api_password" class="col-sm-3 control-label">Password</label>
+                                                <div class="col-sm-9">
+                                                    <input type="password" class="form-control" id="api_password" name="api_password" placeholder="" value="">
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary" id="add-maxscale" value="add">Save changes</button>
+                                                <input type="hidden" id="api_id" name="api_id" value="0">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
