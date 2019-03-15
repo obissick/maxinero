@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use App\Setting;
 use Auth;
+use Session;
+use View;
 
 class ServerController extends Controller
 {
@@ -32,7 +34,7 @@ class ServerController extends Controller
             return view('servers.servers', compact('servers'));
             
         } catch(\GuzzleHttp\Exception\ConnectException $exception){
-            return view('setting.index');
+            return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
         }
     }
 
@@ -164,6 +166,8 @@ class ServerController extends Controller
     {
         $id = preg_replace('#[ -]+#', '-', $id);
         $this->delete_request('servers/'.$id);
+        Session::flash('success', 'Server deleted.');
+        return View::make('flash-message');
     }
     
 }

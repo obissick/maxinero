@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 use App\Setting;
 use Auth;
+use Session;
+use View;
 
 class SettingController extends Controller
 {
@@ -56,20 +58,25 @@ class SettingController extends Controller
 
     public function select(Request $request, $id)
     {
-        Setting::where('selected', 1)
+        try{
+            Setting::where('selected', 1)
             ->where('user_id', Auth::user()->id)
             ->update(['selected' => false]);
 
-        Setting::where('id', $id)
+            Setting::where('id', $id)
             ->where('user_id', Auth::user()->id)
             ->update(['selected' => true]);
-
-        //return redirect()->back()->with('status', 'MaxScale server deleted.');
+            Session::flash('success', 'Server selected.');
+        } catch(Exception $exception){
+            Session::flash('error', 'Error selecting server.');
+        }
+        return View::make('flash-message');
     }
 
     public function destroy($id)
     {
         Setting::find($id)->delete();
-        //return redirect()->back()->with('status', 'MaxScale server deleted.');
+        Session::flash('success', 'MaxScale server deleted.');
+        return View::make('flash-message');
     }
 }

@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container container-fluid">
+    <div class="flash-message"></div>
     <h2>Services</h2>
     <button id="addservice" name="add-service" class="btn btn-success btn-xs" data-toggle="modal" data-target="#service">Add Service</button>
     <div class="row">

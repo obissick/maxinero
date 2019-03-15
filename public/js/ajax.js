@@ -61,6 +61,7 @@ $(document).ready(function(){
                 console.log(data);
 
                 $("#server" + server_id).remove();
+                $('div.flash-message').html(data);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.responseText);
@@ -922,9 +923,9 @@ $(document).ready(function(){
             type: "PUT",
             url: settings_url + '/' + setting_id + "/select",
             data: formData,
-            dataType: 'json',
+            dataType: 'html',
             success: function (data) {
-                alert("MaxScale server selected");
+                $('div.flash-message').html(data);
             },
             error: function (data) {
                 console.log('Error:', data);

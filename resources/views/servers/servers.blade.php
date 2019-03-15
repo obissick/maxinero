@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container container-fluid">
+    <div class="flash-message"></div>
     <h2>DB Servers</h2>
     <button id="btn-add" name="btn-add" class="btn btn-success btn-xs">Add Server</button>
     <div class="row">

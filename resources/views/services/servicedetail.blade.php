@@ -1,8 +1,55 @@
 @extends('layouts.app')
 
 @section('content')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script>
+	
+	var times =  {!! $times !!}.map(function(e) {
+   		return e.created_at;
+    });
+    
+    var times = {!! $times !!};
+	var avg_ctime = {!! $avg_ctime !!}.map(function(e) {
+   		return e.avg_ctime;
+	});
+    var avg_ctime = {!! $avg_ctime !!}
+	var config = {
+		type: 'line',
+		data: {
+            labels: times,
+            datasets: [{ 
+                data: avg_ctime,
+                label: "Connections",
+                borderColor: "#3e95cd",
+                fill: false
+            }
+            ]
+        },
+		options: {
+			responsive: true,
+			legend: {
+				position: 'top',
+			},
+			title: {
+				display: false,
+				text: 'Goals'
+			},
+			animation: {
+				animateScale: true,
+				animateRotate: true
+			}
+		}
+	};
+
+	window.onload = function() {
+		var ctx = document.getElementById('line').getContext('2d');
+		window.myDoughnut = new Chart(ctx, config);
+	};
+</script>
 <div class="container container-fluid">
+    <div class="flash-message"></div>
     <h2>{{$service['data']['id']}}</h2>
+    <canvas id="line" height="150" width="600"></canvas>
     <div class="row">
             <div class="table-responsive">
                 <!-- Table-to-load-the-data Part -->

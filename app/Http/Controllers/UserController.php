@@ -26,7 +26,7 @@ class UserController extends Controller
             return view('users.users', compact('users'));
             
         } catch(\GuzzleHttp\Exception\ConnectException $exception){
-            return view('setting.index');
+            return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
         }
     }
 

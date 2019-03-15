@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\ServiceStats;
+use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
@@ -26,7 +28,7 @@ class ServiceController extends Controller
             return view('services.services', compact('services', 'monitors'));
             
         } catch(\GuzzleHttp\Exception\ConnectException $exception){
-            return view('setting.index');
+            return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
         }
     }
 
@@ -81,11 +83,26 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        
+        $maxserver = $this->get_api_info();
+        $service_stat = DB::table('service_stats')
+            ->select(DB::raw('created_at, avg(connections) AS avg'))
+            ->where('setting_id', $maxserver->id)
+            ->where('service_id', $id)
+            //->whereTime('created_at', Carbon::today())
+            ->groupBy('created_at')
+            ->groupBy('service_id')
+            ->orderBy('created_at')
+            ->orderBy('service_id')
+            ->get()->toArray();
+        $times = array_column($service_stat, 'created_at');
+        $avg_ctime = array_column($service_stat, 'avg');
+
         if($this->get_api_info()){
             $service = json_decode($this->get_request('services/'.$id), true);
             $listeners = json_decode($this->get_request('services/'.$id.'/listeners'), true);
-            return view('services.servicedetail', compact('service', 'listeners'));
+            return view('services.servicedetail', compact('service', 'listeners'))
+                ->with('times',json_encode($times,JSON_NUMERIC_CHECK))
+                ->with('avg_ctime',json_encode($avg_ctime,JSON_NUMERIC_CHECK));
         }else{
             return view('setting.index');
         }
