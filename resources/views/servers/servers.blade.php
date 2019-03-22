@@ -1,10 +1,64 @@
 @extends('layouts.app')
 
 @section('content')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script>
+	
+	var times =  {!! $times !!}.map(function(e) {
+   		return e.created_at;
+    });
+    
+    var times = {!! $times !!};
+	var sum_conn = {!! $sum_conn !!}.map(function(e) {
+   		return e.sum;
+	});
+    var sum_conn = {!! $sum_conn !!}
+	var config = {
+		type: 'line',
+		data: {
+            labels: times,
+            datasets: [{ 
+                data: sum_conn,
+                label: "Current Connections",
+                borderColor: "#3e95cd",
+                fill: false
+            }
+            ]
+        },
+		options: {
+			responsive: true,
+			legend: {
+				position: 'top',
+			},
+			title: {
+				display: false,
+				text: 'Goals'
+			},
+			animation: {
+				animateScale: true,
+				animateRotate: true
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true, 
+                        stepSize: 1
+                    }
+                }]
+            }
+		}
+	};
+
+	window.onload = function() {
+		var ctx = document.getElementById('line').getContext('2d');
+		window.myDoughnut = new Chart(ctx, config);
+	};
+</script>
 <div class="container container-fluid">
     <div class="flash-message"></div>
     <h2>DB Servers</h2>
     <button id="btn-add" name="btn-add" class="btn btn-success btn-xs">Add Server</button>
+    <canvas id="line" height="150" width="600"></canvas>
     <div class="row">
         <div class="table-responsive-sm">
             <br />
@@ -26,7 +80,7 @@
                 <tbody id="servers-list" name="servers-list">
                     @for ($i = 0; $i < count($servers['data']); $i++)
                     <tr id="server{{$servers['data'][$i]['id']}}">
-                        <td>{{$servers['data'][$i]['id']}}</td>
+                        <td><a href="{{route('servers.show', $servers['data'][$i]['id'])}}" class="btn btn-primary btn-xs btn-detail service-info" value="{{$servers['data'][$i]['id']}}">{{$servers['data'][$i]['id']}}</a></td>
                         <td>{{$servers['data'][$i]['attributes']['parameters']['address']}}</td>
                         <td>{{$servers['data'][$i]['attributes']['parameters']['port']}}</td>
                         <td>{{$servers['data'][$i]['attributes']['parameters']['protocol']}}</td>

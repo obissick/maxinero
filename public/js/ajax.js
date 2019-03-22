@@ -486,7 +486,7 @@ $(document).ready(function(){
 
                 var state = '<td id="state'+ data['data']['id'] + '">' + data['data']['attributes']['state'] + '</td>'
                 var action = '<td id="action'+ data['data']['id'] + '"><button class="btn btn-success btn-xs btn-detail start-service" value="' + data['data']['id'] + '">Start</button>';
-                action += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button></td>';
+                action += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 action += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td>';
 
                 $("#state" + service_id).replaceWith(state);
@@ -518,7 +518,7 @@ $(document).ready(function(){
 
                 var state = '<td id="state'+ data['data']['id'] + '">' + data['data']['attributes']['state'] + '</td>'
                 var action = '<td id="action'+ data['data']['id'] + '"><button class="btn btn-warning btn-xs btn-detail stop-service" value="' + data['data']['id'] + '">Stop</button>';
-                action += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button></td>';
+                action += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
                 action += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td>';
 
                 $("#state" + service_id).replaceWith(state);
@@ -581,10 +581,12 @@ $(document).ready(function(){
 
                 $('#service').trigger("reset");
 
-                $('#service').modal('hide')
+                $('#service').modal('hide');
             },
             error: function (data) {
                 console.log('Error:', data);
+                $('#service').modal('hide');
+                $('div.validation').html(data);
             }
         });
     });

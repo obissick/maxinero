@@ -12,6 +12,7 @@ use App\Setting;
 use Auth;
 use Session;
 use View;
+use App\ServiceStats;
 
 class ServerController extends Controller
 {
@@ -29,9 +30,22 @@ class ServerController extends Controller
     public function index()
     {
         try{
+            $maxserver = $this->get_api_info();
+            $server_stat = DB::table('server_stats')
+                ->select(DB::raw('created_at, sum(connections) AS sum'))
+                ->where('setting_id', $maxserver->id)
+                ->whereRaw('created_at > (CONVERT_TZ( NOW(), @@session.time_zone, \'+00:00\') - INTERVAL 30 MINUTE)')
+                ->groupBy('created_at')
+                ->orderBy('created_at')
+                ->get()->toArray();
+        
+            $times = array_column($server_stat, 'created_at');
+            $sum_conn = array_column($server_stat, 'sum');
             
             $servers = json_decode($this->get_request('servers'), true);
-            return view('servers.servers', compact('servers'));
+            return view('servers.servers', compact('servers'))
+                ->with('times',json_encode($times,JSON_NUMERIC_CHECK))
+                ->with('sum_conn',json_encode($sum_conn,JSON_NUMERIC_CHECK));
             
         } catch(\GuzzleHttp\Exception\ConnectException $exception){
             return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
@@ -118,9 +132,9 @@ class ServerController extends Controller
      */
     public function show($id)
     {
-        $server = $this->get_request('servers/'.$id);
+        $server = json_decode($this->get_request('servers/'.$id), true);
         #dd(json_decode($server));
-        return $server;
+        return view('servers.serverdetail', compact('server'));
     }
 
     /**
