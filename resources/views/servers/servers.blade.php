@@ -12,7 +12,12 @@
 	var sum_conn = {!! $sum_conn !!}.map(function(e) {
    		return e.sum;
 	});
-    var sum_conn = {!! $sum_conn !!}
+    var sum_conn = {!! $sum_conn !!};
+
+    var sum_ops = {!! $sum_ops !!}.map(function(e) {
+   		return e.sum_ops;
+	});
+    var sum_ops = {!! $sum_ops !!};
 	var config = {
 		type: 'line',
 		data: {
@@ -20,7 +25,13 @@
             datasets: [{ 
                 data: sum_conn,
                 label: "Current Connections",
-                borderColor: "#3e95cd",
+                borderColor: "#20c997",
+                fill: false
+            },
+            {
+                data: sum_ops,
+                label: "Current Operations",
+                borderColor: "#fd7e14",
                 fill: false
             }
             ]
@@ -41,8 +52,7 @@
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true, 
-                        stepSize: 1
+                        beginAtZero: true
                     }
                 }]
             }

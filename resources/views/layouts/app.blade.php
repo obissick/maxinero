@@ -98,7 +98,6 @@
         </main>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="{{asset('js/ajax.js')}}"></script>
     <script>
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
@@ -106,5 +105,6 @@
             });
         }, 4000);
     </script>
+    <script src="{{asset('js/ajax.js')}}"></script>
 </body>
 </html>

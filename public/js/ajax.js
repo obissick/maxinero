@@ -586,7 +586,7 @@ $(document).ready(function(){
             error: function (data) {
                 console.log('Error:', data);
                 $('#service').modal('hide');
-                $('div.validation').html(data);
+                //$('div.validation').html(data);
             }
         });
     });

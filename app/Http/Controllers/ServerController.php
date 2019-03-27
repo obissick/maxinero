@@ -32,7 +32,7 @@ class ServerController extends Controller
         try{
             $maxserver = $this->get_api_info();
             $server_stat = DB::table('server_stats')
-                ->select(DB::raw('created_at, sum(connections) AS sum'))
+                ->select(DB::raw('created_at, sum(connections) AS sum, sum(active_operations) AS sum_ops'))
                 ->where('setting_id', $maxserver->id)
                 ->whereRaw('created_at > (CONVERT_TZ( NOW(), @@session.time_zone, \'+00:00\') - INTERVAL 30 MINUTE)')
                 ->groupBy('created_at')
@@ -41,11 +41,13 @@ class ServerController extends Controller
         
             $times = array_column($server_stat, 'created_at');
             $sum_conn = array_column($server_stat, 'sum');
+            $sum_ops = array_column($server_stat, 'sum_ops');
             
             $servers = json_decode($this->get_request('servers'), true);
             return view('servers.servers', compact('servers'))
                 ->with('times',json_encode($times,JSON_NUMERIC_CHECK))
-                ->with('sum_conn',json_encode($sum_conn,JSON_NUMERIC_CHECK));
+                ->with('sum_conn',json_encode($sum_conn,JSON_NUMERIC_CHECK))
+                ->with('sum_ops',json_encode($sum_ops,JSON_NUMERIC_CHECK));
             
         } catch(\GuzzleHttp\Exception\ConnectException $exception){
             return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');

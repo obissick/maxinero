@@ -22,7 +22,7 @@
                 label: "Connections",
                 borderColor: "#3e95cd",
                 fill: false
-            }
+                }
             ]
         },
 		options: {
