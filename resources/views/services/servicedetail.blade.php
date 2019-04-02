@@ -42,7 +42,11 @@
                 yAxes: [{
                     ticks: {
                         beginAtZero: true, 
-                        stepSize: 1
+                        userCallback: function(label, index, labels) {
+                            if (Math.floor(label) === label) {
+                            return label;
+                            }
+                        },
                     }
                 }]
             }
