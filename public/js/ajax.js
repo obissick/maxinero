@@ -18,7 +18,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "GET",
-            url: url + '/' + server_id,
+            url: url + '/' + server_id + '/edit',
             success: function (data) {
                 //console.log(jQuery.parseJSON(data));
                 var res = jQuery.parseJSON(data);

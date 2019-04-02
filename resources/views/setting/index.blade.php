@@ -45,8 +45,8 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                     <h4 class="modal-title" id="myModalLabel">MaxScale Editor</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>    
                                 </div>
                                 <div class="modal-body">
                                     <form id="addapi" name="addapi" class="form-horizontal" method="POST" action="{{ route('settings.store') }}" novalidate="">
@@ -66,14 +66,14 @@
                                         </div>
                                         
                                         <div class="form-group">
-                                                <label for="api_password" class="col-sm-3 control-label">Password</label>
-                                                <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="api_password" name="api_password" placeholder="" value="">
-                                                </div>
+                                            <label for="api_password" class="col-sm-3 control-label">Password</label>
+                                            <div class="col-sm-9">
+                                                <input type="password" class="form-control" id="api_password" name="api_password" placeholder="" value="">
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary" id="add-maxscale" value="add">Save changes</button>
-                                                <input type="hidden" id="api_id" name="api_id" value="0">
+                                            <button type="submit" class="btn btn-primary" id="add-maxscale" value="add">Save changes</button>
+                                            <input type="hidden" id="api_id" name="api_id" value="0">
                                         </div>
                                     </form>
                                 </div>

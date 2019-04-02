@@ -135,7 +135,7 @@ class ServerController extends Controller
     public function show($id)
     {
         $server = json_decode($this->get_request('servers/'.$id), true);
-        #dd(json_decode($server));
+        //dd(json_decode($server));
         return view('servers.serverdetail', compact('server'));
     }
 
@@ -147,7 +147,8 @@ class ServerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $server = $this->get_request('servers/'.$id);
+        return $server;
     }
 
     /**

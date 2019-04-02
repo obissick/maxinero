@@ -71,8 +71,14 @@ class ServiceController extends Controller
             ]
         ]);
 
-        $res = $this->post_request($data, 'services/');
-        return $this->get_request('services/'.$request->input('service_id'));
+        try{
+            $res = $this->post_request($data, 'services/');
+            return $this->get_request('services/'.$request->input('service_id'));
+
+        }catch(\GuzzleHttp\Exception\ClientException $exception){
+            return redirect('services')->with('error', $exception->getResponse()->getBody(true));
+        }
+        
     }
 
     /**
