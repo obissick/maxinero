@@ -27,6 +27,7 @@ $(document).ready(function(){
                 $('#port').val(res['data']['attributes']['parameters']['port']);
                 $('#protocol').val(res['data']['attributes']['parameters']['protocol']);
                 $('#btn-save').val("update");
+                document.getElementById("server_id").disabled = true;
 
                 $('#server').modal('show');
             },
@@ -219,7 +220,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: url + '/' + server_id,
+            url: url + '/' + server_id + '/changestate',
             data: ({state: 'Master'}),
             dataType: 'json',
             success: function (data) {
@@ -256,7 +257,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: url + '/' + server_id,
+            url: url + '/' + server_id + '/changestate',
             data: ({state: 'Slave'}),
             dataType: 'json',
             success: function (data) {
@@ -293,7 +294,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: url + '/' + server_id,
+            url: url + '/' + server_id + '/changestate',
             data: ({state: 'Maintenance'}),
             dataType: 'json',
             success: function (data) {
@@ -330,7 +331,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: url + '/' + server_id,
+            url: url + '/' + server_id + '/changestate',
             data: ({state: 'Running'}),
             dataType: 'json',
             success: function (data) {
@@ -367,7 +368,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: url + '/' + server_id,
+            url: url + '/' + server_id+ '/changestate',
             data: ({state: 'Synced'}),
             dataType: 'json',
             success: function (data) {
@@ -404,7 +405,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: url + '/' + server_id,
+            url: url + '/' + server_id + '/changestate',
             data: ({state: 'NDB'}),
             dataType: 'json',
             success: function (data) {
@@ -441,7 +442,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: url + '/' + server_id,
+            url: url + '/' + server_id + '/changestate',
             data: ({state: 'Stale'}),
             dataType: 'json',
             success: function (data) {
@@ -478,7 +479,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: services_url + '/' + service_id,
+            url: services_url + '/' + service_id + '/changestate',
             data: ({type: 'stop'}),
             dataType: 'json',
             success: function (data) {
@@ -486,7 +487,7 @@ $(document).ready(function(){
 
                 var state = '<td id="state'+ data['data']['id'] + '">' + data['data']['attributes']['state'] + '</td>'
                 var action = '<td id="action'+ data['data']['id'] + '"><button class="btn btn-success btn-xs btn-detail start-service" value="' + data['data']['id'] + '">Start</button>';
-                action += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                action += '<button class="btn btn-info btn-xs btn-detail edit-service" value="' + data['data']['id'] + '">Edit</button>';
                 action += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td>';
 
                 $("#state" + service_id).replaceWith(state);
@@ -510,7 +511,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: services_url + '/' + service_id,
+            url: services_url + '/' + service_id + '/changestate',
             data: ({type: 'start'}),
             dataType: 'json',
             success: function (data) {
@@ -518,7 +519,7 @@ $(document).ready(function(){
 
                 var state = '<td id="state'+ data['data']['id'] + '">' + data['data']['attributes']['state'] + '</td>'
                 var action = '<td id="action'+ data['data']['id'] + '"><button class="btn btn-warning btn-xs btn-detail stop-service" value="' + data['data']['id'] + '">Stop</button>';
-                action += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                action += '<button class="btn btn-info btn-xs btn-detail edit-service" value="' + data['data']['id'] + '">Edit</button>';
                 action += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['data']['id'] + '">Delete</button></td>';
 
                 $("#state" + service_id).replaceWith(state);
@@ -553,14 +554,12 @@ $(document).ready(function(){
 
         var type = "POST"; //for creating new resource
         var service_id = $('#service_id').val();
-        var my_url = services_url + '/';
+        var my_url = services_url;
 
         if (state == "update"){
             type = "PUT"; //for updating existing resource
             my_url += '/' + service_id;
         }
-
-        console.log(formData);
 
         $.ajax({
 
@@ -587,6 +586,38 @@ $(document).ready(function(){
                 console.log('Error:', data);
                 $('#service').modal('hide');
                 //$('div.validation').html(data);
+            }
+        });
+    });
+
+    //display modal form for server editing
+    $('.edit-service').click(function(){
+        var service_id = $(this).val(); 
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "GET",
+            url: services_url + '/' + service_id + '/edit',
+            success: function (data) {
+                //console.log(jQuery.parseJSON(data));
+                var res = jQuery.parseJSON(data);
+                $('#service_id').val(res['data']['id']);
+                $('#service_type').val(res['data']['type']);
+                $('#service_module').val(res['data']['attributes']['router']);
+                $('#user').val(res['data']['attributes']['parameters']['user']);
+                $('#password').val(res['data']['attributes']['parameters']['password']);
+                $('#add-service').val("update");
+                document.getElementById("service_id").disabled = true;
+                $('#service').modal('show');
+            },
+            error: function (data) {
+                console.log('Error:', data);
             }
         });
     });

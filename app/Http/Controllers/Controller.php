@@ -60,6 +60,18 @@ class Controller extends BaseController
         return $res;
     }
 
+    function put_data($data, $location){
+        $setting = $this->get_api_info();
+        $client = new GuzzleHttp\Client();
+        $res = $client->patch($setting->api_url.$location, [
+            'headers'  => ['content-type' => 'application/json', 'Accept' => 'application/json'],
+            'auth' => [$setting->username, Crypt::decrypt($setting->password)], 
+            'verify' => false,
+            'body' => json_encode($data)
+        ]);
+        return $res;
+    }
+
     function get_api_info(){
         return DB::table('settings')
             ->select(DB::raw('id, api_url, username, password'))

@@ -24,10 +24,12 @@ Route::resource('/settings', 'SettingController');
 Route::put('/settings/{setting}/select', 'SettingController@select')->name('settings.select');
 
 Route::resource('/servers', 'ServerController');
+Route::put('/servers/{server}/changestate', 'ServerController@change_state')->name('servers.state');
 
 Route::resource('/services', 'ServiceController');
 Route::delete('/services/{service}/deletelistener', 'ServiceController@destroy_listener')->name('services.delete_listener');
 Route::post('/services/{service}/createlistener', 'ServiceController@create_listener')->name('services.create_listener');
+Route::put('/services/{service}/changestate', 'ServiceController@change_state')->name('services.state');
 
 Route::resource('/monitors', 'MonitorController');
 

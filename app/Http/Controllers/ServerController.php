@@ -160,17 +160,57 @@ class ServerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $server = $this->get_request('servers/'.$id);
-        $server = json_decode($server, true);
-        $state = $request->input('state');
-        $states = explode(',', trim($server['data']['attributes']['state']));
-        if(in_array($state, $states)){
-            $res = $this->put_request('servers/'.$id.'/clear?state='.$state);
+        $this->validate($request,[
+            'server_id' => 'required',
+            'address' => 'required',
+            'port' => 'required',
+            'protocol' => 'required',
+            'address' => 'required'
+            ]);
+
+        $services = explode(',', trim($request->input('services')));
+        
+        $relation_data = array();
+        for ($i = 0; $i < count($services); $i++){
+            $relation_data[$i]['id'] = $services[$i];
+            $relation_data[$i]['type'] = 'services';
+        }
+        #dd($relation_data);
+
+        if($services[0]==""){
+            $data = array(
+                'data' => [
+                'id' => $request->input('server_id'),
+                'type' => 'servers',
+                'attributes' => [
+                    'parameters' => [
+                        'address' => $request->input('address'),
+                        'port' => (int) $request->input('port'),
+                        'protocol' => $request->input('protocol')
+                    ]
+                ]
+                ]);
         }else{
-            $res = $this->put_request('servers/'.$id.'/set?state='.$state);
-        }  
-        sleep(1);
-        return $this->get_request('servers/'.$id);
+            $data = array(
+                'data' => [
+                'id' => $request->input('server_id'),
+                'type' => 'servers',
+                'attributes' => [
+                    'parameters' => [
+                        'address' => $request->input('address'),
+                        'port' => (int) $request->input('port'),
+                        'protocol' => $request->input('protocol')
+                    ]
+                ],
+                'relationships' => [
+                    'services' => [
+                        'data' => $relation_data
+                    ]
+                ]
+            ]);
+        }
+        $res = $this->put_data($data, 'servers/'.$id);
+        return $this->get_request('servers/'.$request->input('server_id'));
     }
 
     /**
@@ -185,6 +225,21 @@ class ServerController extends Controller
         $this->delete_request('servers/'.$id);
         Session::flash('success', 'Server deleted.');
         return View::make('flash-message');
+    }
+
+    public function change_state(Request $request, $id)
+    {
+        $server = $this->get_request('servers/'.$id);
+        $server = json_decode($server, true);
+        $state = $request->input('state');
+        $states = explode(',', trim($server['data']['attributes']['state']));
+        if(in_array($state, $states)){
+            $res = $this->put_request('servers/'.$id.'/clear');
+        }else{
+            $res = $this->put_request('servers/'.$id.'/set?state='.$state);
+        }  
+        sleep(1);
+        return $this->get_request('servers/'.$id);
     }
     
 }

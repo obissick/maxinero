@@ -122,7 +122,8 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $service = $this->get_request('services/'.$id);
+        return $service;
     }
 
     /**
@@ -134,9 +135,35 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $type = $request->input('type');
-        $this->put_request('services/'.$id.'/'.$type);
-        return $this->get_request('services/'.$id);
+        $this->validate($request,[
+            'service_id' => 'required',
+            'service_type' => 'required',
+            'module' => 'required',
+            'user' => 'required',
+            'password' => 'required'
+        ]);
+
+        $data = array(
+            'data' => [
+            'id' => $request->input('service_id'),
+            'type' => $request->input('service_type'),
+            'attributes' => [
+                'router' => $request->input('module'),
+                'parameters' => [
+                    'user' => $request->input('user'),
+                    'password' => $request->input('password')
+                ]
+            ]
+        ]);
+
+        try{
+            $res = $this->put_data($data, 'services/'.$id);
+            return $this->get_request('services/'.$request->input('service_id'));
+
+        }catch(\GuzzleHttp\Exception\ClientException $exception){
+            #return redirect('services')->with('error', $exception->getResponse()->getBody(true));
+            #return view('services.services')->with('error', $exception->getResponse()->getBody(true));
+        }
     }
 
     /**
@@ -198,5 +225,11 @@ class ServiceController extends Controller
             return response()->json([$type, $errmessage]);
         }
         
+    }
+
+    public function change_state(Request $request, $id){
+        $type = $request->input('type');
+        $this->put_request('services/'.$id.'/'.$type);
+        return $this->get_request('services/'.$id);
     }
 }

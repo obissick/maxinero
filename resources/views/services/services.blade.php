@@ -4,7 +4,7 @@
 <div class="container container-fluid">
     <div class="flash-message"></div>
     <h2>Services</h2>
-    <button id="addservice" name="add-service" class="btn btn-success btn-xs" data-toggle="modal" data-target="#service">Add Service</button>
+    <button id="addservice" name="addservice" class="btn btn-success btn-xs" data-toggle="modal" data-target="#service">Add Service</button>
     <div class="row">
         <div class="table-responsive">
             <!-- Table-to-load-the-data Part -->
@@ -35,7 +35,7 @@
                             @else
                                 <button class="btn btn-success btn-xs btn-detail start-service" value="{{$services['data'][$i]['id']}}">Start</button>
                             @endif
-                            <button class="btn btn-info btn-xs btn-detail open-modal" value="{{$services['data'][$i]['id']}}">Edit</button>
+                            <button class="btn btn-info btn-xs btn-detail edit-service" value="{{$services['data'][$i]['id']}}">Edit</button>
                             <button class="btn btn-danger btn-xs btn-delete delete-service" value="{{$services['data'][$i]['id']}}">Delete</button>
                         </td>
                     </tr>
@@ -82,7 +82,7 @@
                             @else
                                 <button class="btn btn-success btn-xs btn-detail start-monitor" value="{{$monitors['data'][$i]['id']}}">Start</button>
                             @endif
-                            <button class="btn btn-info btn-xs btn-detail open-modal" value="{{$monitors['data'][$i]['id']}}">Edit</button>
+                            <button class="btn btn-info btn-xs btn-detail edit-monitor" value="{{$monitors['data'][$i]['id']}}">Edit</button>
                             <button class="btn btn-danger btn-xs btn-delete delete-monitor" value="{{$monitors['data'][$i]['id']}}">Delete</button>
                         </td>
                     </tr>
