@@ -15,6 +15,7 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th>Name</th>
                                 <th>API URL</th>
                                 <th>Username</th>
                                 <th>Password</th>
@@ -24,6 +25,7 @@
                         <tbody id="configs-list" name="configs-list">
                             @foreach ($settings as $setting)
                             <tr id="setting{{$setting->id}}">
+                                <td>{{$setting->name}}</td>
                                 <td>{{$setting->api_url}}</td>
                                 <td>{{$setting->username}}</td>
                                 <td></td>
@@ -51,7 +53,13 @@
                                 <div class="modal-body">
                                     <form id="addapi" name="addapi" class="form-horizontal" method="POST" action="{{ route('settings.store') }}" novalidate="">
                                         {{ csrf_field() }}
-                                        <div class="form-group error">
+                                        <div class="form-group">
+                                            <label for="api_name" class="col-sm-3 control-label">Name</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control has-error" id="api_name" name="api_name" placeholder="" value="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="api_url" class="col-sm-3 control-label">API URL</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control has-error" id="api_url" name="api_url" placeholder="" value="">

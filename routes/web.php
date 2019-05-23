@@ -36,3 +36,4 @@ Route::resource('/monitors', 'MonitorController');
 Route::resource('/maxscale', 'MaxscaleController');
 
 Route::resource('/users', 'UserController');
+Route::resource('/profile', 'ProfileController');

@@ -20,14 +20,16 @@ class SettingController extends Controller
     public function index()
     {
         $settings = DB::table('settings')
-            ->select(DB::raw('id, api_url, username, password, selected'))
+            ->select(DB::raw('id, name, api_url, username, password, selected'))
             ->where('user_id', Auth::user()->id)->paginate(25);
         return view('setting.index', compact('settings'));
     }
 
     public function store(Request $request)
     {
+        //$this->validate_settings($request);
         $settings = new Setting([
+            'name' => $request->get('api_name'),
             'api_url' => $request->get('api_url'),
             'username' => $request->get('api_username'),
             'password' => Crypt::encrypt($request->get('api_password')),
@@ -47,7 +49,9 @@ class SettingController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->validate_settings($request);
         Setting::find($id)->update([
+            'name' => $request->get('api_name'),
             'api_url' => $request->get('api_url'),
             'username' => $request->get('api_username'),
             'password' => Crypt::encrypt($request->get('api_password')), 
@@ -78,5 +82,13 @@ class SettingController extends Controller
         Setting::find($id)->delete();
         Session::flash('success', 'MaxScale server deleted.');
         return View::make('flash-message');
+    }
+    public function validate_settings(Request $request){
+        return $this->validate($request,[
+            'api_name' => 'required',
+            'api_url' => 'required',
+            'api_username' => 'required',
+            'api_password' => 'required'
+        ]);
     }
 }

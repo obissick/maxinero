@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 
 <div class="container container-fluid">
     <div class="row">
@@ -14,7 +13,8 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <div class="numberCircle">{{$count}}</div>	
+                    <!--<div class="numberCircle">{{$count}}</div>-->	
+                    <div id="sessions_div" style="width: 400px; height: 200px;"></div>
                     <br />
                     <div class="table-responsive">
                     <table class="table table-striped table-bordered task-table">
@@ -62,7 +62,8 @@
 			<div class="panel panel-default">
 				<div class="panel-heading"># Threads</div>
 				<div class="panel-body">
-					<div class="numberCircle">{{$threads_count}}</div>	
+                    <!--<div class="numberCircle">{{$threads_count}}</div>-->
+                    <div id="threads_div" style="width: 400px; height: 200px;"></div>	
                     <br />
                     <div class="table-responsive">
                     <table class="table table-striped table-bordered task-table">
@@ -112,5 +113,46 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['gauge']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+    var data = google.visualization.arrayToDataTable([
+        ['Label', 'Value'],
+        ['Sessions', {{$count}}]
+    ]);
+
+    var options = {
+        minorTicks: 5
+    };
+
+    var chart = new google.visualization.Gauge(document.getElementById('sessions_div'));
+
+    chart.draw(data, options);
+    }
+</script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['gauge']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+    var data = google.visualization.arrayToDataTable([
+        ['Label', 'Value'],
+        ['Threads', {{$threads_count}}]
+    ]);
+
+    var options = {
+        minorTicks: 5
+    };
+
+    var chart = new google.visualization.Gauge(document.getElementById('threads_div'));
+
+    chart.draw(data, options);
+    }
+</script>
 @endsection
 

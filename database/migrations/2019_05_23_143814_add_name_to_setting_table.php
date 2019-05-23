@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSettingSelected extends Migration
+class AddNameToSettingTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddSettingSelected extends Migration
      */
     public function up()
     {
-        Schema::table('settings', function($table) {
-            $table->boolean('selected')->default(false);
+        Schema::table('settings', function (Blueprint $table) {
+            $table->string('name');
         });
     }
 
@@ -25,8 +25,8 @@ class AddSettingSelected extends Migration
      */
     public function down()
     {
-        Schema::table('settings', function($table) {
-            $table->dropColumn('selected');
+        Schema::table('settings', function (Blueprint $table) {
+            $table->dropColumn('name');
         });
     }
 }

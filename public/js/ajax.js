@@ -582,10 +582,8 @@ $(document).ready(function(){
 
                 $('#service').modal('hide');
             },
-            error: function (data) {
-                console.log('Error:', data);
-                $('#service').modal('hide');
-                //$('div.validation').html(data);
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);       
             }
         });
     });
@@ -713,8 +711,8 @@ $(document).ready(function(){
 
                 $('#listener').modal('hide')
             },
-            error: function (data) {
-                console.log('Error:', data);
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);       
             }
         });
     });
