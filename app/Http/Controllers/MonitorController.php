@@ -34,6 +34,7 @@ class MonitorController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate_monitor($request);
         $servers = explode(',', trim($request->input('servers')));
         
         $relation_data = array();
@@ -123,5 +124,14 @@ class MonitorController extends Controller
     {
         $id = preg_replace('#[ -]+#', '-', $id);
         $this->delete_request('monitors/'.$id);
+    }
+
+    public function validate_monitor(Request $request){
+        return $this->validate($request,[
+            'monitor_id' => 'required',
+            'monitor_type' => 'required',
+            'module' => 'required',
+            'monitor_interval' => 'required'
+        ]);
     }
 }

@@ -27,7 +27,7 @@ class SettingController extends Controller
 
     public function store(Request $request)
     {
-        //$this->validate_settings($request);
+        $this->validate_settings($request);
         $settings = new Setting([
             'name' => $request->get('api_name'),
             'api_url' => $request->get('api_url'),

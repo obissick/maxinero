@@ -95,9 +95,9 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
+                <div class="title m-b-md container-fluid">
                     <!--MaxiNero-->
-                    <img src="{{ asset('img/logo.png') }} " height="320" width="840"/>
+                    <img class="visible-md" src="{{ asset('img/logo.png') }} " height="320" width="840" alt="maxinero, maxscale, load balancer, mysql, mariadb"/>
                 </div>
 
                 <div class="links">

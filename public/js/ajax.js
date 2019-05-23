@@ -202,8 +202,8 @@ $(document).ready(function(){
 
                 $('#monitor').modal('hide')
             },
-            error: function (data) {
-                console.log('Error:', data);
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);       
             }
         });
     });
