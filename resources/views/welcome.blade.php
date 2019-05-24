@@ -94,16 +94,22 @@
                 </div>
             @endif
 
-            <div class="content">
-                <div class="title m-b-md container-fluid">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-4">
                     <!--MaxiNero-->
-                    <img class="visible-md" src="{{ asset('img/logo.png') }} " height="320" width="840" alt="maxinero, maxscale, load balancer, mysql, mariadb"/>
+                    
                 </div>
-
+    
                 <div class="links">
                    <!-- <a href="">Documentation</a>-->
                 </div>
             </div>
+            <div class="jumbotron">
+                <div class="container">
+                    <img class="img-fluid" src="{{ asset('img/logo.png') }} " height="320" width="840" alt="maxinero, maxscale, load balancer, mysql, mariadb"/>
+                </div>
+              </div>
         </div>
+        
     </body>
 </html>

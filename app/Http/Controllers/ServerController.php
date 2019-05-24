@@ -16,10 +16,12 @@ use App\ServiceStats;
 
 class ServerController extends Controller
 {
-    
+    public $guzzle;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->guzzle = \App::make('App\Http\Controllers\GuzzleController');
     }
     
     /**
@@ -30,7 +32,7 @@ class ServerController extends Controller
     public function index()
     {
         try{
-            $maxserver = $this->get_api_info();
+            $maxserver = $this->guzzle->get_api_info();
             $server_stat = DB::table('server_stats')
                 ->select(DB::raw('created_at, sum(connections) AS sum, sum(active_operations) AS sum_ops'))
                 ->where('setting_id', $maxserver->id)
@@ -43,7 +45,7 @@ class ServerController extends Controller
             $sum_conn = array_column($server_stat, 'sum');
             $sum_ops = array_column($server_stat, 'sum_ops');
             
-            $servers = json_decode($this->get_request('servers'), true);
+            $servers = json_decode($this->guzzle->get_request('servers'), true);
             return view('servers.servers', compact('servers'))
                 ->with('times',json_encode($times,JSON_NUMERIC_CHECK))
                 ->with('sum_conn',json_encode($sum_conn,JSON_NUMERIC_CHECK))
@@ -121,8 +123,8 @@ class ServerController extends Controller
                 ]
             ]);
         }
-        $res = $this->post_request($data, 'servers');
-        return $this->get_request('servers/'.$request->input('server_id'));
+        $res = $this->guzzle->post_request($data, 'servers');
+        return $this->guzzle->get_request('servers/'.$request->input('server_id'));
         
     }
 
@@ -134,7 +136,7 @@ class ServerController extends Controller
      */
     public function show($id)
     {
-        $server = json_decode($this->get_request('servers/'.$id), true);
+        $server = json_decode($this->guzzle->get_request('servers/'.$id), true);
         //dd(json_decode($server));
         return view('servers.serverdetail', compact('server'));
     }
@@ -147,7 +149,7 @@ class ServerController extends Controller
      */
     public function edit($id)
     {
-        $server = $this->get_request('servers/'.$id);
+        $server = $this->guzzle->get_request('servers/'.$id);
         return $server;
     }
 
@@ -209,8 +211,8 @@ class ServerController extends Controller
                 ]
             ]);
         }
-        $res = $this->put_data($data, 'servers/'.$id);
-        return $this->get_request('servers/'.$request->input('server_id'));
+        $res = $this->guzzle->put_data($data, 'servers/'.$id);
+        return $this->guzzle->get_request('servers/'.$request->input('server_id'));
     }
 
     /**
@@ -222,24 +224,24 @@ class ServerController extends Controller
     public function destroy($id)
     {
         $id = preg_replace('#[ -]+#', '-', $id);
-        $this->delete_request('servers/'.$id);
+        $this->guzzle->delete_request('servers/'.$id);
         Session::flash('success', 'Server deleted.');
         return View::make('flash-message');
     }
 
     public function change_state(Request $request, $id)
     {
-        $server = $this->get_request('servers/'.$id);
+        $server = $this->guzzle->get_request('servers/'.$id);
         $server = json_decode($server, true);
         $state = $request->input('state');
         $states = explode(',', trim($server['data']['attributes']['state']));
         if(in_array($state, $states)){
-            $res = $this->put_request('servers/'.$id.'/clear');
+            $res = $this->guzzle->put_request('servers/'.$id.'/clear');
         }else{
-            $res = $this->put_request('servers/'.$id.'/set?state='.$state);
+            $res = $this->guzzle->put_request('servers/'.$id.'/set?state='.$state);
         }  
         sleep(1);
-        return $this->get_request('servers/'.$id);
+        return $this->guzzle->get_request('servers/'.$id);
     }
     
 }

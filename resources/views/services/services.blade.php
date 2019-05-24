@@ -130,6 +130,18 @@
                                     </div>
                             </div>
                             <div class="form-group">
+                                <label for="monuser" class="col-sm-3 control-label">Monitor User</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="monuser" name="monuser" placeholder="user" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="monpass" class="col-sm-3 control-label">Monitor User</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" id="monpass" name="monpass" placeholder="password" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
                                     <label for="port" class="col-sm-3 control-label">Servers</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="servers" name="servers" placeholder="Separate by comma" value="">

@@ -5,6 +5,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="flash-message"></div>
+            @include('flash-message')
             <div class="panel panel-default">
                 <h2>MaxScale Servers</h2>
                 <button id="addmaxscale" name="add-maxscale" class="btn btn-success btn-xs" data-toggle="modal" data-target="#config">Add</button>

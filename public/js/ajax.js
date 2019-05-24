@@ -157,6 +157,8 @@ $(document).ready(function(){
             monitor_type: $('#monitor_type').val(),
             module: $('#module').val(),
             monitor_interval: $('#monitor_interval').val(),
+            user: $('#monuser').val(),
+            password: $('#monpass').val(),
             servers: $('#servers').val(),
         }
 
@@ -183,8 +185,10 @@ $(document).ready(function(){
             success: function (data) {
 
                 var servers = "";
-                for(i = 0; i < data['data']['relationships']['servers']['data'].length; i++){
-                    servers+= data['data']['relationships']['servers']['data'][i]['id'] + " "
+                if(data['data']['relationships']['servers']){
+                    for(i = 0; i < data['data']['relationships']['servers']['data'].length; i++){
+                        servers+= data['data']['relationships']['servers']['data'][i]['id'] + " "
+                    }
                 }
                 var monitor = '<tr id="monitor' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['module'] + '</td><td>' + data['data']['attributes']['state']+ '</td><td>' + servers + '</td>';
                 monitor += '<td><button class="btn btn-success btn-xs btn-detail start-monitor" value="' + data['data']['id'] + '">Start</button>';
@@ -200,10 +204,49 @@ $(document).ready(function(){
 
                 $('#addmonitor').trigger("reset");
 
-                $('#monitor').modal('hide')
+                $('#monitor').modal('hide');
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.responseText);       
+            }
+        });
+    });
+
+    //display modal form for server editing
+    $('.edit-monitor').click(function(){
+        var monitor_id = $(this).val(); 
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "GET",
+            url: monitors_url + '/' + monitor_id + '/edit',
+            success: function (data) {
+                //console.log(jQuery.parseJSON(data));
+                var res = jQuery.parseJSON(data);
+                var servers_list = res['data']['relationships']['servers']['data'];
+                var servers_string = [];
+                jQuery.each(servers_list, function(key, value){
+                    servers_string.push(value['id']);                  
+                });
+                $('#monitor_id').val(res['data']['id']);
+                $('#monitor_type').val(res['data']['type']);
+                $('#module').val(res['data']['attributes']['module']);
+                $('#monitor_interval').val(res['data']['attributes']['parameters']['monitor_interval']);
+                $('#monuser').val(res['data']['attributes']['parameters']['user']);
+                $('#monpass').val(res['data']['attributes']['parameters']['password']);
+                $('#servers').val(servers_string.join(','));
+                $('#add-mon').val("update");
+                document.getElementById("monitor_id").disabled = true;
+                $('#monitor').modal('show');
+            },
+            error: function (data) {
+                console.log('Error:', data);
             }
         });
     });
@@ -791,14 +834,16 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: monitors_url + '/' + monitor_id,
+            url: monitors_url + '/' + monitor_id + "/changestate",
             data: ({type: 'stop'}),
             dataType: 'json',
             success: function (data) {
                 console.log(data);
                 var servers = "";
-                for(i = 0; i < data['data']['relationships']['servers']['data'].length; i++){
-                    servers+= data['data']['relationships']['servers']['data'][i]['id'] + " "
+                if(data['data']['relationships']['servers']){
+                    for(i = 0; i < data['data']['relationships']['servers']['data'].length; i++){
+                        servers+= data['data']['relationships']['servers']['data'][i]['id'] + " "
+                    }
                 }
                 var monitor = '<tr id="monitor' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['module'] + '</td><td>' + data['data']['attributes']['state']+ '</td><td>' + servers + '</td>';
                 monitor += '<td><button class="btn btn-success btn-xs btn-detail start-monitor" value="' + data['data']['id'] + '">Start</button>';
@@ -825,14 +870,16 @@ $(document).ready(function(){
         $.ajax({
 
             type: "PUT",
-            url: monitors_url + '/' + monitor_id,
+            url: monitors_url + '/' + monitor_id + '/changestate',
             data: ({type: 'start'}),
             dataType: 'json',
             success: function (data) {
                 console.log(data);
                 var servers = "";
-                for(i = 0; i < data['data']['relationships']['servers']['data'].length; i++){
-                    servers+= data['data']['relationships']['servers']['data'][i]['id'] + " "
+                if(data['data']['relationships']['servers']){
+                    for(i = 0; i < data['data']['relationships']['servers']['data'].length; i++){
+                        servers+= data['data']['relationships']['servers']['data'][i]['id'] + " "
+                    }
                 }
 
                 var monitor = '<tr id="monitor' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['module'] + '</td><td>' + data['data']['attributes']['state']+ '</td><td>' + servers + '</td>';

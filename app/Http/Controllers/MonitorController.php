@@ -6,6 +6,13 @@ use Illuminate\Http\Request;
 
 class MonitorController extends Controller
 {
+    public $guzzle;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->guzzle = \App::make('App\Http\Controllers\GuzzleController');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -35,47 +42,9 @@ class MonitorController extends Controller
     public function store(Request $request)
     {
         $this->validate_monitor($request);
-        $servers = explode(',', trim($request->input('servers')));
-        
-        $relation_data = array();
-        for ($i = 0; $i < count($servers); $i++){
-            $relation_data[$i]['id'] = $servers[$i];
-            $relation_data[$i]['type'] = 'servers';
-        }
-        #dd($relation_data);
-
-        if($servers[0]==""){
-            $data = array(
-                'data' => [
-                'id' => $request->input('monitor_id'),
-                'type' => $request->input('monitor_type'),
-                'attributes' => [
-                    'module' => $request->input('module'),
-                    'parameters' => [
-                        'monitor_interval' => (int) $request->input('monitor_interval')
-                    ]
-                ]
-                ]);
-        }else{
-            $data = array(
-                'data' => [
-                    'id' => $request->input('monitor_id'),
-                    'type' => $request->input('monitor_type'),
-                    'attributes' => [
-                        'module' => $request->input('module'),
-                        'parameters' => [
-                            'monitor_interval' => (int) $request->input('monitor_interval')
-                        ]
-                    ],
-                'relationships' => [
-                    'servers' => [
-                        'data' => $relation_data
-                    ]
-                ]
-            ]);
-        }
-        $res = $this->post_request($data, 'monitors');
-        return $this->get_request('monitors/'.$request->input('monitor_id'));
+        $data = $this->prep_data($request);
+        $res = $this->guzzle->post_request($data, 'monitors');
+        return $this->guzzle->get_request('monitors/'.$request->input('monitor_id'));
     }
 
     /**
@@ -97,7 +66,8 @@ class MonitorController extends Controller
      */
     public function edit($id)
     {
-        //
+        $monitor = $this->guzzle->get_request('monitors/'.$id);
+        return $monitor;
     }
 
     /**
@@ -109,9 +79,10 @@ class MonitorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $type = $request->input('type');
-        $this->put_request('monitors/'.$id.'/'.$type);
-        return $this->get_request('monitors/'.$id);
+        $this->validate_monitor($request);
+        $data = $this->prep_data($request);
+        $res = $this->guzzle->put_data($data, 'monitors/'.$id);
+        return $this->guzzle->get_request('monitors/'.$request->input('monitor_id'));
     }
 
     /**
@@ -123,7 +94,7 @@ class MonitorController extends Controller
     public function destroy($id)
     {
         $id = preg_replace('#[ -]+#', '-', $id);
-        $this->delete_request('monitors/'.$id);
+        $this->guzzle->delete_request('monitors/'.$id);
     }
 
     public function validate_monitor(Request $request){
@@ -133,5 +104,57 @@ class MonitorController extends Controller
             'module' => 'required',
             'monitor_interval' => 'required'
         ]);
+    }
+
+    public function change_state(Request $request, $id){
+        $type = $request->input('type');
+        $this->guzzle->put_request('monitors/'.$id.'/'.$type);
+        return $this->guzzle->get_request('monitors/'.$id);
+    }
+
+    public function prep_data(Request $request){
+        $servers = explode(',', trim($request->input('servers')));
+        
+        $relation_data = array();
+        for ($i = 0; $i < count($servers); $i++){
+            $relation_data[$i]['id'] = $servers[$i];
+            $relation_data[$i]['type'] = 'servers';
+        }
+
+        if($servers[0]==""){
+            $data = array(
+                'data' => [
+                'id' => $request->input('monitor_id'),
+                'type' => $request->input('monitor_type'),
+                'attributes' => [
+                    'module' => $request->input('module'),
+                    'parameters' => [
+                        'monitor_interval' => (int) $request->input('monitor_interval'),
+                        'user' => $request->input('user'),
+                        'password' => $request->input('password')
+                    ]
+                ]
+                ]);
+        }else{
+            $data = array(
+                'data' => [
+                    'id' => $request->input('monitor_id'),
+                    'type' => $request->input('monitor_type'),
+                    'attributes' => [
+                        'module' => $request->input('module'),
+                        'parameters' => [
+                            'monitor_interval' => (int) $request->input('monitor_interval'),
+                            'user' => $request->input('monuser'),
+                            'password' => $request->input('monpass')
+                        ]
+                    ],
+                'relationships' => [
+                    'servers' => [
+                        'data' => $relation_data
+                    ]
+                ]
+            ]);
+        }
+        return $data;
     }
 }

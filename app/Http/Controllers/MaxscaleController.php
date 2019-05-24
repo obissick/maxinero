@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 
 class MaxscaleController extends Controller
 {
+    public $guzzle;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->guzzle = \App::make('App\Http\Controllers\GuzzleController');
     }
     /**
      * Display a listing of the resource.
@@ -18,8 +21,7 @@ class MaxscaleController extends Controller
     public function index()
     {
         try{
-            
-            $maxscale = json_decode($this->get_request('maxscale'), true);
+            $maxscale = json_decode($this->guzzle->get_request('maxscale'), true);
             return view('maxinfo', compact('maxscale'));
             
         } catch(\GuzzleHttp\Exception\ConnectException $exception){

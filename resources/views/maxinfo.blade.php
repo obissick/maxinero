@@ -8,7 +8,7 @@
         <div class="table-responsive">
                 
             <!-- Table-to-load-the-data Part -->
-            <table class="table table-borderless">
+            <table class="table table-borderless table-sm">
                 <tr>
                     <th>Version</th>
                     <td>{{$maxscale['data']['attributes']['version']}}</td>

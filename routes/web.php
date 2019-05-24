@@ -30,6 +30,7 @@ Route::resource('/services', 'ServiceController');
 Route::delete('/services/{service}/deletelistener', 'ServiceController@destroy_listener')->name('services.delete_listener');
 Route::post('/services/{service}/createlistener', 'ServiceController@create_listener')->name('services.create_listener');
 Route::put('/services/{service}/changestate', 'ServiceController@change_state')->name('services.state');
+Route::put('/monitors/{monitor}/changestate', 'MonitorController@change_state')->name('monitors.state');
 
 Route::resource('/monitors', 'MonitorController');
 

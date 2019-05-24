@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
+    public $guzzle; 
 
     public function __construct()
     {
         $this->middleware('auth');
+        $this->guzzle = \App::make('App\Http\Controllers\GuzzleController');
     }
 
     /**
@@ -23,8 +25,8 @@ class ServiceController extends Controller
     {
         try{
             
-            $services = json_decode($this->get_request('services'), true);
-            $monitors = json_decode($this->get_request('monitors'), true);
+            $services = json_decode($this->guzzle->get_request('services'), true);
+            $monitors = json_decode($this->guzzle->get_request('monitors'), true);
             return view('services.services', compact('services', 'monitors'));
             
         } catch(\GuzzleHttp\Exception\ConnectException $exception){
@@ -72,8 +74,8 @@ class ServiceController extends Controller
         ]);
 
         try{
-            $res = $this->post_request($data, 'services/');
-            return $this->get_request('services/'.$request->input('service_id'));
+            $res = $this->guzzle->post_request($data, 'services/');
+            return $this->guzzle->get_request('services/'.$request->input('service_id'));
 
         }catch(\GuzzleHttp\Exception\ClientException $exception){
             return redirect('services')->with('error', $exception->getResponse()->getBody(true));
@@ -89,7 +91,7 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $maxserver = $this->get_api_info();
+        $maxserver = $this->guzzle->get_api_info();
         $service_stat = DB::table('service_stats')
             ->select(DB::raw('created_at, avg(connections) AS avg'))
             ->where('setting_id', $maxserver->id)
@@ -103,9 +105,9 @@ class ServiceController extends Controller
         $times = array_column($service_stat, 'created_at');
         $avg_ctime = array_column($service_stat, 'avg');
 
-        if($this->get_api_info()){
-            $service = json_decode($this->get_request('services/'.$id), true);
-            $listeners = json_decode($this->get_request('services/'.$id.'/listeners'), true);
+        if($this->guzzle->get_api_info()){
+            $service = json_decode($this->guzzle->get_request('services/'.$id), true);
+            $listeners = json_decode($this->guzzle->get_request('services/'.$id.'/listeners'), true);
             return view('services.servicedetail', compact('service', 'listeners'))
                 ->with('times',json_encode($times,JSON_NUMERIC_CHECK))
                 ->with('avg_ctime',json_encode($avg_ctime,JSON_NUMERIC_CHECK));
@@ -122,7 +124,7 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        $service = $this->get_request('services/'.$id);
+        $service = $this->guzzle->get_request('services/'.$id);
         return $service;
     }
 
@@ -157,8 +159,8 @@ class ServiceController extends Controller
         ]);
 
         try{
-            $res = $this->put_data($data, 'services/'.$id);
-            return $this->get_request('services/'.$request->input('service_id'));
+            $res = $this->guzzle->put_data($data, 'services/'.$id);
+            return $this->guzzle->get_request('services/'.$request->input('service_id'));
 
         }catch(\GuzzleHttp\Exception\ClientException $exception){
             #return redirect('services')->with('error', $exception->getResponse()->getBody(true));
@@ -176,7 +178,7 @@ class ServiceController extends Controller
     {
         //$service = $request->input('service');
         $id = preg_replace('#[ -]+#', '-', $id);
-        $this->delete_request('services/'.$id);
+        $this->guzzle->delete_request('services/'.$id);
     }
     public function create_listener(Request $request, $id)
     {
@@ -203,8 +205,8 @@ class ServiceController extends Controller
         if(!empty($request->input('ssl_version'))) $data['data']['attributes']['parameters']['ssl_version'] = $request->input('ssl_version');
         if(!empty($request->input('ssl_depth'))) $data['data']['attributes']['parameters']['ssl_cert_verify_depth'] = $request->input('ssl_depth');
 
-        $res = $this->post_request($data, 'services/'.$id.'/listeners');
-        return $this->get_request('services/'.$id.'/listeners'.'/'.$listener);
+        $res = $this->guzzle->post_request($data, 'services/'.$id.'/listeners');
+        return $this->guzzle->get_request('services/'.$id.'/listeners'.'/'.$listener);
         
     }
     public function destroy_listener(Request $request, $id)
@@ -212,7 +214,7 @@ class ServiceController extends Controller
         try{
             $listener = $request->input('listener');
             $id = preg_replace('#[ -]+#', '-', $id);
-            $this->delete_request('services/'.$id.'/listeners'.'/'.$listener);
+            $this->guzzle->delete_request('services/'.$id.'/listeners'.'/'.$listener);
         } catch(\GuzzleHttp\Exception\ClientException $exception){
             $pos = strpos($exception->getMessage(),"was not created at runtime");
             if($pos === false) {
@@ -229,7 +231,7 @@ class ServiceController extends Controller
 
     public function change_state(Request $request, $id){
         $type = $request->input('type');
-        $this->put_request('services/'.$id.'/'.$type);
-        return $this->get_request('services/'.$id);
+        $this->guzzle->put_request('services/'.$id.'/'.$type);
+        return $this->guzzle->get_request('services/'.$id);
     }
 }

@@ -8,10 +8,12 @@ use View;
 
 class UserController extends Controller
 {
+    public $guzzle;
 
     public function __construct()
     {
         $this->middleware('auth');
+        $this->guzzle = \App::make('App\Http\Controllers\GuzzleController');
     }
     /**
      * Display a listing of the resource.
@@ -22,7 +24,7 @@ class UserController extends Controller
     {
         try{
             
-            $users = json_decode($this->get_request('users'), true);
+            $users = json_decode($this->guzzle->get_request('users'), true);
             return view('users.users', compact('users'));
             
         } catch(\GuzzleHttp\Exception\ConnectException $exception){
@@ -55,8 +57,8 @@ class UserController extends Controller
 
         ]);
 
-        $res = $this->post_request($data, 'users/inet');
-        return $this->get_request('users/inet/'.$request->input('user_id'));
+        $res = $this->guzzle->post_request($data, 'users/inet');
+        return $this->guzzle->get_request('users/inet/'.$request->input('user_id'));
     }
 
     /**
@@ -68,11 +70,11 @@ class UserController extends Controller
     public function destroy(Request $request, $id)
     {
         if($request->input('type')== 'delete-user'){
-            $this->delete_request('users/inet/'.$id);
+            $this->guzzle->delete_request('users/inet/'.$id);
             Session::flash('success', 'User deleted.');
             return View::make('flash-message');
         }elseif($request->input('type')== 'disable-user'){
-            $this->delete_request('users/unix/'.$id);
+            $this->guzzle->delete_request('users/unix/'.$id);
             Session::flash('success', 'User disabled.');
             return View::make('flash-message');
         }
