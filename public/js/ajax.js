@@ -213,7 +213,7 @@ $(document).ready(function(){
     });
 
     //display modal form for server editing
-    $('.edit-monitor').click(function(){
+    $('.table').on('click', '.edit-monitor', function(){
         var monitor_id = $(this).val(); 
 
         $.ajaxSetup({
@@ -227,13 +227,15 @@ $(document).ready(function(){
             type: "GET",
             url: monitors_url + '/' + monitor_id + '/edit',
             success: function (data) {
-                //console.log(jQuery.parseJSON(data));
+                console.log(jQuery.parseJSON(data));
                 var res = jQuery.parseJSON(data);
-                var servers_list = res['data']['relationships']['servers']['data'];
                 var servers_string = [];
-                jQuery.each(servers_list, function(key, value){
-                    servers_string.push(value['id']);                  
-                });
+                if(res['data']['relationships']['servers']){
+                    var servers_list = res['data']['relationships']['servers']['data'];
+                    jQuery.each(servers_list, function(key, value){
+                        servers_string.push(value['id']);                  
+                    });
+                }
                 $('#monitor_id').val(res['data']['id']);
                 $('#monitor_type').val(res['data']['type']);
                 $('#module').val(res['data']['attributes']['module']);
@@ -847,7 +849,7 @@ $(document).ready(function(){
                 }
                 var monitor = '<tr id="monitor' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['module'] + '</td><td>' + data['data']['attributes']['state']+ '</td><td>' + servers + '</td>';
                 monitor += '<td><button class="btn btn-success btn-xs btn-detail start-monitor" value="' + data['data']['id'] + '">Start</button>';
-                monitor += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                monitor += '<button class="btn btn-info btn-xs btn-detail edit-monitor" value="' + data['data']['id'] + '">Edit</button>';
                 monitor += '<button class="btn btn-danger btn-xs btn-delete delete-monitor" value="' + data['data']['id'] + '">Delete</button></td></tr>';
 
                 $("#monitor" + monitor_id).replaceWith(monitor);
@@ -884,7 +886,7 @@ $(document).ready(function(){
 
                 var monitor = '<tr id="monitor' + data['data']['id'] + '"><td>' + data['data']['id'] + '</td><td>' + data['data']['type'] + '</td><td>' + data['data']['attributes']['module'] + '</td><td>' + data['data']['attributes']['state']+ '</td><td>' + servers + '</td>';
                 monitor += '<td><button class="btn btn-warning btn-xs btn-detail stop-monitor" value="' + data['data']['id'] + '">Stop</button>';
-                monitor += '<button class="btn btn-info btn-xs btn-detail open-modal" value="' + data['data']['id'] + '">Edit</button>';
+                monitor += '<button class="btn btn-info btn-xs btn-detail edit-monitor" value="' + data['data']['id'] + '">Edit</button>';
                 monitor += '<button class="btn btn-danger btn-xs btn-delete delete-monitor" value="' + data['data']['id'] + '">Delete</button></td></tr>';
 
                 $("#monitor" + monitor_id).replaceWith(monitor);

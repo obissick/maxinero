@@ -77,7 +77,8 @@ class ProcessStats implements ShouldQueue
         $client = new GuzzleHttp\Client();
         $res = $client->request('GET', $server->api_url.$location, [
             'auth' => [$server->username, Crypt::decrypt($server->password)], 
-            'verify' => false
+            'verify' => false,
+            'timeout' => 1.00
         ]);
         return $res->getBody()->getContents();
     }
