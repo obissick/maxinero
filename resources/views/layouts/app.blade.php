@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140958660-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140958660-1');
+    </script>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +39,7 @@
         }
         footer {
             position: absolute;
-            bottom: 0;
+            /*bottom: 0;*/
             width: 100%;
         }
     </style>
@@ -84,6 +94,7 @@
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="">Profile</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -114,6 +125,24 @@
         }, 4000);
     </script>
     <script src="{{asset('js/ajax.js')}}"></script>
+    <!-- Frame Modal Bottom -->
+    <div class="modal fade bottom" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!-- Add class .modal-frame and then add class .modal-bottom (or other classes from list above) to set a position to the modal -->
+        <div class="modal-dialog modal-frame modal-bottom" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center">
+
+                    <p class="pt-3 pr-2" id="errormodal">
+                    </p>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Frame Modal Bottom -->
 </body>
 
 <!-- Footer -->

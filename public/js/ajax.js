@@ -137,7 +137,7 @@ $(document).ready(function(){
                 $('#server').modal('hide')
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.responseText);       
+                alert(xhr.responseText);   
             }
         });
     });
@@ -1044,6 +1044,39 @@ $(document).ready(function(){
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.responseText);
                 
+            }
+        });
+    });
+
+    $('.table').on('click', '.edit-maxscale', function(){
+        var setting_id = $(this).val(); 
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "GET",
+            url: settings_url + '/' + setting_id + '/edit',
+            success: function (data) {
+                console.log(jQuery.parseJSON(data));
+                var res = jQuery.parseJSON(data);
+                $('#monitor_id').val(res['data']['id']);
+                $('#monitor_type').val(res['data']['type']);
+                $('#module').val(res['data']['attributes']['module']);
+                $('#monitor_interval').val(res['data']['attributes']['parameters']['monitor_interval']);
+                $('#monuser').val(res['data']['attributes']['parameters']['user']);
+                $('#monpass').val(res['data']['attributes']['parameters']['password']);
+                $('#servers').val(servers_string.join(','));
+                $('#add-mon').val("update");
+                document.getElementById("monitor_id").disabled = true;
+                $('#monitor').modal('show');
+            },
+            error: function (data) {
+                console.log('Error:', data);
             }
         });
     });

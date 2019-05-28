@@ -43,8 +43,8 @@ class SettingController extends Controller
 
     public function edit($id)
     {
-        $setting = Setting::find($id);
-        return view('setting.index', compact('setting'));
+        $settings = Setting::find($id);
+        return $settings;
     }
 
     public function update(Request $request, $id)

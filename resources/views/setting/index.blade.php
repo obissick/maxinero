@@ -35,9 +35,10 @@
                                           
                                     @else
                                         <button class="btn btn-success btn-xs btn-detail select" value="{{$setting->id}}">Select</button>
+                                        <button class="btn btn-danger btn-xs btn-delete delete-maxscale" value="{{$setting->id}}">Delete</button>
                                     @endif
-                                    <button class="btn btn-info btn-xs btn-detail edit-maxscale" value="{{$setting->id}}">Edit</button>
-                                    <button class="btn btn-danger btn-xs btn-delete delete-maxscale" value="{{$setting->id}}">Delete</button>
+                                    <!--<button class="btn btn-info btn-xs btn-detail edit-maxscale" value="{{$setting->id}}">Edit</button>-->
+                                    
                                 </td>
                             </tr>
                             @endforeach
