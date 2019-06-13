@@ -22,10 +22,26 @@ $(document).ready(function(){
             success: function (data) {
                 //console.log(jQuery.parseJSON(data));
                 var res = jQuery.parseJSON(data);
+                var services_string = [];
+                var monitors_string = [];
+                if(res['data']['relationships']['services']){
+                    var services_list = res['data']['relationships']['services']['data'];
+                    jQuery.each(services_list, function(key, value){
+                        services_string.push(value['id']);                  
+                    });
+                }
+                if(res['data']['relationships']['monitors']){
+                    var monitors_list = res['data']['relationships']['monitors']['data'];
+                    jQuery.each(monitors_list, function(key, value){
+                        monitors_string.push(value['id']);                  
+                    });
+                }
                 $('#server_id').val(res['data']['id']);
                 $('#address').val(res['data']['attributes']['parameters']['address']);
                 $('#port').val(res['data']['attributes']['parameters']['port']);
                 $('#protocol').val(res['data']['attributes']['parameters']['protocol']);
+                $('#services').val(services_string.join(','));
+                $('#monitors').val(monitors_string.join(','));
                 $('#btn-save').val("update");
                 document.getElementById("server_id").disabled = true;
 
@@ -1074,6 +1090,27 @@ $(document).ready(function(){
                 $('#add-mon').val("update");
                 document.getElementById("monitor_id").disabled = true;
                 $('#monitor').modal('show');
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    $("#flush").click(function (e) {
+
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }     
+          });
+
+        $.ajax({
+
+            type: "POST",
+            url:  '/maxscale/flushlog' ,
+            success: function (data) {
+                $('#favoritesModal').modal('hide');
             },
             error: function (data) {
                 console.log('Error:', data);

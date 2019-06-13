@@ -35,6 +35,7 @@ Route::put('/monitors/{monitor}/changestate', 'MonitorController@change_state')-
 Route::resource('/monitors', 'MonitorController');
 
 Route::resource('/maxscale', 'MaxscaleController');
+Route::post('/maxscale/flushlog', 'MaxscaleController@flush_log')->name('maxscale.flush_log');
 
 Route::resource('/users', 'UserController');
 Route::resource('/profile', 'ProfileController');

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Session;
+use View;
+use Redirect;
 
 class MaxscaleController extends Controller
 {
@@ -22,7 +25,8 @@ class MaxscaleController extends Controller
     {
         try{
             $maxscale = json_decode($this->guzzle->get_request('maxscale'), true);
-            return view('maxinfo', compact('maxscale'));
+            $log = $this->guzzle->get_request('maxscale/logs');
+            return view('maxinfo', compact('maxscale','log'));
             
         } catch(\GuzzleHttp\Exception\ConnectException $exception){
             return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
@@ -83,6 +87,25 @@ class MaxscaleController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function flush_log(Request $request)
+    {
+        try{
+            $this->guzzle->post_request([],'maxscale/logs/flush');
+            
+        } catch(\GuzzleHttp\Exception\ConnectException $exception){
+            return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
+        } catch(\GuzzleHttp\Exception\RequestException $exception){
+            return redirect('maxscale')->with('error', $exception->getMessage());
+        }
     }
 
     /**
