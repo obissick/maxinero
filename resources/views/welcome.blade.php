@@ -108,8 +108,30 @@
                 <div class="container">
                     <img class="img-fluid" src="{{ asset('img/logo.png') }} " height="320" width="840" alt="maxinero, maxscale, load balancer, mysql, mariadb"/>
                 </div>
-              </div>
+            </div>
+            <section class="bg-primary" id="about">
+                <div class="container">
+                    <div class="row">
+                    <div class="col-lg-8 mx-auto text-center">
+                        <h2 class="section-heading text-white">We've got what you need!</h2>
+                        <hr class="light my-4">
+                        <p class="text-faded mb-4">Maxinero utilizes the API already provided by Maxscale to allow easy integration. Just provide Maxinero with your API endpoint and credentials and Maxinero will do the rest. With Maxinero, users can manage database servers, services, listeners, monitors, etc.</p>
+                        <a class="btn btn-light btn-xl js-scroll-trigger" href="{{ route('register') }}">Get Started!</a>
+                    </div>
+                    </div>
+                </div>
+            </section>
         </div>
         
     </body>
+    <!-- Footer -->
+    <footer class="page-footer font-small">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">© 2019 Copyright:
+            <a href="https://www.maxinero.com">maxinero.com</a>
+        </div>
+        <!-- Copyright -->
+        
+    </footer>
+    <!-- Footer -->
 </html>

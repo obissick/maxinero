@@ -36,7 +36,7 @@ class ServerController extends Controller
             $server_stat = DB::table('server_stats')
                 ->select(DB::raw('created_at, sum(connections) AS sum, sum(active_operations) AS sum_ops'))
                 ->where('setting_id', $maxserver->id)
-                ->whereRaw('created_at > (CONVERT_TZ( NOW(), @@session.time_zone, \'+00:00\') - INTERVAL 30 MINUTE)')
+                ->whereRaw('created_at > (CONVERT_TZ( NOW(), @@session.time_zone, \'+00:00\') - INTERVAL 1 DAY)')
                 ->groupBy('created_at')
                 ->orderBy('created_at')
                 ->get()->toArray();

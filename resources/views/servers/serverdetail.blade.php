@@ -17,7 +17,10 @@
                         <th>Server Version</th>
                         <th>State</th>
                         <th>Connections</th>
-                        <th>Total Connections</th>                
+                        <th>Total Connections</th>
+                        <th>Persistent Connections</th>
+                        <th>Active Operations</th>    
+                        <th>Routed Packets</th>              
                     </tr>
                 </thead>
                 <tbody id="servers-list" name="servers-list">
@@ -29,6 +32,9 @@
                         <td>{{$server['data']['attributes']['state']}}</td>
                         <td>{{$server['data']['attributes']['statistics']['connections']}}</td>
                         <td>{{$server['data']['attributes']['statistics']['total_connections']}}</td>
+                        <td>{{$server['data']['attributes']['statistics']['persistent_connections']}}</td>
+                        <td>{{$server['data']['attributes']['statistics']['active_operations']}}</td>
+                        <td>{{$server['data']['attributes']['statistics']['routed_packets']}}</td>
                     </tr>
                 </tbody>
             </table>

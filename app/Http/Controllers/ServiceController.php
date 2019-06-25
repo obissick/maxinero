@@ -96,7 +96,7 @@ class ServiceController extends Controller
             ->select(DB::raw('created_at, avg(connections) AS avg'))
             ->where('setting_id', $maxserver->id)
             ->where('service_id', $id)
-            ->whereRaw('created_at > (CONVERT_TZ( NOW(), @@session.time_zone, \'+00:00\') - INTERVAL 30 MINUTE)')
+            ->whereRaw('created_at > (CONVERT_TZ( NOW(), @@session.time_zone, \'+00:00\') - INTERVAL 1 DAY)')
             ->groupBy('created_at')
             ->groupBy('service_id')
             ->orderBy('created_at')
