@@ -17,7 +17,7 @@
                     <div id="sessions_div" style="width: 400px; height: 200px;"></div>
                     <br />
                     <div class="table-responsive">
-                    <table class="table table-striped table-bordered task-table">
+                    <table class="table table-striped table-bordered task-table" id="sessions">
 						
                         <!-- Table Headings -->
                         <thead>
@@ -53,6 +53,7 @@
                             @endfor
                             
                         </tbody>
+                    
                     </table>
                 </div>
                 </div>
@@ -66,7 +67,7 @@
                     <div id="threads_div" style="width: 400px; height: 200px;"></div>	
                     <br />
                     <div class="table-responsive">
-                    <table class="table table-striped table-bordered task-table">
+                    <table class="table table-striped table-bordered task-table" id="threads">
 						
                         <!-- Table Headings -->
                         <thead>
@@ -153,6 +154,12 @@
 
     chart.draw(data, options);
     }
+</script>
+<script>
+    $(document).ready(function() {
+        var table = $('#sessions').DataTable();
+        var table = $('#threads').DataTable();
+    } );
 </script>
 @endsection
 

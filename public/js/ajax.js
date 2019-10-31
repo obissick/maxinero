@@ -44,7 +44,7 @@ $(document).ready(function(){
                 $('#monitors').val(monitors_string.join(','));
                 $('#btn-save').val("update");
                 document.getElementById("server_id").disabled = true;
-
+                jQuery.noConflict();
                 $('#server').modal('show');
             },
             error: function (data) {
@@ -261,6 +261,7 @@ $(document).ready(function(){
                 $('#servers').val(servers_string.join(','));
                 $('#add-mon').val("update");
                 document.getElementById("monitor_id").disabled = true;
+                jQuery.noConflict();
                 $('#monitor').modal('show');
             },
             error: function (data) {
@@ -650,7 +651,7 @@ $(document).ready(function(){
     });
 
     //display modal form for server editing
-    $('.edit-service').click(function(){
+    $('.table').on('click', '.edit-service', function(){
         var service_id = $(this).val(); 
 
         $.ajaxSetup({
@@ -673,6 +674,7 @@ $(document).ready(function(){
                 $('#password').val(res['data']['attributes']['parameters']['password']);
                 $('#add-service').val("update");
                 document.getElementById("service_id").disabled = true;
+                jQuery.noConflict();
                 $('#service').modal('show');
             },
             error: function (data) {

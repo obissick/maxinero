@@ -7,8 +7,9 @@
     <button id="addservice" name="addservice" class="btn btn-success btn-xs" data-toggle="modal" data-target="#service">Add Service</button>
     <div class="row">
         <div class="table-responsive">
+            <br />
             <!-- Table-to-load-the-data Part -->
-            <table class="table">
+            <table class="table" id="services-table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -44,14 +45,14 @@
             </table>
         </div>
     </div>
-        
+    <br />    
     <h2>Monitors</h2>
     <button id="btn-add" name="btn-add" class="btn btn-success btn-xs" data-toggle="modal" data-target="#monitor">Add Monitor</button>
     <div class="row">
         <div class="table-responsive">
             <br />
             <!-- Table-to-load-the-data Part -->
-            <table class="table">
+            <table class="table" id="monitors-table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -210,5 +211,10 @@
         </div>
     </div>
 </div>
-
+<script>
+    $(document).ready(function() {
+        var table = $('#services-table').DataTable();
+        var table = $('#monitors-table').DataTable();
+    } );
+</script>
 @endsection

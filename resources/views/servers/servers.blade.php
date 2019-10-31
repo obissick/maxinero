@@ -78,7 +78,7 @@
         <div class="table-responsive-sm">
             <br />
             <!-- Table-to-load-the-data Part -->
-            <table class="table">
+            <table class="table" id="servers-table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -190,5 +190,9 @@
             </div>
         </div> 
 </div>
-
+<script>
+    $(document).ready(function() {
+        var table = $('#servers-table').DataTable();
+    } );
+</script>
 @endsection
