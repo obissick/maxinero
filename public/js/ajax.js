@@ -57,6 +57,7 @@ $(document).ready(function(){
     $('#btn-add').click(function(){
         $('#btn-save').val("add");
         $('#addserver').trigger("reset");
+        jQuery.noConflict();
         $('#server').modal('show');
     });
 

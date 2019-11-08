@@ -236,9 +236,9 @@ class ServerController extends Controller
         $state = $request->input('state');
         $states = explode(',', trim($server['data']['attributes']['state']));
         if(in_array($state, $states)){
-            $res = $this->guzzle->put_request('servers/'.$id.'/clear');
+            $res = $this->guzzle->put_request('servers/'.$id.'/clear?state='.$state);
         }else{
-            $res = $this->guzzle->put_request('servers/'.$id.'/set?state='.$state);
+            $res = $this->guzzle->put_request('servers/'.$id.'/set?state='.$state.'&force=yes');
         }  
         sleep(1);
         return $this->guzzle->get_request('servers/'.$id);

@@ -23,6 +23,9 @@ class GuzzleController extends Controller
     function get_request($location){
         
         $setting = $this->get_api_info();
+        if (!isset($setting)){
+            throw new Exception("No Maxscale server found.");
+        }
         $client = new Client();
         $res = $client->request('GET', $setting->api_url.$location, [
             'auth' => [$setting->username, Crypt::decrypt($setting->password)], 
