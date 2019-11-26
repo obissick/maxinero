@@ -32,6 +32,9 @@ class ServiceController extends Controller
         } catch(\GuzzleHttp\Exception\ConnectException $exception){
             return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
         }
+        catch(\Exception $exception){
+            return redirect('settings')->with('error', $exception->getMessage());
+        }
     }
 
     /**

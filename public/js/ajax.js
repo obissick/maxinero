@@ -959,7 +959,7 @@ $(document).ready(function(){
                 }
 
                 $('#adduser').trigger("reset");
-
+                jQuery.noConflict();
                 $('#user').modal('hide')
             },
             error: function (data) {
@@ -1113,6 +1113,7 @@ $(document).ready(function(){
             type: "POST",
             url:  '/maxscale/flushlog' ,
             success: function (data) {
+                jQuery.noConflict();
                 $('#favoritesModal').modal('hide');
             },
             error: function (data) {

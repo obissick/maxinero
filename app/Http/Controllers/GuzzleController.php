@@ -21,19 +21,20 @@ class GuzzleController extends Controller
     }
 
     function get_request($location){
-        
+
         $setting = $this->get_api_info();
-        if (!isset($setting)){
-            throw new Exception("No Maxscale server found.");
+        if(isset($setting)){
+            $client = new Client();
+            $res = $client->request('GET', $setting->api_url.$location, [
+                'auth' => [$setting->username, Crypt::decrypt($setting->password)], 
+                'verify' => false,
+                'timeout' => 2.00
+            ]);
+            return $res->getBody()->getContents();
         }
-        $client = new Client();
-        $res = $client->request('GET', $setting->api_url.$location, [
-            'auth' => [$setting->username, Crypt::decrypt($setting->password)], 
-            'verify' => false,
-            'timeout' => 2.00
-        ]);
-        return $res->getBody()->getContents();
-        
+        else{
+            throw new \Exception("No Maxscale server found.");
+        }
     }
 
     function post_request($data, $location){

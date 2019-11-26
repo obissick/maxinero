@@ -40,8 +40,8 @@ class HomeController extends Controller
             return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
         } catch(\GuzzleHttp\Exception\RequestException $exception){
             return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
-        } catch(Exception $exception){
-            return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
+        } catch(\Exception $exception){
+            return redirect('settings')->with('error', $exception->getMessage());
         }
     }
 }
