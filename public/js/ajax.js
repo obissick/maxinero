@@ -76,14 +76,11 @@ $(document).ready(function(){
             type: "DELETE",
             url: url + '/' + server_id,
             success: function (data) {
-                console.log(data);
-
                 $("#server" + server_id).remove();
                 $('div.flash-message').html(data);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.responseText);
-                
             }
         });
     });
@@ -244,7 +241,6 @@ $(document).ready(function(){
             type: "GET",
             url: monitors_url + '/' + monitor_id + '/edit',
             success: function (data) {
-                console.log(jQuery.parseJSON(data));
                 var res = jQuery.parseJSON(data);
                 var servers_string = [];
                 if(res['data']['relationships']['servers']){
@@ -546,7 +542,6 @@ $(document).ready(function(){
             data: ({type: 'stop'}),
             dataType: 'json',
             success: function (data) {
-                console.log(data);
 
                 var state = '<td id="state'+ data['data']['id'] + '">' + data['data']['attributes']['state'] + '</td>'
                 var action = '<td id="action'+ data['data']['id'] + '"><button class="btn btn-success btn-xs btn-detail start-service" value="' + data['data']['id'] + '">Start</button>';
@@ -578,7 +573,6 @@ $(document).ready(function(){
             data: ({type: 'start'}),
             dataType: 'json',
             success: function (data) {
-                console.log(data);
 
                 var state = '<td id="state'+ data['data']['id'] + '">' + data['data']['attributes']['state'] + '</td>'
                 var action = '<td id="action'+ data['data']['id'] + '"><button class="btn btn-warning btn-xs btn-detail stop-service" value="' + data['data']['id'] + '">Stop</button>';
@@ -666,7 +660,6 @@ $(document).ready(function(){
             type: "GET",
             url: services_url + '/' + service_id + '/edit',
             success: function (data) {
-                //console.log(jQuery.parseJSON(data));
                 var res = jQuery.parseJSON(data);
                 $('#service_id').val(res['data']['id']);
                 $('#service_type').val(res['data']['type']);
@@ -703,13 +696,10 @@ $(document).ready(function(){
             type: "DELETE",
             url: services_url + '/' + service_id,
             success: function (data) {
-                console.log(data);
-
                 $("#service" + service_id).remove();
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.responseText);
-                
+                alert(xhr.responseText);   
             }
         });
     });
@@ -802,7 +792,6 @@ $(document).ready(function(){
             data: formData,
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 if(data[0]='error'){
                     $('#listener-button').append('</br>'+'<p class="text-danger">'+data[1]+'</p>');
                 }else{
@@ -811,8 +800,7 @@ $(document).ready(function(){
                 
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.responseText);
-                
+                alert(xhr.responseText);  
             }
         });
     });
@@ -832,13 +820,10 @@ $(document).ready(function(){
             type: "DELETE",
             url: monitors_url + '/' + monitor_id,
             success: function (data) {
-                console.log(data);
-
                 $("#monitor" + monitor_id).remove();
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.responseText);
-                
+                alert(xhr.responseText); 
             }
         });
     });
@@ -859,7 +844,6 @@ $(document).ready(function(){
             data: ({type: 'stop'}),
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 var servers = "";
                 if(data['data']['relationships']['servers']){
                     for(i = 0; i < data['data']['relationships']['servers']['data'].length; i++){
@@ -895,7 +879,6 @@ $(document).ready(function(){
             data: ({type: 'start'}),
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 var servers = "";
                 if(data['data']['relationships']['servers']){
                     for(i = 0; i < data['data']['relationships']['servers']['data'].length; i++){
@@ -989,17 +972,12 @@ $(document).ready(function(){
             data: formData,
             dataType: 'html',
             success: function (data) {
-                console.log(data);
-               
                 $("#user" + user_id).remove();
                 $('div.flash-message').html(data);
                 //$('#button-user').append('<p class="text-success">'+data[1]+'</p>');
-                
-                
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.responseText);
-                
+                alert(xhr.responseText);  
             }
         });
     });
@@ -1052,17 +1030,12 @@ $(document).ready(function(){
             data: formData,
             dataType: 'html',
             success: function (data) {
-                console.log(data);
-               
                 $("#setting" + setting_id).remove();
                 $('div.flash-message').html(data);
-                //$('#button-user').append('<p class="text-success">'+data[1]+'</p>');
-                
-                
+                //$('#button-user').append('<p class="text-success">'+data[1]+'</p>'); 
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.responseText);
-                
+                alert(xhr.responseText); 
             }
         });
     });
@@ -1081,7 +1054,6 @@ $(document).ready(function(){
             type: "GET",
             url: settings_url + '/' + setting_id + '/edit',
             success: function (data) {
-                console.log(jQuery.parseJSON(data));
                 var res = jQuery.parseJSON(data);
                 $('#monitor_id').val(res['data']['id']);
                 $('#monitor_type').val(res['data']['type']);
