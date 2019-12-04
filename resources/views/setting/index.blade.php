@@ -63,7 +63,7 @@
                                         <div class="form-group">
                                             <label for="api_url" class="col-sm-3 control-label">API URL</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control has-error" id="api_url" name="api_url" placeholder="" value="">
+                                                <input type="text" class="form-control has-error" id="api_url" name="api_url" placeholder="https://host:port/v1/" value="">
                                             </div>
                                         </div>
 

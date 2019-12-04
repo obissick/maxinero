@@ -14,6 +14,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Maxinero utilizes the API already provided by Maxscale to allow easy integration. Just provide Maxinero with your API endpoint and credentials and Maxinero will do the rest. With Maxinero, users can manage database servers, services, listeners, monitors, etc">
+    <meta name="keywords" content="maxscale, mariadb, mysql, galera, clustering, proxy, database">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
