@@ -21,7 +21,7 @@ class SettingController extends Controller
     {
         $settings = DB::table('settings')
             ->select(DB::raw('id, name, api_url, username, password, selected'))
-            ->where('user_id', Auth::user()->id)->paginate(25);
+            ->where('user_id', Auth::user()->id)->get();
         return view('setting.index', compact('settings'));
     }
 
@@ -38,26 +38,27 @@ class SettingController extends Controller
         ]);
 
         $settings->save();
-        return redirect()->back()->with('status', 'MaxScale server added.');
+        return $settings->toJson();
     }
 
     public function edit($id)
     {
         $settings = Setting::find($id);
-        return $settings;
+
+        return $settings->toJson();
     }
 
     public function update(Request $request, $id)
     {
         $this->validate_settings($request);
-        Setting::find($id)->update([
+        DB::table('settings')->where('id', $id)->update([
             'name' => $request->get('api_name'),
             'api_url' => $request->get('api_url'),
             'username' => $request->get('api_username'),
             'password' => Crypt::encrypt($request->get('api_password')), 
             'selected' => false,
         ]);
-        return redirect()->route('settings.index');
+        return $settings->toJson();
     }
 
     public function select(Request $request, $id)

@@ -1010,6 +1010,64 @@ $(document).ready(function(){
         });
     });
 
+    //create new server / update existing server
+    $("#add-api").click(function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
+        e.preventDefault(); 
+
+        var formData = {
+            api_name: $('#api_name').val(),
+            api_url: $('#api_url').val(),
+            api_username: $('#api_username').val(),
+            api_password: $('#api_password').val(),
+        }
+
+        //used to determine the http verb to use [add=POST], [update=PUT]
+        var state = $('#add-api').val();
+
+        var type = "POST"; //for creating new resource
+        var maxscale_id = $('#setting_id').val();
+        var my_url = settings_url;
+
+        if (state == "update"){
+            type = "PUT"; //for updating existing resource
+            my_url += '/' + maxscale_id;
+        }
+
+        $.ajax({
+
+            type: type,
+            url: my_url,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {   
+                var setting = '<tr id=setting' + data['id'] + '"><td>' + data['name'] + '</td><td>' + data['api_url'] + '</td><td>' + data['username'] + '</td>' + '</td><td></td>';
+                setting += '<td><button class="btn btn-success btn-xs btn-detail select" value="' + data['id'] + '">Select</button>';
+                setting += '<button class="btn btn-info btn-xs btn-detail edit-maxscale" value="' + data['id'] + '">Edit</button>';
+                setting += '<button class="btn btn-danger btn-xs btn-delete delete-service" value="' + data['id'] + '">Delete</button></td></tr>';
+
+                if (state == "add"){ //if user added a new record
+                    $('#configs-list').append(setting);
+                }else{ //if user updated an existing record
+
+                    $("#setting" + maxscale_id).replaceWith(setting);
+                }
+
+                $('#setting').trigger("reset");
+                jQuery.noConflict();
+                $('#config').modal('hide');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);       
+            }
+        });
+    });
+
     $('.table').on('click', '.delete-maxscale', function(){
         var setting_id = $(this).val();
 
@@ -1055,16 +1113,13 @@ $(document).ready(function(){
             url: settings_url + '/' + setting_id + '/edit',
             success: function (data) {
                 var res = jQuery.parseJSON(data);
-                $('#monitor_id').val(res['data']['id']);
-                $('#monitor_type').val(res['data']['type']);
-                $('#module').val(res['data']['attributes']['module']);
-                $('#monitor_interval').val(res['data']['attributes']['parameters']['monitor_interval']);
-                $('#monuser').val(res['data']['attributes']['parameters']['user']);
-                $('#monpass').val(res['data']['attributes']['parameters']['password']);
-                $('#servers').val(servers_string.join(','));
-                $('#add-mon').val("update");
-                document.getElementById("monitor_id").disabled = true;
-                $('#monitor').modal('show');
+                $('#setting_id').val(res['id']);
+                $('#api_name').val(res['name']);
+                $('#api_url').val(res['api_url']);
+                $('#api_username').val(res['username']);
+                $('#add-api').val("update");
+                jQuery.noConflict();
+                $('#config').modal('show');
             },
             error: function (data) {
                 console.log('Error:', data);

@@ -104,7 +104,7 @@
                         <td>{{$servers['data'][$i]['attributes']['statistics']['total_connections']}}</td>
                         <td>
                             <div class="dropdown">
-                                <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn btn-warning btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     State
                                     <span class="caret"></span>
                                 </button>
@@ -117,7 +117,7 @@
                                     <li><button type="button" class="btn btn-link btn-xs ndb" value="{{$servers['data'][$i]['id']}}">ndb</button></li>
                                     <li><button type="button" class="btn btn-link btn-xs stale" value="{{$servers['data'][$i]['id']}}">stale</button></li>
                                 </ul>
-                                <button class="btn btn-warning btn-xs btn-detail open-modal" value="{{$servers['data'][$i]['id']}}">Edit</button>
+                                <button class="btn btn-info btn-xs btn-detail open-modal" value="{{$servers['data'][$i]['id']}}">Edit</button>
                                 <button class="btn btn-danger btn-xs btn-delete delete-server" value="{{$servers['data'][$i]['id']}}">Delete</button>
                             </div>
                             
