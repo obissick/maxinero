@@ -159,28 +159,45 @@
                                             <input type="text" class="form-control" id="port" name="port" placeholder="3306" value="">
                                         </div>
                                     </div>
-
                                     <div class="form-group">
-                                            <label for="port" class="col-sm-3 control-label">Protocol</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="protocol" name="protocol" placeholder="MariaDBBackend" value="">
-                                            </div>
+                                        <label for="protocol" class="col-sm-3 control-label">Protocol</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="protocol" name="protocol" placeholder="MariaDBBackend" value="">
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                            <label for="port" class="col-sm-3 control-label">Services</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="services" name="services" placeholder="Separate by comma" value="">
-                                            </div>
+                                        <label for="ssl_key" class="col-sm-3 control-label">SSL Key</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="ssl_key" name="ssl_key" placeholder="Optional" value="">
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                            <label for="port" class="col-sm-3 control-label">Monitors</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="monitors" name="monitors" placeholder="Separate by comma" value="">
-                                            </div>
+                                        <label for="ssl_cert" class="col-sm-3 control-label">SSL Cert</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="ssl_cert" name="ssl_cert" placeholder="Optional" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ssl_ca_cert" class="col-sm-3 control-label">SSL CA Cert</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="ssl_ca_cert" name="ssl_ca_cert" placeholder="Optional" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="port" class="col-sm-3 control-label">Services</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="services" name="services" placeholder="Separate by comma" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="port" class="col-sm-3 control-label">Monitors</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="monitors" name="monitors" placeholder="Separate by comma" value="">
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes</button>
-                                            <input type="hidden" id="server_id" name="server_id" value="0">
+                                        <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes</button>
+                                        <input type="hidden" id="server_id_hidden" name="server_id_hidden" value="0">
                                     </div>
                                 </form>
                             </div>

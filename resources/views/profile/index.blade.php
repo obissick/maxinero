@@ -10,11 +10,16 @@
   		<div class="col-sm-4"><!--left col-->
               
           <ul class="list-group">
-            <li class="list-group-item text-muted">Profile</li>
+            <li class="list-group-item text-muted">Profile </li>
             <li class="list-group-item text-right"><span class="pull-left"><strong>Joined:</strong></span> {{$user->created_at}}</li>
             <li class="list-group-item text-right"><span class="pull-left"><strong>Last Updated:</strong></span> {{$user->updated_at}}</li>
             <li class="list-group-item text-right"><span class="pull-left"><strong>Email:</strong></span> {{$user->email}}</li>
-            
+            <li class="list-group-item text-right"><span class="pull-left"><strong></strong></span> 
+              <form class="form" id="deleteForm" name="deleteForm" method="POST" action="{{ route('profile.destroy', $user->id) }}" novalidate="">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}  
+                <button class="btn btn-md btn-danger" onclick="if (!confirm('Are you sure?')) { return false }"><i class="glyphicon glyphicon-ok-sign"></i>Delete Account</button></li>
+              </form>
           </ul> 
           
           <ul class="list-group">
@@ -62,7 +67,7 @@
                       <div class="form-group">
                            <div class="col-xs-12">
                                 <br>
-                              	<button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                <button class="btn btn-md btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
                             </div>
                       </div>
               	</form>

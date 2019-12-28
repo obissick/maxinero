@@ -4,6 +4,7 @@ $(document).ready(function(){
     var monitors_url = "/monitors"
     var users_url = "/users";
     var settings_url = "/settings";
+    var profile_url = "/profile";
 
     //display modal form for server editing
     $('.open-modal').click(function(){
@@ -40,6 +41,9 @@ $(document).ready(function(){
                 $('#address').val(res['data']['attributes']['parameters']['address']);
                 $('#port').val(res['data']['attributes']['parameters']['port']);
                 $('#protocol').val(res['data']['attributes']['parameters']['protocol']);
+                $('#ssl_key').val(res['data']['attributes']['parameters']['ssl_key']);
+                $('#ssl_cert').val(res['data']['attributes']['parameters']['ssl_cert']);
+                $('#ssl_ca_cert').val(res['data']['attributes']['parameters']['ssl_ca_cert']);
                 $('#services').val(services_string.join(','));
                 $('#monitors').val(monitors_string.join(','));
                 $('#btn-save').val("update");
@@ -100,6 +104,9 @@ $(document).ready(function(){
             address: $('#address').val(),
             port: $('#port').val(),
             protocol: $('#protocol').val(),
+            ssl_key: $('#ssl_key').val(),
+            ssl_cert: $('#ssl_cert').val(),
+            ssl_ca_cert: $('#ssl_ca_cert').val(),
             services: $('#services').val(),
             monitors: $('#monitors').val(),
         }
@@ -1138,10 +1145,12 @@ $(document).ready(function(){
         $.ajax({
 
             type: "POST",
+            dataType: 'html',
             url:  '/maxscale/flushlog' ,
             success: function (data) {
                 jQuery.noConflict();
                 $('#favoritesModal').modal('hide');
+                $('div.flash-message').html(data);
             },
             error: function (data) {
                 console.log('Error:', data);

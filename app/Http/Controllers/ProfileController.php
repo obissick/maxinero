@@ -65,4 +65,10 @@ class ProfileController extends Controller
         }
         
     }
+
+    public function destroy($id)
+    {
+        User::find($id)->delete();
+        return redirect('home');
+    }
 }

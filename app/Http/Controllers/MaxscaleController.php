@@ -103,7 +103,8 @@ class MaxscaleController extends Controller
     {
         try{
             $this->guzzle->post_request([],'maxscale/logs/flush');
-            
+            Session::flash('success', 'Log flushed!');
+            return View::make('flash-message');
         } catch(\GuzzleHttp\Exception\ConnectException $exception){
             return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
         } catch(\GuzzleHttp\Exception\RequestException $exception){

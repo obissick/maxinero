@@ -34,7 +34,7 @@ class SettingController extends Controller
             'username' => $request->get('api_username'),
             'password' => Crypt::encrypt($request->get('api_password')),
             'user_id' => Auth::user()->id,
-            'selected' => false,
+            'selected' => 1,
         ]);
 
         $settings->save();
@@ -56,9 +56,8 @@ class SettingController extends Controller
             'api_url' => $request->get('api_url'),
             'username' => $request->get('api_username'),
             'password' => Crypt::encrypt($request->get('api_password')), 
-            'selected' => false,
         ]);
-        return $settings->toJson();
+        return $this->edit($id);
     }
 
     public function select(Request $request, $id)

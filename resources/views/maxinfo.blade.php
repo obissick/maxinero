@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container container-fluid">
-    @include('flash-message')
+    <div class="flash-message"></div>
     <div class="float-right">
         <button 
             type="button" 
