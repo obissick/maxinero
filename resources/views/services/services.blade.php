@@ -137,16 +137,16 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="monpass" class="col-sm-3 control-label">Monitor User</label>
+                                <label for="monpass" class="col-sm-3 control-label">Monitor Password</label>
                                 <div class="col-sm-9">
                                     <input type="password" class="form-control" id="monpass" name="monpass" placeholder="password" value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label for="port" class="col-sm-3 control-label">Servers</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="servers" name="servers" placeholder="Separate by comma" value="">
-                                    </div>
+                                <label for="port" class="col-sm-3 control-label">Servers</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="servers" name="servers" placeholder="Separate by comma" value="">
+                                </div>
                             </div>
                             <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" id="add-mon" value="add">Save changes</button>

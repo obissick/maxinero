@@ -102,7 +102,8 @@ class MonitorController extends Controller
             'monitor_id' => 'required',
             'monitor_type' => 'required',
             'module' => 'required',
-            'monitor_interval' => 'required'
+            'user' => 'required',
+            'password' => 'required'
         ]);
     }
 
@@ -144,8 +145,8 @@ class MonitorController extends Controller
                         'module' => $request->input('module'),
                         'parameters' => [
                             'monitor_interval' => (int) $request->input('monitor_interval'),
-                            'user' => $request->input('monuser'),
-                            'password' => $request->input('monpass')
+                            'user' => $request->input('user'),
+                            'password' => $request->input('password')
                         ]
                     ],
                 'relationships' => [
