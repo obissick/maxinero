@@ -55,6 +55,13 @@
                                     <form id="add-api-form" name="add-api-form" class="form-horizontal" novalidate="">
                                         {{ csrf_field() }}
                                         <div class="form-group">
+                                            <label for="api_info" class="col-sm-3 control-label">Note</label>
+                                            <div class="col-sm-9">
+                                                <code>1. URL must be in this format: https://host:port/v1/</code></br>
+                                                <code>2. 66.229.237.160 must be allowed to access your API.</code>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="api_name" class="col-sm-3 control-label">Name</label>
                                             <div class="col-sm-9">
                                                 <input type="hidden" name="setting_id" id="setting_id"/>

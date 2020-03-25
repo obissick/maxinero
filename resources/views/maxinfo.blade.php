@@ -168,8 +168,8 @@
                 <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <pre language = "json">
-                    <code class="prettyprint">
+                <pre class="prettyprint lang-json">
+                    <code >
                         {{$log}}
                     </code>
                 </pre>
