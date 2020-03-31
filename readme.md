@@ -24,16 +24,24 @@ $ sudo apt-get install nginx
 $ sudo ufw allow 'Nginx HTTP'
 
 Install PHP:
-$ sudo apt-get install php curl unzip php-pear php-fpm php-dev php-zip php-curl php-xmlrpc php-gd php-mysql php-mbstring php-xml git
+$ sudo apt-get install software-properties-common
+$ sudo add-apt-repository ppa:ondrej/php
+$ sudo apt-get update
+$ sudo apt-get install curl unzip git php7.2 php7.2-mysql php7.2-fpm php7.2-mbstring php7.2-xml php7.2-curl
 $ sudo systemctl restart nginx
 
 Install MariaDB:
-$ sudo apt install mariadb-server
+$ sudo apt-get install software-properties-common
+$ sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+$ sudo add-apt-repository "deb [arch=amd64,arm64,ppc64el] http://mariadb.mirror.liquidtelecom.com/repo/10.4/ubuntu $(lsb_release -cs) main"
+$ sudo apt update
+$ sudo apt -y install mariadb-server mariadb-client
 $ sudo mysql_secure_installation
 
 // connect to mariadb and create database;
-$ mysql -u username -p 
-> create database maxinero;
+$ mysql -u root -p 
+GRANT ALL PRIVILEGES ON *.* TO 'maxuser'@'localhost' IDENTIFIED BY 'password';
+MariaDB [(none)]> create database maxinero;
 
 Install Composer:
 $ sudo curl -s https://getcomposer.org/installer | php
@@ -42,8 +50,8 @@ $ sudo mv composer.phar /usr/local/bin/composer
 Install Maxinero:
 $ cd /var/www/html/
 $ git clone https://github.com/obissick/maxinero.git
+$ cd maxinero
 $ chmod -R 777 storage/
-$ php artisan key:generate
 $ cp .env.example .env
 
 // edit .env with database info
@@ -52,13 +60,13 @@ APP_NAME=maxinero
 APP_ENV=local
 APP_KEY=
 APP_DEBUG=true
-APP_URL=application_url
+APP_URL=http://10.0.0.35
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=maxinero
-DB_USERNAME=username
+DB_USERNAME=maxuser
 DB_PASSWORD=password
 
 // Install dependencies
@@ -69,18 +77,23 @@ $ php artisan key:generate
 $ php artisan migrate
 $ php artisan db:seed
 
-Edit Nginx config:
-$ nano /etc/nginx/sites-available/default.conf
+// disable SSL
+$ nano var/www/html/maxinero/app/Providers/AppServiceProvider.php
+//comment out this line to use without SSL
+ //URL::forceScheme('https');
 
-// /etc/nginx/sites-available/default.conf file
+Edit Nginx config:
+$ nano /etc/nginx/conf.d/maxinero.conf
+
+// /etc/nginx/conf.d/maxinero.conf file
 server {
     listen 80;
     listen [::]:80;
 
-    root /var/www/html/max-ui/public;
+    root /var/www/html/maxinero/public;
     index index.php index.html index.htm index.nginx-debian.html;
 
-    server_name <our.application.name>;
+    server_name host/ip;
 
     location / {
     try_files $uri $uri/ /index.php$is_args$args;
@@ -98,7 +111,7 @@ server {
         deny all;
     }
 }
-
+sudo systemctl reload nginx
 ```
 ## Screenshots
 
