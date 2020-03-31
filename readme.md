@@ -19,38 +19,86 @@ UI for administering MariaDB MaxScale server.
 Ubuntu:
 ```
 Install Nginx:
-sudo apt-get update
-sudo apt-get install nginx
-sudo ufw allow 'Nginx HTTP'
+$ sudo apt-get update
+$ sudo apt-get install nginx
+$ sudo ufw allow 'Nginx HTTP'
 
 Install PHP:
-sudo apt-get install php curl unzip php-pear php-fpm php-dev php-zip php-curl php-xmlrpc php-gd php-mysql php-mbstring php-xml git
-sudo systemctl restart nginx
+$ sudo apt-get install php curl unzip php-pear php-fpm php-dev php-zip php-curl php-xmlrpc php-gd php-mysql php-mbstring php-xml git
+$ sudo systemctl restart nginx
 
 Install MariaDB:
-sudo apt install mariadb-server
-sudo mysql_secure_installation
+$ sudo apt install mariadb-server
+$ sudo mysql_secure_installation
 
 // connect to mariadb and create database;
-mysql -u username -p 
-create database maxinero;
+$ mysql -u username -p 
+> create database maxinero;
 
 Install Composer:
-sudo curl -s https://getcomposer.org/installer | php
-sudo mv composer.phar /usr/local/bin/composer
+$ sudo curl -s https://getcomposer.org/installer | php
+$ sudo mv composer.phar /usr/local/bin/composer
 
 Install Maxinero:
-cd /var/www/html/
-git clone https://github.com/obissick/maxinero.git
-chmod -R 777 storage/
-php artisan key:generate
-cp .env.example .env
+$ cd /var/www/html/
+$ git clone https://github.com/obissick/maxinero.git
+$ chmod -R 777 storage/
+$ php artisan key:generate
+$ cp .env.example .env
 
 // edit .env with database info
 nano .env
+APP_NAME=maxinero
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=application_url
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
 DB_DATABASE=maxinero
-DB_USERNAME=your_database_username
-DB_PASSWORD=your_database_password
+DB_USERNAME=username
+DB_PASSWORD=password
+
+// Install dependencies
+$ composer update
+$ composer dump-autoload
+$ php artisan config:clear
+$ php artisan key:generate
+$ php artisan migrate
+$ php artisan db:seed
+
+Edit Nginx config:
+$ nano /etc/nginx/sites-available/default.conf
+
+// /etc/nginx/sites-available/default.conf file
+server {
+    listen 80;
+    listen [::]:80;
+
+    root /var/www/html/max-ui/public;
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    server_name <our.application.name>;
+
+    location / {
+    try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+      try_files $uri /index.php =404;
+      fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+      fastcgi_index index.php;
+      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+      include fastcgi_params;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
 ```
 ## Screenshots
 
