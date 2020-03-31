@@ -57,7 +57,7 @@ $ cp .env.example .env
 // edit .env with database info
 nano .env
 APP_NAME=maxinero
-APP_ENV=local
+APP_ENV=production
 APP_KEY=
 APP_DEBUG=true
 APP_URL=http://10.0.0.35
