@@ -111,6 +111,8 @@ server {
         deny all;
     }
 }
+
+// reload nginx
 sudo systemctl reload nginx
 ```
 ## Screenshots
