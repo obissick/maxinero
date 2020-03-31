@@ -1,6 +1,57 @@
 # Maxinero
 UI for administering MariaDB MaxScale server.
 
+# Install
+
+## Requirements:
+Nginx
+MariaDB
+PHP >= 7.1.3 	
+OpenSSL PHP Extension 	
+PDO PHP Extension 	
+Mbstring PHP Extension 
+Tokenizer PHP Extension
+XML PHP Extension
+Ctype PHP Extension
+JSON PHP Extension
+BCMath PHP Extension
+
+Ubuntu:
+```
+Install Nginx:
+sudo apt-get update
+sudo apt-get install nginx
+sudo ufw allow 'Nginx HTTP'
+
+Install PHP:
+sudo apt-get install php curl unzip php-pear php-fpm php-dev php-zip php-curl php-xmlrpc php-gd php-mysql php-mbstring php-xml git
+sudo systemctl restart nginx
+
+Install MariaDB:
+sudo apt install mariadb-server
+sudo mysql_secure_installation
+
+// connect to mariadb and create database;
+mysql -u username -p 
+create database maxinero;
+
+Install Composer:
+sudo curl -s https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+
+Install Maxinero:
+cd /var/www/html/
+git clone https://github.com/obissick/maxinero.git
+chmod -R 777 storage/
+php artisan key:generate
+cp .env.example .env
+
+// edit .env with database info
+nano .env
+DB_DATABASE=maxinero
+DB_USERNAME=your_database_username
+DB_PASSWORD=your_database_password
+```
 ## Screenshots
 
 ### Dashboard
