@@ -1,6 +1,10 @@
 # Maxinero
 UI for administering MariaDB MaxScale server.
 
+Test it out at www.maxinero.com
+Username: demo@maxinero.com
+Password: demo
+
 # Install
 
 ## Requirements:
