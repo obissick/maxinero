@@ -28,7 +28,7 @@ class GuzzleController extends Controller
             $res = $client->request('GET', $setting->api_url.$location, [
                 'auth' => [$setting->username, Crypt::decrypt($setting->password)], 
                 'verify' => false,
-                'timeout' => 2.00
+                'timeout' => 5.00
             ]);
             return $res->getBody()->getContents();
         }

@@ -47,22 +47,28 @@
                     <th>Data Directory</th>
                     <td>{{$maxscale['data']['attributes']['parameters']['datadir']}}</td>
                 </tr>
+                @isset($maxscale['data']['attributes']['parameters']['process_datadir'])
                 <tr>
                     <th>Process Directory</th>
                     <td>{{$maxscale['data']['attributes']['parameters']['process_datadir']}}</td>
                 </tr>
+                @endisset
                 <tr>
                     <th>Cache Directory</th>
                     <td>{{$maxscale['data']['attributes']['parameters']['cachedir']}}</td>
                 </tr>
+                @isset($maxscale['data']['attributes']['parameters']['configdir'])
                 <tr>
                     <th>Config Directory</th>
                     <td>{{$maxscale['data']['attributes']['parameters']['configdir']}}</td>
                 </tr>
+                @endisset
+                @isset($maxscale['data']['attributes']['parameters']['config_persistdir'])
                 <tr>
                     <th>Config Persist Directory</th>
                     <td>{{$maxscale['data']['attributes']['parameters']['config_persistdir']}}</td>
                 </tr>
+                @endisset
                 <tr>
                     <th>Config Module Directory</th>
                     <td>{{$maxscale['data']['attributes']['parameters']['module_configdir']}}</td>
@@ -75,10 +81,12 @@
                     <th>Log Directory</th>
                     <td>{{$maxscale['data']['attributes']['parameters']['logdir']}}</td>
                 </tr>
+                @isset($maxscale['data']['attributes']['parameters']['langdir'])
                 <tr>
                     <th>Lang Directory</th>
                     <td>{{$maxscale['data']['attributes']['parameters']['langdir']}}</td>
                 </tr>
+                @endisset
                 <tr>
                     <th>Exec Directory</th>
                     <td>{{$maxscale['data']['attributes']['parameters']['execdir']}}</td>
