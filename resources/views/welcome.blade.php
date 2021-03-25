@@ -127,7 +127,7 @@
     <!-- Footer -->
     <footer class="page-footer font-small">
         <!-- Copyright -->
-        <div class="footer-copyright text-center py-3">© 2019 Copyright:
+        <div class="footer-copyright text-center py-3">© 2021 Copyright:
             <a href="https://www.maxinero.com">maxinero.com</a>
         </div>
         <!-- Copyright -->

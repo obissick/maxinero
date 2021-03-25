@@ -5,20 +5,22 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.2",
+        "coreui/coreui": "3.2.0",
         "fideloper/proxy": "^4.0",
-        "guzzlehttp/guzzle": "~6.0",
-        "laravel/cashier": "^9.3",
-        "laravel/framework": "5.8.*",
-        "laravel/telescope": "^2.1",
-        "laravel/tinker": "^1.0"
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/framework": "^8.0",
+        "laravel/helpers": "^1.4",
+        "laravel/telescope": "^4.0",
+        "laravel/tinker": "^3.0",
+        "laravel/ui": "^3.0"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^2.0",
-        "phpunit/phpunit": "^7.0"
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "classmap": [
