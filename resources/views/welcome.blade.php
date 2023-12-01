@@ -14,7 +14,7 @@
         <style>
             html, body {
                 background-color: #fff;
-                color: #636b6f;
+                color: #000000;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
                 height: 100vh;
@@ -127,7 +127,7 @@
     <!-- Footer -->
     <footer class="page-footer font-small">
         <!-- Copyright -->
-        <div class="footer-copyright text-center py-3">© 2019 Copyright:
+        <div class="footer-copyright text-center py-3">© 2022 Copyright:
             <a href="https://www.maxinero.com">maxinero.com</a>
         </div>
         <!-- Copyright -->
