@@ -144,7 +144,6 @@
         },
         {
             "name": "doctrine/inflector",
-<<<<<<< HEAD
             "version": "1.4.4",
             "source": {
                 "type": "git",
@@ -155,18 +154,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/inflector/zipball/4bd5c1cdfcd00e9e2d8c484f79150f67e5d355d9",
                 "reference": "4bd5c1cdfcd00e9e2d8c484f79150f67e5d355d9",
-=======
-            "version": "2.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/inflector.git",
-                "reference": "9cf661f4eb38f7c881cac67c75ea9b00bf97b210"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/9cf661f4eb38f7c881cac67c75ea9b00bf97b210",
-                "reference": "9cf661f4eb38f7c881cac67c75ea9b00bf97b210",
->>>>>>> a4e216d7b7d05071d25a859d90a9a39d6e350b84
                 "shasum": ""
             },
             "require": {
@@ -187,12 +174,8 @@
             },
             "autoload": {
                 "psr-4": {
-<<<<<<< HEAD
                     "Doctrine\\Inflector\\": "lib/Doctrine/Inflector",
                     "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector"
-=======
-                    "Doctrine\\Inflector\\": "lib/Doctrine/Inflector"
->>>>>>> a4e216d7b7d05071d25a859d90a9a39d6e350b84
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -237,11 +220,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/inflector/issues",
-<<<<<<< HEAD
                 "source": "https://github.com/doctrine/inflector/tree/1.4.4"
-=======
-                "source": "https://github.com/doctrine/inflector/tree/2.0.x"
->>>>>>> a4e216d7b7d05071d25a859d90a9a39d6e350b84
             },
             "funding": [
                 {
@@ -257,11 +236,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
             "time": "2021-04-16T17:34:40+00:00"
-=======
-            "time": "2020-05-29T15:13:26+00:00"
->>>>>>> a4e216d7b7d05071d25a859d90a9a39d6e350b84
         },
         {
             "name": "doctrine/lexer",
@@ -3134,11 +3109,7 @@
                 "terminal"
             ],
             "support": {
-<<<<<<< HEAD
                 "source": "https://github.com/symfony/console/tree/v4.4.40"
-=======
-                "source": "https://github.com/symfony/console/tree/v5.2.6"
->>>>>>> a4e216d7b7d05071d25a859d90a9a39d6e350b84
             },
             "funding": [
                 {
@@ -3408,11 +3379,7 @@
             "description": "Provides tools to manage errors and ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
-<<<<<<< HEAD
                 "source": "https://github.com/symfony/error-handler/tree/v4.4.40"
-=======
-                "source": "https://github.com/symfony/error-handler/tree/v5.2.6"
->>>>>>> a4e216d7b7d05071d25a859d90a9a39d6e350b84
             },
             "funding": [
                 {
