@@ -156,11 +156,7 @@
 <!-- Footer -->
 <footer class="page-footer font-small">
     <!-- Copyright -->
-<<<<<<< HEAD
     <div class="footer-copyright text-center py-3">© 2023 Copyright:
-=======
-    <div class="footer-copyright text-center py-3">© 2021 Copyright:
->>>>>>> a4e216d7b7d05071d25a859d90a9a39d6e350b84
         <a href="https://www.maxinero.com"> Maxinero.com</a>
     </div>
     <!-- Copyright -->
