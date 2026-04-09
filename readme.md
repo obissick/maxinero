@@ -1,150 +1,189 @@
 # Maxinero
-UI for administering MariaDB MaxScale server.
 
-Test it out at www.maxinero.com
-Username: demo@maxinero.com
-Password: demo
+A web UI for administering [MariaDB MaxScale](https://mariadb.com/kb/en/maxscale/) via its REST API. Manage multiple MaxScale instances from one interface — servers, services, monitors, listeners, users, and live connection charts.
 
-# Install
+![Dashboard](screenshots/dash.png)
 
-## Requirements:
-    Nginx
-    MariaDB
-    PHP >= 7.1.3 	
-    OpenSSL PHP Extension 	
-    PDO PHP Extension 	
-    Mbstring PHP Extension 
-    Tokenizer PHP Extension
-    XML PHP Extension
-    Ctype PHP Extension
-    JSON PHP Extension
-    BCMath PHP Extension
+---
 
-Ubuntu:
+## Features
+
+- **Dashboard** — active sessions, worker threads, live connection charts
+- **DB Servers** — add, edit, delete, change state (master/slave/maintenance/drain/running)
+- **Services & Monitors** — start/stop, edit, manage listeners
+- **MaxScale Info** — version, parameters, directories, log viewer
+- **Users** — manage inet and unix MaxScale accounts
+- **Multi-Instance** — add multiple MaxScale API endpoints and switch between them from the navbar
+- **Per-user config** — each user manages their own set of API connections
+
+---
+
+## Screenshots
+
+| Dashboard | DB Servers |
+|---|---|
+| ![Dashboard](screenshots/dash.png) | ![DB Servers](screenshots/dbservers.png) |
+
+| Services & Monitors | MaxScale Info |
+|---|---|
+| ![Services](screenshots/services_monitors.png) | ![MaxScale Info](screenshots/maxscaleinfo.png) |
+
+| Users | Log Viewer |
+|---|---|
+| ![Users](screenshots/max_users.png) | ![Log](screenshots/log.png) |
+
+---
+
+## Requirements
+
+- PHP 8.2+
+- MySQL / MariaDB
+- Composer
+- Node.js 18+ (for Vite build)
+- Apache httpd or Nginx
+- MaxScale 2.x – 24.x (REST API v1)
+
+---
+
+## Installation
+
+### 1. Clone & install dependencies
+```bash
+git clone https://github.com/obissick/maxinero.git
+cd maxinero
+composer install --no-dev --optimize-autoloader
+npm ci && npm run build
 ```
-Install Nginx:
-$ sudo apt-get update
-$ sudo apt-get install nginx
-$ sudo ufw allow 'Nginx HTTP'
 
-Install PHP:
-$ sudo apt-get install software-properties-common
-$ sudo add-apt-repository ppa:ondrej/php
-$ sudo apt-get update
-$ sudo apt-get install curl unzip git php7.2 php7.2-mysql php7.2-fpm php7.2-mbstring php7.2-xml php7.2-curl
-$ sudo systemctl restart nginx
+### 2. Environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-Install MariaDB:
-$ sudo apt-get install software-properties-common
-$ sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-$ sudo add-apt-repository "deb [arch=amd64,arm64,ppc64el] http://mariadb.mirror.liquidtelecom.com/repo/10.4/ubuntu $(lsb_release -cs) main"
-$ sudo apt update
-$ sudo apt -y install mariadb-server mariadb-client
-$ sudo mysql_secure_installation
-
-// connect to mariadb and create database;
-$ mysql -u root -p 
-GRANT ALL PRIVILEGES ON *.* TO 'maxuser'@'localhost' IDENTIFIED BY 'password';
-MariaDB [(none)]> create database maxinero;
-
-Install Composer:
-$ sudo curl -s https://getcomposer.org/installer | php
-$ sudo mv composer.phar /usr/local/bin/composer
-
-Install Maxinero:
-$ cd /var/www/html/
-$ git clone https://github.com/obissick/maxinero.git
-$ cd maxinero
-$ chmod -R 777 storage/
-$ cp .env.example .env
-
-// edit .env with database info
-nano .env
-APP_NAME=maxinero
+Edit `.env`:
+```ini
 APP_ENV=production
-APP_KEY=
-APP_DEBUG=true
-APP_URL=http://10.0.0.35
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
 
-DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
-DB_PORT=3306
 DB_DATABASE=maxinero
 DB_USERNAME=maxuser
-DB_PASSWORD=password
+DB_PASSWORD=secret
+```
 
-// Install dependencies
-$ composer update
-$ composer dump-autoload
-$ php artisan config:clear
-$ php artisan key:generate
-$ php artisan migrate
-$ php artisan db:seed
+### 3. Database
+```bash
+php artisan migrate --force
+```
 
-// disable SSL
-$ nano var/www/html/maxinero/app/Providers/AppServiceProvider.php
-//comment out this line to use without SSL
- //URL::forceScheme('https');
+### 4. Permissions
+```bash
+chmod -R 775 storage/ bootstrap/cache/
+chown -R apache:apache storage/ bootstrap/cache/   # or www-data for Nginx
+```
 
-Edit Nginx config:
-$ nano /etc/nginx/conf.d/maxinero.conf
+### 5. Optimize
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
 
-// /etc/nginx/conf.d/maxinero.conf file
+---
+
+## Web Server
+
+### Apache httpd — `/etc/httpd/conf.d/maxinero.conf`
+```apache
+<VirtualHost *:80>
+    ServerName yourdomain.com
+    Redirect permanent / https://yourdomain.com/
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName yourdomain.com
+    DocumentRoot /var/www/maxinero/public
+
+    SSLEngine on
+    SSLCertificateFile    /etc/pki/tls/certs/maxinero.crt
+    SSLCertificateKeyFile /etc/pki/tls/private/maxinero.key
+
+    <Directory /var/www/maxinero/public>
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/run/php-fpm/www.sock|fcgi://localhost"
+    </FilesMatch>
+</VirtualHost>
+```
+
+### Nginx — `/etc/nginx/conf.d/maxinero.conf`
+```nginx
 server {
-    listen 80;
-    listen [::]:80;
+    listen 443 ssl;
+    server_name yourdomain.com;
+    root /var/www/maxinero/public;
+    index index.php;
 
-    root /var/www/html/maxinero/public;
-    index index.php index.html index.htm index.nginx-debian.html;
-
-    server_name host/ip;
+    ssl_certificate     /etc/pki/tls/certs/maxinero.crt;
+    ssl_certificate_key /etc/pki/tls/private/maxinero.key;
 
     location / {
-    try_files $uri $uri/ /index.php$is_args$args;
+        try_files $uri $uri/ /index.php?$query_string;
     }
 
     location ~ \.php$ {
-      try_files $uri /index.php =404;
-      fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
-      fastcgi_index index.php;
-      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-      include fastcgi_params;
-    }
-
-    location ~ /\.ht {
-        deny all;
+        fastcgi_pass unix:/run/php-fpm/www.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
     }
 }
-
-// reload nginx
-sudo systemctl reload nginx
 ```
-## Screenshots
 
-### Dashboard
-The dashboard shows the current connected users and info about the current maxscale threads.
-![Alt text](/screenshots/dash.png?raw=true "Dashboard.")
+---
 
-### Maxscale Info
-This page shows the current settings of the current selected maxscale server.
-![Alt text](/screenshots/maxscaleinfo.png?raw=true "Maxscale info.")
+## Scheduler (connection stats charts)
 
-### Maxscale Log
-This shows the current maxscale log settings, user can also flush the log from here.
-![Alt text](/screenshots/log.png?raw=true "Flush log.")
+Add to cron — stats are collected every minute:
+```bash
+echo "* * * * * apache cd /var/www/maxinero && php artisan schedule:run >> /dev/null 2>&1" \
+    | sudo tee /etc/cron.d/maxinero
+```
 
-### Services & Monitors
-This page shows the configures Maxscale services and monitors. Click on a services to view listeners and other information.
-![Alt text](/screenshots/services_monitors.png?raw=true "Services & Monitors.")
+---
 
-### DB Servers
-Here users can find the database servers that are currently configured with Maxscale. From here users can add, edit, or remove servers. The state of the server can also be controlled from here by clicking the state dropdown.
-![Alt text](/screenshots/dbservers.png?raw=true "DB servers.")
+## Connecting to MaxScale
 
-### Maxscale Users
-Shows maxscale unix and created users.
-![Alt text](/screenshots/max_users.png?raw=true "Maxscale users.")
+After logging in, go to **Config** (user dropdown) and add a MaxScale API endpoint:
 
-### Maxscale Servers
-Allows users to switch between maxscale servers.
-![Alt text](/screenshots/max_servers.png?raw=true "Maxscale servers.")
+| Field | Example |
+|---|---|
+| Name | Production |
+| API URL | `http://<IP Address>:8989/v1/` |
+| Username | `admin` |
+| Password | `password` |
+
+Multiple endpoints can be added and switched from the top navigation bar.
+
+---
+
+## Tech Stack
+
+- Laravel 11
+- Bootstrap 5.3
+- Chart.js 4
+- Vite 6
+- DataTables 1.13
+- Guzzle (MaxScale REST API client)
+
+---
+
+## License
+
+MIT
+
