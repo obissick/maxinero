@@ -148,10 +148,5 @@
         </div>
     </div>
 
-    <footer class="page-footer font-small mt-4">
-        <div class="footer-copyright text-center py-3">
-            &copy; {{ date('Y') }} <a href="https://www.maxinero.com">Maxinero.com</a>
-        </div>
-    </footer>
 </body>
 </html>
