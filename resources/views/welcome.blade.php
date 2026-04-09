@@ -108,6 +108,65 @@
         </div>
     </section>
 
+    {{-- Screenshots --}}
+    <section class="py-5" style="background:#fff;">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-2">See it in action</h2>
+            <p class="text-center text-muted mb-5">A look at the interface across key areas of the application.</p>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <a href="{{ asset('img/dash.png') }}" target="_blank">
+                        <div class="rounded-3 overflow-hidden shadow-sm border" style="aspect-ratio:16/9;">
+                            <img src="{{ asset('img/dash.png') }}" alt="Dashboard" class="w-100 h-100" style="object-fit:cover;object-position:top;">
+                        </div>
+                    </a>
+                    <p class="text-center text-muted small mt-2 mb-0">Dashboard — sessions &amp; thread overview</p>
+                </div>
+                <div class="col-md-6">
+                    <a href="{{ asset('img/dbservers.png') }}" target="_blank">
+                        <div class="rounded-3 overflow-hidden shadow-sm border" style="aspect-ratio:16/9;">
+                            <img src="{{ asset('img/dbservers.png') }}" alt="DB Servers" class="w-100 h-100" style="object-fit:cover;object-position:top;">
+                        </div>
+                    </a>
+                    <p class="text-center text-muted small mt-2 mb-0">DB Servers — state management &amp; connection chart</p>
+                </div>
+                <div class="col-md-6">
+                    <a href="{{ asset('img/services_monitors.png') }}" target="_blank">
+                        <div class="rounded-3 overflow-hidden shadow-sm border" style="aspect-ratio:16/9;">
+                            <img src="{{ asset('img/services_monitors.png') }}" alt="Services &amp; Monitors" class="w-100 h-100" style="object-fit:cover;object-position:top;">
+                        </div>
+                    </a>
+                    <p class="text-center text-muted small mt-2 mb-0">Services &amp; Monitors — start/stop, edit, listeners</p>
+                </div>
+                <div class="col-md-6">
+                    <a href="{{ asset('img/maxscaleinfo.png') }}" target="_blank">
+                        <div class="rounded-3 overflow-hidden shadow-sm border" style="aspect-ratio:16/9;">
+                            <img src="{{ asset('img/maxscaleinfo.png') }}" alt="MaxScale Info" class="w-100 h-100" style="object-fit:cover;object-position:top;">
+                        </div>
+                    </a>
+                    <p class="text-center text-muted small mt-2 mb-0">MaxScale info — version, parameters &amp; directories</p>
+                </div>
+                <div class="col-md-6">
+                    <a href="{{ asset('img/max_users.png') }}" target="_blank">
+                        <div class="rounded-3 overflow-hidden shadow-sm border" style="aspect-ratio:16/9;">
+                            <img src="{{ asset('img/max_users.png') }}" alt="Users" class="w-100 h-100" style="object-fit:cover;object-position:top;">
+                        </div>
+                    </a>
+                    <p class="text-center text-muted small mt-2 mb-0">Users — inet &amp; unix account management</p>
+                </div>
+                <div class="col-md-6">
+                    <a href="{{ asset('img/log.png') }}" target="_blank">
+                        <div class="rounded-3 overflow-hidden shadow-sm border" style="aspect-ratio:16/9;">
+                            <img src="{{ asset('img/log.png') }}" alt="Log Viewer" class="w-100 h-100" style="object-fit:cover;object-position:top;">
+                        </div>
+                    </a>
+                    <p class="text-center text-muted small mt-2 mb-0">Log viewer — MaxScale log output in the browser</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="py-3 text-center text-muted small" style="border-top:1px solid #dee2e6;">
         &copy; {{ date('Y') }} <a href="https://www.maxinero.com" class="text-muted">maxinero.com</a>
     </footer>
