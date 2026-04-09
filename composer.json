@@ -8,7 +8,7 @@
         "php": "^7.2|^8.0",
         "coreui/coreui": "3.2.0",
         "fideloper/proxy": "^4.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.4.5",
         "laravel/framework": "^8.0",
         "laravel/helpers": "^1.4",
         "laravel/telescope": "^4.0",
