@@ -2,249 +2,146 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreServerRequest;
+use App\Services\MaxScaleClient;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\Request;
-
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Crypt;
-use App\Setting;
-use Auth;
-use Session;
-use View;
-use App\ServiceStats;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 class ServerController extends Controller
 {
-    public $guzzle;
-
-    public function __construct()
+    public function __construct(private MaxScaleClient $maxscale)
     {
         $this->middleware('auth');
-        $this->guzzle = \App::make('App\Http\Controllers\GuzzleController');
     }
-    
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        try{
-            $maxserver = $this->guzzle->get_api_info();
+        try {
+            $maxserver = $this->maxscale->getApiInfo();
             $server_stat = DB::table('server_stats')
                 ->select(DB::raw('created_at, sum(connections) AS sum, sum(active_operations) AS sum_ops'))
                 ->where('setting_id', $maxserver->id)
-                ->whereRaw('created_at > (CONVERT_TZ( NOW(), @@session.time_zone, \'+00:00\') - INTERVAL 1 HOUR)')
+                ->whereRaw("created_at > (CONVERT_TZ(NOW(), @@session.time_zone, '+00:00') - INTERVAL 1 HOUR)")
                 ->groupBy('created_at')
                 ->orderBy('created_at')
                 ->get()->toArray();
-        
-            $times = array_column($server_stat, 'created_at');
+
+            $times    = array_column($server_stat, 'created_at');
             $sum_conn = array_column($server_stat, 'sum');
-            $sum_ops = array_column($server_stat, 'sum_ops');
-            
-            $servers = json_decode($this->guzzle->get_request('servers'), true);
+            $sum_ops  = array_column($server_stat, 'sum_ops');
+
+            $servers = json_decode($this->maxscale->get('servers'), true);
+
             return view('servers.servers', compact('servers'))
-                ->with('times',json_encode($times,JSON_NUMERIC_CHECK))
-                ->with('sum_conn',json_encode($sum_conn,JSON_NUMERIC_CHECK))
-                ->with('sum_ops',json_encode($sum_ops,JSON_NUMERIC_CHECK));
-            
-        } catch(\GuzzleHttp\Exception\ConnectException $exception){
+                ->with('times', json_encode($times, JSON_NUMERIC_CHECK))
+                ->with('sum_conn', json_encode($sum_conn, JSON_NUMERIC_CHECK))
+                ->with('sum_ops', json_encode($sum_ops, JSON_NUMERIC_CHECK));
+        } catch (ConnectException) {
             return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
-        }
-        catch(\Exception $exception){
-            return redirect('settings')->with('error', $exception->getMessage());
+        } catch (\Exception $e) {
+            return redirect('settings')->with('error', $e->getMessage());
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    public function create() {}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreServerRequest $request)
     {
-        $this->validate($request,[
-            'server_id' => 'required',
-            'address' => 'required',
-            'port' => 'required',
-            'protocol' => 'required',
-            'address' => 'required'
-            ]);
+        $services      = array_filter(explode(',', trim($request->input('services', ''))));
+        $relation_data = array_values(array_map(fn($s) => ['id' => $s, 'type' => 'services'], $services));
 
-        $services = explode(',', trim($request->input('services')));
-        
-        $relation_data = array();
-        for ($i = 0; $i < count($services); $i++){
-            $relation_data[$i]['id'] = $services[$i];
-            $relation_data[$i]['type'] = 'services';
+        $params = [
+            'address' => $request->input('address'),
+            'port'    => (int) $request->input('port'),
+        ];
+        if ($request->filled('protocol')) {
+            $params['protocol'] = $request->input('protocol');
         }
-        #dd($relation_data);
 
-        if($services[0]==""){
-            $data = array(
-                'data' => [
-                'id' => $request->input('server_id'),
+        $data = [
+            'data' => [
+                'id'   => $request->input('server_id'),
                 'type' => 'servers',
-                'attributes' => [
-                    'parameters' => [
-                        'address' => $request->input('address'),
-                        'port' => (int) $request->input('port'),
-                        'protocol' => $request->input('protocol')
-                    ]
-                ]
-                ]);
-        }else{
-            $data = array(
-                'data' => [
-                'id' => $request->input('server_id'),
-                'type' => 'servers',
-                'attributes' => [
-                    'parameters' => [
-                        'address' => $request->input('address'),
-                        'port' => (int) $request->input('port'),
-                        'protocol' => $request->input('protocol')
-                    ]
-                ],
-                'relationships' => [
-                    'services' => [
-                        'data' => $relation_data
-                    ]
-                ]
-            ]);
+                'attributes' => ['parameters' => $params],
+            ],
+        ];
+
+        if (! empty($relation_data)) {
+            $data['data']['relationships'] = ['services' => ['data' => $relation_data]];
         }
-        $res = $this->guzzle->post_request($data, 'servers');
-        return $this->guzzle->get_request('servers/'.$request->input('server_id'));
-        
+
+        $this->maxscale->post('servers', $data);
+
+        return $this->maxscale->get('servers/' . $request->input('server_id'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(string $id)
     {
-        $server = json_decode($this->guzzle->get_request('servers/'.$id), true);
-        //dd(json_decode($server));
+        $server = json_decode($this->maxscale->get('servers/' . $id), true);
+
         return view('servers.serverdetail', compact('server'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(string $id)
     {
-        $server = $this->guzzle->get_request('servers/'.$id);
-        return $server;
+        return $this->maxscale->get('servers/' . $id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(StoreServerRequest $request, string $id)
     {
-        $this->validate($request,[
-            'server_id' => 'required',
-            'address' => 'required',
-            'port' => 'required',
-            'protocol' => 'required',
-            'address' => 'required'
-            ]);
+        $services      = array_filter(explode(',', trim($request->input('services', ''))));
+        $relation_data = array_values(array_map(fn($s) => ['id' => $s, 'type' => 'services'], $services));
 
-        $services = explode(',', trim($request->input('services')));
-        
-        $relation_data = array();
-        for ($i = 0; $i < count($services); $i++){
-            $relation_data[$i]['id'] = $services[$i];
-            $relation_data[$i]['type'] = 'services';
+        $params = [
+            'address' => $request->input('address'),
+            'port'    => (int) $request->input('port'),
+        ];
+        if ($request->filled('protocol')) {
+            $params['protocol'] = $request->input('protocol');
         }
-        #dd($relation_data);
 
-        if($services[0]==""){
-            $data = array(
-                'data' => [
-                'id' => $request->input('server_id'),
+        $data = [
+            'data' => [
+                'id'   => $request->input('server_id'),
                 'type' => 'servers',
-                'attributes' => [
-                    'parameters' => [
-                        'address' => $request->input('address'),
-                        'port' => (int) $request->input('port'),
-                        'protocol' => $request->input('protocol')
-                    ]
-                ]
-                ]);
-        }else{
-            $data = array(
-                'data' => [
-                'id' => $request->input('server_id'),
-                'type' => 'servers',
-                'attributes' => [
-                    'parameters' => [
-                        'address' => $request->input('address'),
-                        'port' => (int) $request->input('port'),
-                        'protocol' => $request->input('protocol')
-                    ]
-                ],
-                'relationships' => [
-                    'services' => [
-                        'data' => $relation_data
-                    ]
-                ]
-            ]);
+                'attributes' => ['parameters' => $params],
+            ],
+        ];
+
+        if (! empty($relation_data)) {
+            $data['data']['relationships'] = ['services' => ['data' => $relation_data]];
         }
-        $res = $this->guzzle->put_data($data, 'servers/'.$id);
-        return $this->guzzle->get_request('servers/'.$request->input('server_id'));
+
+        $this->maxscale->patch('servers/' . $id, $data);
+
+        return $this->maxscale->get('servers/' . $request->input('server_id'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        $id = preg_replace('#[ -]+#', '-', $id);
-        $this->guzzle->delete_request('servers/'.$id);
+        $this->maxscale->delete('servers/' . preg_replace('#[ -]+#', '-', $id));
         Session::flash('success', 'Server deleted.');
+
         return View::make('flash-message');
     }
 
-    public function change_state(Request $request, $id)
+    public function change_state(Request $request, string $id)
     {
-        $server = $this->guzzle->get_request('servers/'.$id);
-        $server = json_decode($server, true);
-        $state = $request->input('state');
+        $server = json_decode($this->maxscale->get('servers/' . $id), true);
+        $state  = $request->input('state');
         $states = explode(',', trim($server['data']['attributes']['state']));
-        if(in_array($state, $states)){
-            $res = $this->guzzle->put_request('servers/'.$id.'/clear?state='.$state);
-        }else{
-            $res = $this->guzzle->put_request('servers/'.$id.'/set?state='.$state.'&force=yes');
-        }  
+
+        if (in_array($state, $states)) {
+            $this->maxscale->put('servers/' . $id . '/clear?state=' . $state);
+        } else {
+            $this->maxscale->put('servers/' . $id . '/set?state=' . $state . '&force=yes');
+        }
+
         sleep(1);
-        return $this->guzzle->get_request('servers/'.$id);
+
+        return $this->maxscale->get('servers/' . $id);
     }
-    
 }
