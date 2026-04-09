@@ -2,46 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Crypt;
+use App\Services\MaxScaleClient;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\Request;
-use App\Setting;
-use Auth;
 
 class HomeController extends Controller
 {
-    public $guzzle;
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(private MaxScaleClient $maxscale)
     {
         $this->middleware('auth');
-        $this->guzzle = \App::make('App\Http\Controllers\GuzzleController');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
-    {  
-        try{
-            $threads = json_decode($this->guzzle->get_request('maxscale/threads'), true);
-            $sessions = json_decode($this->guzzle->get_request('sessions'), true);
-            $count = count($sessions['data']);
-            $threads_count = count($threads['data']);
-            return view('dash.view', compact('count', 'sessions', 'threads_count', 'threads'));
+    {
+        try {
+            $threads  = json_decode($this->maxscale->get('maxscale/threads'), true);
+            $sessions = json_decode($this->maxscale->get('sessions'), true);
 
-        } catch(\GuzzleHttp\Exception\ConnectException $exception){
+            return view('dash.view', [
+                'count'         => count($sessions['data'] ?? []),
+                'sessions'      => $sessions,
+                'threads_count' => count($threads['data'] ?? []),
+                'threads'       => $threads,
+            ]);
+        } catch (ConnectException) {
             return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
-        } catch(\GuzzleHttp\Exception\RequestException $exception){
-            return redirect('settings')->with('error', 'Issue connecting to MaxScale backend.');
-        } catch(\Exception $exception){
-            return redirect('settings')->with('error', $exception->getMessage());
+        } catch (\Exception $e) {
+            return redirect('settings')->with('error', $e->getMessage());
         }
     }
 }

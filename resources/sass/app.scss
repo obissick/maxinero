@@ -1,0 +1,82 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Bootstrap 5
+@import "bootstrap/scss/bootstrap";
+
+body {
+    background-color: #f8f9fa;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.navbar-maxinero {
+    background: linear-gradient(135deg, #1a2a3a 0%, #1c6e7e 100%);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.app-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 0.9rem 0;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.card {
+    border: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #e9ecef;
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+}
+
+// ── Tables ────────────────────────────────────────────────────────────────────
+
+// Brand gradient header — replaces flat Bootstrap table-dark
+.table > thead.table-dark {
+    background: linear-gradient(135deg, #1a2a3a 0%, #1c6e7e 100%);
+    --bs-table-bg: transparent;
+    --bs-table-color: #fff;
+    --bs-table-border-color: rgba(255, 255, 255, 0.12);
+
+    th {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        padding-top: 0.8rem;
+        padding-bottom: 0.8rem;
+        white-space: nowrap;
+    }
+}
+
+// Teal-tinted stripe (replaces Bootstrap grey)
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-color-type: inherit;
+    --bs-table-bg-type: rgba(28, 110, 126, 0.04);
+}
+
+// Teal row hover
+.table-hover > tbody > tr:hover > * {
+    --bs-table-color-state: inherit;
+    --bs-table-bg-state: rgba(28, 110, 126, 0.08);
+    cursor: default;
+}
+
+// th labels inside detail/info tables (Parameters, Instance Info, etc.)
+.table-borderless > tbody > tr > th,
+.table:not(.table-dark) > tbody > tr > th {
+    color: #6c757d;
+    font-weight: 600;
+    font-size: 0.82rem;
+    white-space: nowrap;
+}
+
+// Ensure table inside a card has no extra bottom-margin
+.card > .card-body.p-0 .table {
+    margin-bottom: 0;
+}

@@ -4,82 +4,52 @@ namespace App\Jobs;
 
 use App\ServerStats;
 use App\ServiceStats;
-use App\Setting as Setting;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp;
+use App\Setting;
+use App\Services\MaxScaleClient;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class ProcessStats implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $setting;
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function handle(MaxScaleClient $client): void
     {
-        
-    }
+        foreach (Setting::all() as $setting) {
+            try {
+                $serverStats  = json_decode($client->getForSetting($setting, 'servers'), true);
+                $serviceStats = json_decode($client->getForSetting($setting, 'services'), true);
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        $max_servers = Setting::all();
-        foreach($max_servers as $max_server) {
-            try{
-                $server_stats = json_decode($this->get_stats($max_server,'servers'), true);
-                $service_stats = json_decode($this->get_stats($max_server,'services'), true);
-                for($i = 0; $i < count($server_stats['data']); $i++){
-                    $stat = new ServerStats;
-                    $stat->setting_id = $max_server->id;
-                    $stat->server_id = $server_stats['data'][$i]['id'];
-                    $stat->connections = $server_stats['data'][$i]['attributes']['statistics']['connections'];
-                    $stat->total_connections = $server_stats['data'][$i]['attributes']['statistics']['total_connections'];
-                    $stat->active_operations = $server_stats['data'][$i]['attributes']['statistics']['active_operations'];
-                    $stat->save();
+                foreach ($serverStats['data'] as $item) {
+                    ServerStats::create([
+                        'setting_id'        => $setting->id,
+                        'server_id'         => $item['id'],
+                        'connections'       => $item['attributes']['statistics']['connections'],
+                        'total_connections' => $item['attributes']['statistics']['total_connections'],
+                        'active_operations' => $item['attributes']['statistics']['active_operations'],
+                    ]);
                 }
-                for($i = 0; $i < count($service_stats['data']); $i++){
-                    $stat = new ServiceStats;
-                    $stat->setting_id = $max_server->id;
-                    $stat->service_id = $service_stats['data'][$i]['id'];
-                    $stat->connections = $service_stats['data'][$i]['attributes']['connections'];
-                    $stat->total_connections = $service_stats['data'][$i]['attributes']['total_connections'];
-                    if($service_stats['data'][$i]['attributes']['router'] === "cli"){
 
-                    }else{
-                        $stat->queries = $service_stats['data'][$i]['attributes']['router_diagnostics']['queries'];
+                foreach ($serviceStats['data'] as $item) {
+                    if (($item['attributes']['router'] ?? '') === 'cli') {
+                        continue;
                     }
-                    
-                    $stat->save();
-                }
-            }catch (\GuzzleHttp\Exception\ConnectException $exception){
-                print($exception->getResponse());
-            }
-            
-            
-        }
-    }
 
-    function get_stats($server, $location){
-        $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', $server->api_url.$location, [
-            'auth' => [$server->username, Crypt::decrypt($server->password)], 
-            'verify' => false,
-            'timeout' => 1.00
-        ]);
-        return $res->getBody()->getContents();
+                    ServiceStats::create([
+                        'setting_id'        => $setting->id,
+                        'service_id'        => $item['id'],
+                        'connections'       => $item['attributes']['connections'] ?? $item['attributes']['statistics']['current_connections'] ?? 0,
+                        'total_connections' => $item['attributes']['total_connections'] ?? $item['attributes']['statistics']['total_connections'] ?? 0,
+                        'queries'           => $item['attributes']['router_diagnostics']['queries'] ?? null,
+                    ]);
+                }
+            } catch (ConnectException) {
+                // Skip unreachable servers; logged by the queue worker
+            }
+        }
     }
 }

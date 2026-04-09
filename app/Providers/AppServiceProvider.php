@@ -2,27 +2,28 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use URL;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
-        URL::forceScheme('https');
+        //URL::forceScheme('https');
+
+        View::composer('layouts.app', function ($view) {
+            if (auth()->check()) {
+                $view->with('navApiSettings', DB::table('settings')
+                    ->select('id', 'name', 'selected')
+                    ->where('user_id', auth()->id())
+                    ->get());
+            }
+        });
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         //
     }

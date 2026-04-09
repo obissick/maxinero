@@ -2,73 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\User;
 use Illuminate\Support\Facades\Hash;
-use Auth;
-use Session;
-use View;
 
 class ProfileController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $user = DB::table('users')
-            ->select(DB::raw('id, name, email,  created_at, updated_at'))
-            ->where('id', Auth::user()->id)->first();
-        $apis = DB::table('settings')
-            ->select(DB::raw('count(id) as count'))
-            ->where('user_id', Auth::user()->id)->first();
-        return view('profile.index', compact('user','apis'));
+        $user = User::find(Auth::id());
+        $apis = DB::table('settings')->where('user_id', Auth::id())->count();
+
+        return view('profile.index', compact('user', 'apis'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
-        try{
-            $timestamp = date('Y-m-d H:i:s');
-            if(empty($request->get("password"))){
-                $password = DB::table('users')
-                    ->select(DB::raw('password'))
-                    ->where('id', Auth::user()->id)->first();
-                $password = $password->password;
-            }else{
-                $password = Hash::make($request->get('password'));
-            }
-            DB::table('users')->where('id', $id)->update([
-                'name' => $request->get('name'),
-                'email' => $request->get('email'),
-                'password' => $password, 
-                'updated_at' => $timestamp,
-            ]);
-            return back()->with('success','Profile updated successfully!');
-        }catch(Exception $ex){
-            return back()->with('error',$ex->getMessage());
+        $request->validate([
+            'name'  => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->name  = $request->input('name');
+        $user->email = $request->input('email');
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->input('password'));
         }
-        
+
+        $user->save();
+
+        return back()->with('success', 'Profile updated successfully!');
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        User::find($id)->delete();
+        User::findOrFail($id)->delete();
+
         return redirect('home');
     }
 }

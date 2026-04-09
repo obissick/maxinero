@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSettingSelected extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -29,4 +29,5 @@ class AddSettingSelected extends Migration
             $table->dropColumn('selected');
         });
     }
-}
+};
+

@@ -1,79 +1,112 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container container-fluid">
-    <div class="flash-message"></div>
-    <h2>{{$server['data']['id']}}</h2>
-    <div class="row">
-        <div class="table-responsive-sm">
-            <br />
-            <!-- Table-to-load-the-data Part -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Address</th>
-                        <th>Port</th>
-                        <th>Protocol</th>
-                        <th>Server Version</th>
-                        <th>State</th>
-                        <th>Connections</th>
-                        <th>Total Connections</th>
-                        <th>Persistent Connections</th>
-                        <th>Active Operations</th>    
-                        <th>Routed Packets</th>              
-                    </tr>
-                </thead>
-                <tbody id="servers-list" name="servers-list">
-                    <tr id="server{{$server['data']['id']}}">
-                        <td>{{$server['data']['attributes']['parameters']['address']}}</td>
-                        <td>{{$server['data']['attributes']['parameters']['port']}}</td>
-                        <td>{{$server['data']['attributes']['parameters']['protocol']}}</td>
-                        <td>{{$server['data']['attributes']['version_string']}}</td>
-                        <td>{{$server['data']['attributes']['state']}}</td>
-                        <td>{{$server['data']['attributes']['statistics']['connections']}}</td>
-                        <td>{{$server['data']['attributes']['statistics']['total_connections']}}</td>
-                        <td>{{$server['data']['attributes']['statistics']['persistent_connections']}}</td>
-                        <td>{{$server['data']['attributes']['statistics']['active_operations']}}</td>
-                        <td>{{$server['data']['attributes']['statistics']['routed_packets']}}</td>
-                    </tr>
-                </tbody>
-            </table>
+@php
+    $srv    = $server['data'];
+    $params = $srv['attributes']['parameters'] ?? [];
+    $stats  = $srv['attributes']['statistics'] ?? [];
+    $state  = $srv['attributes']['state'] ?? '';
+    $stateClass = str_contains($state, 'Running') || str_contains($state, 'Master') ? 'success'
+                : (str_contains($state, 'Maintenance') ? 'warning' : 'secondary');
+@endphp
+<div class="container-fluid px-4">
+    <div class="flash-message mb-2"></div>
+    <h1 class="mt-4">
+        {{ $srv['id'] }}
+        <span class="badge bg-{{ $stateClass }} fs-6 align-middle">{{ $state }}</span>
+    </h1>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-2">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Connections</div>
+                    <div class="fs-4 fw-bold">{{ $stats['connections'] ?? 0 }}</div>
+                </div>
+            </div>
         </div>
-        
+        <div class="col-sm-6 col-lg-2">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Total Connections</div>
+                    <div class="fs-4 fw-bold">{{ $stats['total_connections'] ?? 0 }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Persistent</div>
+                    <div class="fs-4 fw-bold">{{ $stats['persistent_connections'] ?? '—' }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Active Ops</div>
+                    <div class="fs-4 fw-bold">{{ $stats['active_operations'] ?? '—' }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Routed Packets</div>
+                    <div class="fs-4 fw-bold">{{ $stats['routed_packets'] ?? '—' }}</div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-        <div class="table-responsive-sm">
-            <br />
-            <!-- Table-to-load-the-data Part -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Services</th>
-                        <th>Monitors</th>
-                    </tr>
-                </thead>
-                <tbody id="servers-list" name="servers-list">
-                    <tr id="server{{$server['data']['id']}}">
-                        <td>
-                            @isset($server['data']['relationships']['services']['data'])
-                            @for($y = 0; $y < count($server['data']['relationships']['services']['data']); $y++)
-                                <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>{{$server['data']['relationships']['services']['data'][$y]['id']}}</button>
-                            @endfor
-                            @endisset
-                        </td>
-                        <td>
-                            @isset($server['data']['relationships']['monitors']['data'])
-                            @for($y = 0; $y < count($server['data']['relationships']['monitors']['data']); $y++)
-                                <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>{{$server['data']['relationships']['monitors']['data'][$y]['id']}}</button>
-                            @endfor
-                            @endisset
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">Parameters</div>
+                <div class="card-body p-0">
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                            <tr><th class="w-40">Address</th><td>{{ $params['address'] ?? '' }}</td></tr>
+                            <tr><th>Port</th><td>{{ $params['port'] ?? '' }}</td></tr>
+                            <tr><th>Protocol</th><td><code>{{ $params['protocol'] ?? '' }}</code></td></tr>
+                            <tr><th>Version</th><td>{{ $srv['attributes']['version_string'] ?? $srv['attributes']['version'] ?? '—' }}</td></tr>
+                            @if(!empty($params['ssl_key']))
+                            <tr><th>SSL Key</th><td><code>{{ $params['ssl_key'] }}</code></td></tr>
+                            @endif
+                            @if(!empty($params['ssl_cert']))
+                            <tr><th>SSL Cert</th><td><code>{{ $params['ssl_cert'] }}</code></td></tr>
+                            @endif
+                            @if(!empty($params['ssl_ca_cert']))
+                            <tr><th>SSL CA Cert</th><td><code>{{ $params['ssl_ca_cert'] }}</code></td></tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">Relationships</div>
+                <div class="card-body">
+                    <p class="mb-1 fw-semibold">Services</p>
+                    <div class="mb-3">
+                        @forelse($srv['relationships']['services']['data'] ?? [] as $rel)
+                            <span class="badge bg-primary me-1">{{ $rel['id'] }}</span>
+                        @empty
+                            <span class="text-muted">None</span>
+                        @endforelse
+                    </div>
+                    <p class="mb-1 fw-semibold">Monitors</p>
+                    <div>
+                        @forelse($srv['relationships']['monitors']['data'] ?? [] as $rel)
+                            <span class="badge bg-success me-1">{{ $rel['id'] }}</span>
+                        @empty
+                            <span class="text-muted">None</span>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 @endsection
